@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SVG Test</title>
+  </head>
+
+  <body>
+    <h1>SVG Test</h1>
+
+    <svg id="svg" height="500" width="500">
+     <polyline id="polyline" points="250,250"
+     style="fill:none;stroke:black;stroke-width:3" />
+    </svg>
+
+    <script>
+      var svg = document.getElementById('svg');
+
+      var direction = 0;
+      var speed = 1;
+      var position_x = 250;
+      var position_y = 250;
+
+      var key_right = false;
+      var key_left = false;
+
+      document.addEventListener('keydown', keydownHandler);
+      document.addEventListener('keyup', keyupHandler);
+
+      function keydownHandler(e) {
+        console.log('Down' + `${e.code}`);
+        if(e.code == 'ArrowRight')
+          key_right = true;
+
+        if(e.code == 'ArrowLeft')
+          key_left = true;
+      }
+
+      function keyupHandler(e) {
+        console.log('Up' + `${e.code}`);
+
+        if(e.code == 'ArrowRight')
+          key_right = false;
+
+        if(e.code == 'ArrowLeft')
+          key_left = false;
+      }
+
+      function updateState() {
+        if(key_right == true)
+          direction += 0.1;
+
+        if(key_left == true)
+          direction -= 0.1;
+
+        console.log(direction);
+
+        update_x = 0;
+        update_y = 1;
+
+        position_x += (Math.cos(direction) * update_x - Math.sin(direction) * update_y) * speed;
+        position_y += (Math.sin(direction) * update_x + Math.cos(direction) * update_y) * speed;
+
+        var point = svg.createSVGPoint();
+        point.x = position_x;
+        point.y = position_y;
+        var polyline= document.getElementById('polyline');
+        polyline.points.appendItem(point);
+      }
+
+      window.setInterval(function(){
+        updateState();
+      }, 40);
+
+    </script>
+
+  </body>
+</html>
