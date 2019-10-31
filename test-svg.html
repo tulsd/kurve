@@ -3,25 +3,33 @@
 
   <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link rel="stylesheet" href="style.css" />
+
     <title>SVG Test</title>
   </head>
 
   <body>
     <h1>SVG Test</h1>
 
-    <svg id="svg" height="500" width="500">
+    <canvas id="canvas"></canvas>
+
+
+    <svg id="svg" height="1000" width="1000">
      <polyline id="polyline" points=""
      style="fill:none;stroke:black;stroke-width:3" />
     </svg>
 
     <script src="c-input-handler.js"></script>
     <script src="c-player.js"></script>
+    <script src="v-drawer.js"></script>
 
     <script>
       let input_handler = new InputHandler();
-      let player1 = new PlayerLine(1, document.getElementById('svg'), document.getElementById('polyline'));
+      let drawer = new Drawer(document.getElementById('svg'), document.getElementById('polyline'));
+      let player1 = new Player(1, [1000, 1000], [500, 500], drawer);
 
       function main()
       {
