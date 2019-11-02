@@ -50,6 +50,7 @@ class Player
       case 'PlayerId':
         this.id_ = message.content;
         this.communicator_.unregisterFromMessageType('PlayerId', 'local');
+        this.communicator_.sendMessage('RequestRemotePlayerHello', 'Global', this.id_);
         break;
 
       default:
@@ -129,7 +130,8 @@ class Player
   updateExport()
   {
     this.drawer_.drawLineFromTo(this.position_head_old_, this.position_head_, this.color_, this.thickness_);
-    this.communicator_.sendMessage('RequestPositionUpdate', 'Global',
-                                   {player: this.id_, position: this.position_head_});
+    this.communicator_.sendMessage('RequestPositionUpdate', 'Global', {player: this.id_,
+                                   position_old: this.position_head_old_, position: this.position_head_,
+                                   color: this.color_, thickness: this.thickness_});
   }
 }

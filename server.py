@@ -16,11 +16,21 @@ def messageHandler(player_id, player_websocket, message):
     # Handle message
     if m_type == 'RequestPlayerId':
         print('DEBUG: RequestPlayerId from player ' + str(player_id))
-        return {'type': 'PlayerId', 'destination': player_id, 'content': player_id}
+        destination = 'sender'
+        response    = {'type': 'PlayerId', 'destination': player_id, 'content': player_id}
+        return destination, response
+
+    elif m_type == 'RequestRemotePlayerHello':
+        print('DEBUG: RequestRemotePlayerHello from player ' + str(player_id))
+        destination = 'everyone-but-sender'
+        response    = {'type': 'RemotePlayerHello', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
+        return destination, response
 
     else:
         print('DEBUG: Unknown message from player ' + str(player_id))
-        return False
+        destination = 'void'
+        response    = {}
+        return destination, response
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Main connection handler function
@@ -42,10 +52,17 @@ async def connectionHandler(websocket, path):
         # Handle messages
         while True:
             json_string_in = await websocket.recv()
-            response = messageHandler(player_id, websocket, json.loads(json_string_in))
+            destination, response = messageHandler(player_id, websocket, json.loads(json_string_in))
 
-            if(response != False):
+            if(destination == 'sender'):
                 await websocket.send(json.dumps(response))
+
+            elif(destination == 'everyone-but-sender'):
+                player_keys = players.keys()
+                for loop_payer_id in players:
+                    if player_id != loop_payer_id:
+                        loop_player_websocket = players[loop_payer_id]
+                        await loop_player_websocket.send(json.dumps(response))
 
     finally:
         # ----------------------------------------------------------------------------------------------------------

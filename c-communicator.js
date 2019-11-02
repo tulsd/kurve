@@ -3,7 +3,7 @@ class Communicator
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(server_url, server_port, players)
+  constructor(server_url, server_port, game, players)
   {
     // Connection
     this.connection_open_     = false;
@@ -18,7 +18,7 @@ class Communicator
 
     // Message register
     this.players_ = players;
-    this.register_ = {};
+    this.register_ = {'game': game};
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
