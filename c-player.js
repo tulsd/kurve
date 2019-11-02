@@ -9,14 +9,15 @@ class Player
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(id, fieldsize, startposition, drawer, communicator)
+  constructor(id, fieldsize, startposition, collision_detector, drawer, communicator)
   {
     // General setup
-    this.id_            = id;
-    this.is_local_      = false;
-    this.fieldsize_     = fieldsize;
-    this.drawer_        = drawer;
-    this.communicator_  = communicator;
+    this.id_                  = id;
+    this.is_local_            = false;
+    this.fieldsize_           = fieldsize;
+    this.collision_detector_  = collision_detector;
+    this.drawer_              = drawer;
+    this.communicator_        = communicator;
 
     // Id setup
     if(this.id_ == 'local')
@@ -93,6 +94,9 @@ class Player
     let vector_up = [0,-1];
     let potential_new_position_x = this.position_head_[0] + ((Math.cos(this.direction_) * vector_up[0] - Math.sin(this.direction_) * vector_up[1]) * this.speed_);
     let potential_new_position_y = this.position_head_[1] + ((Math.sin(this.direction_) * vector_up[0] + Math.cos(this.direction_) * vector_up[1]) * this.speed_);
+
+    // Check if new position collides with obstacles
+    this.collision_detector_.collisionAtLocation([potential_new_position_x, potential_new_position_y]);
 
     // Check if new position is out of bounds (x)
     if(potential_new_position_x < 0)
