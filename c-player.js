@@ -23,7 +23,7 @@ class Player
     if(this.id_ == 'local')
     {
       this.is_local_ = true;
-      this.communicator_.registerToMessageType('PlayerId', 'local');
+      this.communicator_.registerToMessageType('PlayerId', this);
       this.communicator_.sendMessage('RequestPlayerId', 'Server', undefined);
     }
 
@@ -49,7 +49,6 @@ class Player
     {
       case 'PlayerId':
         this.id_ = message.content;
-        this.communicator_.unregisterFromMessageType('PlayerId', 'local');
         this.communicator_.sendMessage('RequestRemotePlayerHello', 'Global', this.id_);
         break;
 

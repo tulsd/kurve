@@ -3,7 +3,7 @@ class Communicator
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(server_url, server_port, game, players)
+  constructor(server_url, server_port)
   {
     // Connection
     this.connection_open_     = false;
@@ -17,8 +17,7 @@ class Communicator
     this.websocket_.onerror   = function(e){event_target.onError.call(event_target, e);};
 
     // Message register
-    this.players_ = players;
-    this.register_ = {'game': game};
+    this.register_ = {};
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -39,6 +38,9 @@ class Communicator
     let message = JSON.parse(event.data);
     let m_type = message.type;
 
+    console.log(message);
+
+
     // Create player array if never created before
     if(this.register_[m_type] == undefined)
     {
@@ -48,9 +50,9 @@ class Communicator
     // Give message to registered players
     let event_target = this;
     this.register_[m_type].forEach(
-      function(player_id)
+      function(message_target)
       {
-        event_target.players_[player_id].handleMessage(message);
+        message_target.handleMessage(message);
       }
     );
   }
@@ -70,7 +72,7 @@ class Communicator
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for receiving
 
-  registerToMessageType(type, player_id)
+  registerToMessageType(type, message_target)
   {
     // Create player array if never created before
     if(this.register_[type] == undefined)
@@ -78,12 +80,7 @@ class Communicator
       this.register_[type] = new Set();
     }
 
-    this.register_[type].add(player_id);
-  }
-
-  unregisterFromMessageType(type, player_id)
-  {
-    // TODO
+    this.register_[type].add(message_target);
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

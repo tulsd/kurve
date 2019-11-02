@@ -19,7 +19,7 @@ class Game
     this.players_             = {};
 
     // Essentials
-    this.communicator_        = new Communicator(this.server_url_, this.server_port_, this, this.players_);
+    this.communicator_        = new Communicator(this.server_url_, this.server_port_);
     this.input_handler_       = new InputHandler();
     this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'));
     this.drawer_              = new Drawer(document.getElementById('canvas'));
@@ -36,6 +36,8 @@ class Game
     switch(message.type)
     {
       case 'RemotePlayerHello':
+        console.log('here');
+
         let remote_player_id = message.content;
         this.players_[remote_player_id] = new Player(remote_player_id, this.fieldsize_, [400, 400],
                                                      this.collision_detector_, this.drawer_, this.communicator_);
@@ -62,7 +64,7 @@ class Game
                                        this.communicator_);
 
       // Create other players
-      this.communicator_.registerToMessageType('RemotePlayerHello', 'game');
+      this.communicator_.registerToMessageType('RemotePlayerHello', this);
 
       // Call run function periodically
       let event_target = this;
