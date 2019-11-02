@@ -1,10 +1,13 @@
 class Communicator
 {
-  constructor()
+  constructor(server_url, server_port)
   {
-    this.websocket = new WebSocket("ws://localhost:8765"); // TODO: Make socket use right IP, not localhost
-    this.websocket.onopen = this.onOpen;
-    this.websocket.onmessage = this.onMessage;
+    this.connection_open_     = false;
+    this.websocket            = new WebSocket('ws://' + server_url + ':' + server_port);
+    let event_target = this;
+    this.websocket.onopen     = function(e){event_target.onOpen.call(event_target, e);};
+    this.websocket.onmessage  = function(e){event_target.onMessage.call(event_target, e);};
+    // TODO: Error, close
   }
 
   // Handle events
@@ -12,6 +15,8 @@ class Communicator
   onOpen(event)
   {
     console.log('DEBUG: WebSocket open');
+    console.log(this)
+    this.connection_open_ = true;
   }
 
   onMessage(event)

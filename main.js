@@ -1,21 +1,64 @@
-// Global state
-let state = 'Lobby';
-
-// Create essentials
-let communicator    = new Communicator();
-let input_handler   = new InputHandler();
-let drawer          = new Drawer(document.getElementById('svg'), document.getElementById('polyline'));
-
-// Create player self
-let player          = new Player(undefined, [1000, 1000], [500, 500], drawer, communicator);
-
-// Create other players
-// TODO
-
-// Run game
-function main()
+class Game
 {
-    player1.updateAll(input_handler.getDirection());
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Setup
+    constructor()
+    {
+        // Settings
+        this.server_url_  = 'localhost';
+        this.server_port_ = '8765';
+
+        // States
+        this.state_ = 'Lobby';
+
+        // Essentials
+        this.communicator_  = new Communicator(this.server_url_, this.server_port_);
+        this.input_handler_ = new InputHandler();
+        this.drawer_        = new Drawer(document.getElementById('svg'), document.getElementById('polyline'));
+
+        // Players
+        this.player_local_ = undefined;
+        this.players_remote_ = [];
+
+        // Create game
+        this.createGame();
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Methods
+    createGame()
+    {
+        // Check connection
+        if(this.communicator_.connection_open_)
+        {
+            console.log('DEBUG: Network ready, starting game');
+
+            // Create local player
+            this.player_local_ = new Player(undefined, [1000, 1000], [500, 500], this.drawer_, this.communicator_);
+
+            // Create other players
+            // TODO
+
+            // Call run function periodically
+            let event_target = this;
+            window.setInterval(function(){event_target.runGame.call(event_target);}, 4000);
+        }
+        else
+        {
+            console.log('DEBUG: Network not ready, retrying');
+
+            // Call create function one more time
+            let event_target = this;
+            window.setTimeout(function(){event_target.createGame.call(event_target);}, 1000);
+        }
+    }
+
+    runGame()
+    {
+        this.player_local_.updateAll(this.input_handler_.getDirection());
+    }
 }
 
-window.setInterval(main, 4000);
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Execute
+let game = new Game();

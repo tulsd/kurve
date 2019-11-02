@@ -10,12 +10,14 @@ class Player
     this.fieldsize = fieldsize;
     this.drawer = drawer;
     this.communicator = communicator;
+    this.controllable = false;
 
     // Id setup
     if(id == undefined)
     {
-      this.communicator.registerToMessageType('NewPlayerId');
-      this.communicator.sendMessage('RequestNewPlayerId', 'Server', undefined);
+      this.communicator.registerToMessageType('PlayerId');
+      this.communicator.sendMessage('RequestPlayerId', 'Server', undefined);
+      this.controllable = true;
     }
     else
     {
@@ -90,9 +92,9 @@ class Player
   {
     switch(message.type)
     {
-      case 'NewPlayerId':
+      case 'PlayerId':
         this.id = message.content;
-        this.communicator.unregisterFromMessageType('NewPlayerId');
+        this.communicator.unregisterFromMessageType('PlayerId');
         break;
 
       default:
