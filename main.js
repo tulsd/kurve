@@ -7,6 +7,7 @@ class Game
         // Settings
         this.server_url_  = 'localhost';
         this.server_port_ = '8765';
+        this.frametime_   = 4000;
 
         // States
         this.state_ = 'Lobby';
@@ -41,7 +42,7 @@ class Game
 
             // Call run function periodically
             let event_target = this;
-            window.setInterval(function(){event_target.runGame.call(event_target);}, 4000);
+            window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
         }
         else
         {

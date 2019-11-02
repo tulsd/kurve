@@ -8,15 +8,19 @@ players = {}
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Main message handler function
-def messageHandler(player_id, message):
-    print('DEBUG: Got message from player ' + str(player_id))
+def messageHandler(player_id, player_websocket, message):
 
     # Unpack message
     m_type = message['type']
 
     # Handle message
     if m_type == 'RequestPlayerId':
-        print('here')
+        print('DEBUG: RequestPlayerId from player ' + str(player_id))
+        answer = {'type': 'PlayerId', 'destination': player_id, 'content': player_id}
+        player_websocket.send(json.dumps(answer))
+
+    else:
+        print('DEBUG: Unknown message from player ' + str(player_id))
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Main connection handler function
@@ -38,7 +42,7 @@ async def connectionHandler(websocket, path):
         # Handle messages
         while True:
             json_string = await websocket.recv()
-            messageHandler(player_id, json.loads(json_string))
+            messageHandler(player_id, websocket, json.loads(json_string))
 
     finally:
         # ----------------------------------------------------------------------------------------------------------
