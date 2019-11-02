@@ -42,17 +42,18 @@ class Communicator
     console.log(message);
 
     // Create player array if never created before
-    if(this.register_.m_type == undefined)
+    if(this.register_[m_type] == undefined)
     {
-      this.register_.m_type = new Set();
+      this.register_[m_type] = new Set();
     }
 
     // Give message to registered players
-    this.register_.m_type.forEach(
+    let event_target = this;
+    this.register_[m_type].forEach(
       function(player_id)
       {
         console.log('here');
-        this.players.player_id.handleMessage(message);
+        event_target.players_[player_id].handleMessage(message);
       }
     );
   }
@@ -75,12 +76,12 @@ class Communicator
   registerToMessageType(type, player_id)
   {
     // Create player array if never created before
-    if(this.register_.type == undefined)
+    if(this.register_[type] == undefined)
     {
-      this.register_.type = new Set();
+      this.register_[type] = new Set();
     }
 
-    this.register_.type.add(player_id);
+    this.register_[type].add(player_id);
   }
 
   unregisterFromMessageType(type, player_id)
