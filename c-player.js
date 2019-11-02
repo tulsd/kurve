@@ -1,27 +1,29 @@
 class Player
 {
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Notes
   // Positive x is right
   // Positive y is down
   // Vector up is [0,-1]
 
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Setup
+
   constructor(id, fieldsize, startposition, drawer, communicator)
   {
     // General setup
+    this.id_ = id;
+    this.is_local_ = false;
     this.fieldsize = fieldsize;
     this.drawer = drawer;
     this.communicator = communicator;
-    this.controllable = false;
 
     // Id setup
-    if(id == undefined)
+    if(this.id_ == 'local')
     {
-      this.communicator.registerToMessageType('PlayerId');
+      this.is_local_ = true;
+      this.communicator.registerToMessageType('PlayerId', 'local');
       this.communicator.sendMessage('RequestPlayerId', 'Server', undefined);
-      this.controllable = true;
-    }
-    else
-    {
-      this.id = id;
     }
 
     // Position and movement
@@ -30,6 +32,27 @@ class Player
     this.speed = 1;
     this.turnrate = 0.1;
   }
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods for handling messages
+
+  handleMessage(message)
+  {
+    switch(message.type)
+    {
+      case 'PlayerId':
+        this.id_ = message.content;
+        this.communicator.unregisterFromMessageType('PlayerId', 'local');
+        break;
+
+      default:
+        console.log('DEBUG: Unknown message type')
+        break;
+    }
+  }
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods for updating player
 
   updateAll(direction)
   {
@@ -86,20 +109,5 @@ class Player
   {
     this.drawer.drawLineFromTo([0,0], this.position_head);
     this.communicator.sendMessage('MovedToPosition', 'Global', {player: this.id, position: this.position_head});
-  }
-
-  handleMessage(message)
-  {
-    switch(message.type)
-    {
-      case 'PlayerId':
-        this.id = message.content;
-        this.communicator.unregisterFromMessageType('PlayerId');
-        break;
-
-      default:
-        console.log('DEBUG: Unknown message type')
-        break;
-    }
   }
 }

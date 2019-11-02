@@ -2,24 +2,25 @@ class Game
 {
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
+
   constructor()
   {
     // Settings
-    this.server_url_  = 'localhost';
-    this.server_port_ = '8765';
-    this.frametime_   = 4000;
+    this.server_url_    = 'localhost';
+    this.server_port_   = '8765';
+    this.frametime_     = 4000;
+    this.fieldsize_     = [1000, 1000];
 
     // States
-    this.state_ = 'Lobby';
-
-    // Essentials
-    this.communicator_  = new Communicator(this.server_url_, this.server_port_);
-    this.input_handler_ = new InputHandler();
-    this.drawer_        = new Drawer(document.getElementById('svg'), document.getElementById('polyline'));
+    this.state_         = 'Lobby';
 
     // Players
-    this.player_local_ = undefined;
-    this.players_remote_ = [];
+    this.players_       = {};
+
+    // Essentials
+    this.communicator_  = new Communicator(this.server_url_, this.server_port_, this.players_);
+    this.input_handler_ = new InputHandler();
+    this.drawer_        = new Drawer(document.getElementById('svg'), document.getElementById('polyline'));
 
     // Create game
     this.createGame();
@@ -27,6 +28,7 @@ class Game
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods
+
   createGame()
   {
     // Check connection
@@ -35,7 +37,7 @@ class Game
       console.log('DEBUG: Network ready, starting game');
 
       // Create local player
-      this.player_local_ = new Player(undefined, [1000, 1000], [500, 500], this.drawer_, this.communicator_);
+      this.players_.local = new Player('local', true, this.fieldsize_, [500, 500], this.drawer_, this.communicator_);
 
       // Create other players
       // TODO
@@ -62,4 +64,5 @@ class Game
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Execute
+
 let game = new Game();

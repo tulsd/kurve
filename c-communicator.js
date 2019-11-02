@@ -1,8 +1,9 @@
 class Communicator
 {
-  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
-  constructor(server_url, server_port)
+
+  constructor(server_url, server_port, players)
   {
     // Connection
     this.connection_open_     = false;
@@ -14,8 +15,13 @@ class Communicator
     this.websocket_.onmessage = function(e){event_target.onMessage.call(event_target, e);};
     this.websocket_.onclose   = function(e){event_target.onClose.call(event_target, e);};
     this.websocket_.onerror   = function(e){event_target.onError.call(event_target, e);};
+
+    // Message register
+    this.players_ = players;
+    this.register_ = {};
   }
 
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Handle events
 
   onOpen(event)
@@ -28,10 +34,59 @@ class Communicator
   onMessage(event)
   {
     console.log('DEBUG: WebSocket message receive');
+
+    // Unpack message
     let message = JSON.parse(event.data);
+    let m_type = message.type;
+
+    // Create player array if never created before
+    if(this.register_.m_type == undefined)
+    {
+      this.register_.m_type = new Set();
+    }
+
+    // Give message to registered players
+    this.register_.m_type.forEach(
+      function(player_id)
+      {
+        this.players.player_id.handleMessage(message);
+      }
+    );
   }
 
-  // Callable methods
+  onClose(event)
+  {
+    console.log('DEBUG: WebSocket close');
+    // TODO
+  }
+
+  onError(event)
+  {
+    console.log('DEBUG: WebSocket error');
+    // TODO
+  }
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods for receiving
+
+  registerToMessageType(type, player_id)
+  {
+    // Create player array if never created before
+    if(this.register_.type == undefined)
+    {
+      this.register_.type = new Set();
+    }
+
+    this.register_.type.add(player_id);
+  }
+
+  unregisterFromMessageType(type, player_id)
+  {
+    // TODO
+  }
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods for sending
 
   sendMessage(type, destination, content)
   {
@@ -46,15 +101,5 @@ class Communicator
     };
 
     this.websocket_.send(JSON.stringify(message));
-  }
-
-  registerToMessageType(type)
-  {
-
-  }
-
-  unregisterFromMessageType(type)
-  {
-
   }
 }

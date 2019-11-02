@@ -1,5 +1,8 @@
 class InputHandler
 {
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Setup
+
   constructor(left_key = 'ArrowLeft', right_key = 'ArrowRight')
   {
     // Members
@@ -13,6 +16,9 @@ class InputHandler
     document.addEventListener('keydown', function(e){event_target.keyDownHandler.call(event_target, e);});
     document.addEventListener('keyup', function(e){event_target.keyUpHandler.call(event_target, e);});
   }
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods for handling keypresses
 
   keyDownHandler(e)
   {
@@ -31,6 +37,9 @@ class InputHandler
     if(e.code == this.right_key)
       this.right_active = false;
   }
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods for exporting state of keypresses
 
   getDirection()
   {
