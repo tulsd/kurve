@@ -28,10 +28,11 @@ class Player
     }
 
     // Position and movement
+    this.alive_ = true;
     this.position_head_old_ = startposition;
     this.position_head_     = startposition;
     this.direction_         = 0;
-    this.speed_             = 1;
+    this.speed_             = 2;
     this.turnrate_          = 0.1;
 
     // Optics
@@ -60,11 +61,14 @@ class Player
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for updating player
 
-  updateAll(direction)
+  updateAllIfAlive(direction)
   {
-    this.updateDirection(direction);
-    this.updatePosition();
-    this.updateExport();
+    if(this.alive_)
+    {
+      this.updateDirection(direction);
+      this.updatePosition();
+      this.updateExport();
+    }
   }
 
   updateDirection(direction)
@@ -96,7 +100,10 @@ class Player
     let potential_new_position_y = this.position_head_[1] + ((Math.sin(this.direction_) * vector_up[0] + Math.cos(this.direction_) * vector_up[1]) * this.speed_);
 
     // Check if new position collides with obstacles
-    this.collision_detector_.collisionAtLocation([potential_new_position_x, potential_new_position_y]);
+    if(this.collision_detector_.collisionAtLocation([potential_new_position_x, potential_new_position_y]))
+    {
+      this.alive_ = false;
+    };
 
     // Check if new position is out of bounds (x)
     if(potential_new_position_x < 0)

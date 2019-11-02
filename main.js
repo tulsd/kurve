@@ -60,7 +60,7 @@ class Game
 
   runGame()
   {
-    this.players_.local.updateAll(this.input_handler_.getDirection());
+    this.players_.local.updateAllIfAlive(this.input_handler_.getDirection());
   }
 }
 
