@@ -8,7 +8,6 @@ class Drawer
 
   drawLineFromTo(from, to)
   {
-    console.log(this);
     let point = this.svg.createSVGPoint();
     point.x = to[0];
     point.y = to[1];

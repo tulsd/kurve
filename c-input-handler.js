@@ -5,8 +5,6 @@ class InputHandler
     // Members
     this.left_key = left_key;
     this.right_key = right_key;
-
-    console.log(this.left_key)
     this.left_active = false;
     this.right_active = false;
 
