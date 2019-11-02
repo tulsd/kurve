@@ -1,13 +1,19 @@
 class Communicator
 {
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Setup
   constructor(server_url, server_port)
   {
+    // Connection
     this.connection_open_     = false;
-    this.websocket            = new WebSocket('ws://' + server_url + ':' + server_port);
+    this.websocket_           = new WebSocket('ws://' + server_url + ':' + server_port);
+
+    // Connection events
     let event_target = this;
-    this.websocket.onopen     = function(e){event_target.onOpen.call(event_target, e);};
-    this.websocket.onmessage  = function(e){event_target.onMessage.call(event_target, e);};
-    // TODO: Error, close
+    this.websocket_.onopen    = function(e){event_target.onOpen.call(event_target, e);};
+    this.websocket_.onmessage = function(e){event_target.onMessage.call(event_target, e);};
+    this.websocket_.onclose   = function(e){event_target.onClose.call(event_target, e);};
+    this.websocket_.onerror   = function(e){event_target.onError.call(event_target, e);};
   }
 
   // Handle events
@@ -39,7 +45,7 @@ class Communicator
       time: Date.now()
     };
 
-    this.websocket.send(JSON.stringify(message));
+    this.websocket_.send(JSON.stringify(message));
   }
 
   registerToMessageType(type)
