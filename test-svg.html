@@ -22,23 +22,11 @@
      style="fill:none;stroke:black;stroke-width:3" />
     </svg>
 
+    <script src="c-communicator.js"></script>
     <script src="c-input-handler.js"></script>
     <script src="c-player.js"></script>
     <script src="v-drawer.js"></script>
-
-    <script>
-      let input_handler = new InputHandler();
-      let drawer = new Drawer(document.getElementById('svg'), document.getElementById('polyline'));
-      let player1 = new Player(1, [1000, 1000], [500, 500], drawer);
-
-      function main()
-      {
-        player1.updateAll(input_handler.getDirection());
-      }
-
-      window.setInterval(main, 40);
-
-    </script>
+    <script src="main.js"></script>
 
   </body>
 </html>

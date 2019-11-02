@@ -11,22 +11,26 @@ class Communicator
 
   onOpen(event)
   {
-    console.log('WS open');
+    console.log('DEBUG: WebSocket open');
   }
 
   onMessage(event)
   {
-    console.log('WS got message');
+    console.log('DEBUG: WebSocket message receive');
+    let message = JSON.parse(event.data);
   }
 
   // Callable methods
 
-  sendToServer(type, data)
+  sendMessage(type, destination, content)
   {
+    console.log('DEBUG: WebSocket message send');
+
     let message =
     {
       type: type,
-      data: data,
+      destination: destination,
+      content: content,
       time: Date.now()
     };
 

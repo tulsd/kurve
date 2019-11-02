@@ -4,12 +4,13 @@ class Player
   // Positive y is down
   // Vector up is [0,-1]
 
-  constructor(id, fieldsize, startposition, drawer)
+  constructor(id, fieldsize, startposition, drawer, communicator)
   {
     // General setup
     this.id = id;
     this.fieldsize = fieldsize;
     this.drawer = drawer;
+    this.communicator = communicator;
 
     // Position and movement
     this.position_head = startposition;
@@ -22,7 +23,7 @@ class Player
   {
     this.updateDirection(direction);
     this.updatePosition();
-    this.updateDraw();
+    this.updateExport();
   }
 
   updateDirection(direction)
@@ -69,8 +70,9 @@ class Player
       this.position_head[1] = potential_new_position_y;
   }
 
-  updateDraw()
+  updateExport()
   {
     this.drawer.drawLineFromTo([0,0], this.position_head);
+    this.communicator.sendMessage('PlayerPositionUpdate', 'Global', {player: this.id, position: this.position_head});
   }
 }
