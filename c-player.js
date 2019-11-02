@@ -7,10 +7,20 @@ class Player
   constructor(id, fieldsize, startposition, drawer, communicator)
   {
     // General setup
-    this.id = id;
     this.fieldsize = fieldsize;
     this.drawer = drawer;
     this.communicator = communicator;
+
+    // Id setup
+    if(id == undefined)
+    {
+      this.communicator.registerToMessageType('NewPlayerId');
+      this.communicator.sendMessage('RequestNewPlayerId', 'Server', undefined);
+    }
+    else
+    {
+      this.id = id;
+    }
 
     // Position and movement
     this.position_head = startposition;
@@ -73,6 +83,21 @@ class Player
   updateExport()
   {
     this.drawer.drawLineFromTo([0,0], this.position_head);
-    this.communicator.sendMessage('PlayerPositionUpdate', 'Global', {player: this.id, position: this.position_head});
+    this.communicator.sendMessage('MovedToPosition', 'Global', {player: this.id, position: this.position_head});
+  }
+
+  handleMessage(message)
+  {
+    switch(message.type)
+    {
+      case 'NewPlayerId':
+        this.id = message.content;
+        this.communicator.unregisterFromMessageType('NewPlayerId');
+        break;
+
+      default:
+        console.log('DEBUG: Unknown message type')
+        break;
+    }
   }
 }
