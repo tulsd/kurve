@@ -14,23 +14,23 @@ class Player
     // General setup
     this.id_ = id;
     this.is_local_ = false;
-    this.fieldsize = fieldsize;
-    this.drawer = drawer;
-    this.communicator = communicator;
+    this.fieldsize_ = fieldsize;
+    this.drawer_ = drawer;
+    this.communicator_ = communicator;
 
     // Id setup
     if(this.id_ == 'local')
     {
       this.is_local_ = true;
-      this.communicator.registerToMessageType('PlayerId', 'local');
-      this.communicator.sendMessage('RequestPlayerId', 'Server', undefined);
+      this.communicator_.registerToMessageType('PlayerId', 'local');
+      this.communicator_.sendMessage('RequestPlayerId', 'Server', undefined);
     }
 
     // Position and movement
-    this.position_head = startposition;
-    this.direction = 0;
-    this.speed = 1;
-    this.turnrate = 0.1;
+    this.position_head_ = startposition;
+    this.direction_ = 0;
+    this.speed_ = 1;
+    this.turnrate_ = 0.1;
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -42,7 +42,7 @@ class Player
     {
       case 'PlayerId':
         this.id_ = message.content;
-        this.communicator.unregisterFromMessageType('PlayerId', 'local');
+        this.communicator_.unregisterFromMessageType('PlayerId', 'local');
         break;
 
       default:
@@ -66,11 +66,11 @@ class Player
     switch(direction)
     {
       case 'left':
-        this.direction -= this.turnrate;
+        this.direction_ -= this.turnrate_;
         break;
 
       case 'right':
-        this.direction += this.turnrate;
+        this.direction_ += this.turnrate_;
         break;
 
       default:
@@ -82,32 +82,32 @@ class Player
   updatePosition()
   {
     let vector_up = [0,-1];
-    let potential_new_position_x = this.position_head[0] + ((Math.cos(this.direction) * vector_up[0] - Math.sin(this.direction) * vector_up[1]) * this.speed);
-    let potential_new_position_y = this.position_head[1] + ((Math.sin(this.direction) * vector_up[0] + Math.cos(this.direction) * vector_up[1]) * this.speed);
+    let potential_new_position_x = this.position_head_[0] + ((Math.cos(this.direction_) * vector_up[0] - Math.sin(this.direction_) * vector_up[1]) * this.speed_);
+    let potential_new_position_y = this.position_head_[1] + ((Math.sin(this.direction_) * vector_up[0] + Math.cos(this.direction_) * vector_up[1]) * this.speed_);
 
     if(potential_new_position_x < 0)
-      this.position_head[0] = this.fieldsize[0];
+      this.position_head_[0] = this.fieldsize_[0];
 
-    else if(potential_new_position_x > this.fieldsize[0])
-      this.position_head[0] = 0;
+    else if(potential_new_position_x > this.fieldsize_[0])
+      this.position_head_[0] = 0;
 
     else
-      this.position_head[0] = potential_new_position_x;
+      this.position_head_[0] = potential_new_position_x;
 
 
     if(potential_new_position_y < 0)
-      this.position_head[1] = this.fieldsize[1];
+      this.position_head_[1] = this.fieldsize_[1];
 
-    else if(potential_new_position_y > this.fieldsize[1])
-      this.position_head[1] = 0;
+    else if(potential_new_position_y > this.fieldsize_[1])
+      this.position_head_[1] = 0;
 
     else
-      this.position_head[1] = potential_new_position_y;
+      this.position_head_[1] = potential_new_position_y;
   }
 
   updateExport()
   {
-    this.drawer.drawLineFromTo([0,0], this.position_head);
-    this.communicator.sendMessage('MovedToPosition', 'Global', {player: this.id, position: this.position_head});
+    this.drawer_.drawLineFromTo([0,0], this.position_head_);
+    this.communicator_.sendMessage('RequestPositionUpdate', 'Global', {player: this.id_, position: this.position_head_});
   }
 }

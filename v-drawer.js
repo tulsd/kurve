@@ -5,8 +5,8 @@ class Drawer
 
   constructor(svg, polyline)
   {
-    this.svg = svg;
-    this.polyline = polyline;
+    this.svg_ = svg;
+    this.polyline_ = polyline;
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -14,9 +14,9 @@ class Drawer
 
   drawLineFromTo(from, to)
   {
-    let point = this.svg.createSVGPoint();
+    let point = this.svg_.createSVGPoint();
     point.x = to[0];
     point.y = to[1];
-    this.polyline.points.appendItem(point);
+    this.polyline_.points.appendItem(point);
   }
 }

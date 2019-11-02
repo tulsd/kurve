@@ -8,7 +8,7 @@ class Game
     // Settings
     this.server_url_    = 'localhost';
     this.server_port_   = '8765';
-    this.frametime_     = 4000;
+    this.frametime_     = 1/25 * 1000;
     this.fieldsize_     = [1000, 1000];
 
     // States

@@ -6,10 +6,10 @@ class InputHandler
   constructor(left_key = 'ArrowLeft', right_key = 'ArrowRight')
   {
     // Members
-    this.left_key = left_key;
-    this.right_key = right_key;
-    this.left_active = false;
-    this.right_active = false;
+    this.left_key_ = left_key;
+    this.right_key_ = right_key;
+    this.left_active_ = false;
+    this.right_active_ = false;
 
     // Event listeners
     let event_target = this;
@@ -22,20 +22,20 @@ class InputHandler
 
   keyDownHandler(e)
   {
-    if(e.code == this.left_key)
-      this.left_active = true;
+    if(e.code == this.left_key_)
+      this.left_active_ = true;
 
-    if(e.code == this.right_key)
-      this.right_active = true;
+    if(e.code == this.right_key_)
+      this.right_active_ = true;
   }
 
   keyUpHandler(e)
   {
-    if(e.code == this.left_key)
-      this.left_active = false;
+    if(e.code == this.left_key_)
+      this.left_active_ = false;
 
-    if(e.code == this.right_key)
-      this.right_active = false;
+    if(e.code == this.right_key_)
+      this.right_active_ = false;
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -43,10 +43,10 @@ class InputHandler
 
   getDirection()
   {
-    if(this.left_active == true && this.right_active == false)
+    if(this.left_active_ == true && this.right_active_ == false)
       return 'left';
 
-    if(this.right_active == true && this.left_active == false)
+    if(this.right_active_ == true && this.left_active_ == false)
       return 'right';
 
     return 'straight';
