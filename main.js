@@ -37,7 +37,7 @@ class Game
       console.log('DEBUG: Network ready, starting game');
 
       // Create local player
-      this.players_.local = new Player('local', true, this.fieldsize_, [500, 500], this.drawer_, this.communicator_);
+      this.players_.local = new Player('local', this.fieldsize_, [500, 500], this.drawer_, this.communicator_);
 
       // Create other players
       // TODO
@@ -58,7 +58,7 @@ class Game
 
   runGame()
   {
-    this.player_local_.updateAll(this.input_handler_.getDirection());
+    this.players_.local.updateAll(this.input_handler_.getDirection());
   }
 }
 

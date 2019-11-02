@@ -39,6 +39,8 @@ class Communicator
     let message = JSON.parse(event.data);
     let m_type = message.type;
 
+    console.log(message);
+
     // Create player array if never created before
     if(this.register_.m_type == undefined)
     {
@@ -49,6 +51,7 @@ class Communicator
     this.register_.m_type.forEach(
       function(player_id)
       {
+        console.log('here');
         this.players.player_id.handleMessage(message);
       }
     );
