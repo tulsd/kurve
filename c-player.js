@@ -12,11 +12,11 @@ class Player
   constructor(id, fieldsize, startposition, drawer, communicator)
   {
     // General setup
-    this.id_ = id;
-    this.is_local_ = false;
-    this.fieldsize_ = fieldsize;
-    this.drawer_ = drawer;
-    this.communicator_ = communicator;
+    this.id_            = id;
+    this.is_local_      = false;
+    this.fieldsize_     = fieldsize;
+    this.drawer_        = drawer;
+    this.communicator_  = communicator;
 
     // Id setup
     if(this.id_ == 'local')
@@ -28,10 +28,14 @@ class Player
 
     // Position and movement
     this.position_head_old_ = startposition;
-    this.position_head_ = startposition;
-    this.direction_ = 0;
-    this.speed_ = 1;
-    this.turnrate_ = 0.1;
+    this.position_head_     = startposition;
+    this.direction_         = 0;
+    this.speed_             = 1;
+    this.turnrate_          = 0.1;
+
+    // Optics
+    this.color_     = '#ff0000';
+    this.thickness_ = 1;
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -113,7 +117,7 @@ class Player
 
   updateExport()
   {
-    this.drawer_.drawLineFromTo(this.position_head_old_, this.position_head_);
+    this.drawer_.drawLineFromTo(this.position_head_old_, this.position_head_, this.color_);
     this.communicator_.sendMessage('RequestPositionUpdate', 'Global',
                                    {player: this.id_, position: this.position_head_});
   }
