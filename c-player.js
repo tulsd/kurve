@@ -35,7 +35,7 @@ class Player
 
     // Optics
     this.color_     = '#ff0000';
-    this.thickness_ = 1;
+    this.thickness_ = 5;
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -117,7 +117,7 @@ class Player
 
   updateExport()
   {
-    this.drawer_.drawLineFromTo(this.position_head_old_, this.position_head_, this.color_);
+    this.drawer_.drawLineFromTo(this.position_head_old_, this.position_head_, this.color_, this.thickness_);
     this.communicator_.sendMessage('RequestPositionUpdate', 'Global',
                                    {player: this.id_, position: this.position_head_});
   }
