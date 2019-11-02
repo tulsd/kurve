@@ -3,20 +3,20 @@ class Drawer
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(svg, polyline)
+  constructor(canvas)
   {
-    this.svg_ = svg;
-    this.polyline_ = polyline;
+    this.canvas_ = canvas;
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods
 
-  drawLineFromTo(from, to)
+  drawLineFromTo(from, to, color = '#000000')
   {
-    let point = this.svg_.createSVGPoint();
-    point.x = to[0];
-    point.y = to[1];
-    this.polyline_.points.appendItem(point);
+    let context = this.canvas_.getContext("2d");
+    context.beginPath();
+    context.moveTo(from[0], from[1]);
+    context.lineTo(to[0], to[1]);
+    context.stroke();
   }
 }

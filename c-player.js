@@ -27,6 +27,7 @@ class Player
     }
 
     // Position and movement
+    this.position_head_old_ = startposition;
     this.position_head_ = startposition;
     this.direction_ = 0;
     this.speed_ = 1;
@@ -81,10 +82,15 @@ class Player
 
   updatePosition()
   {
+    // Store old position
+    this.position_head_old_ = [this.position_head_[0], this.position_head_[1]];
+
+    // Calculate new position
     let vector_up = [0,-1];
     let potential_new_position_x = this.position_head_[0] + ((Math.cos(this.direction_) * vector_up[0] - Math.sin(this.direction_) * vector_up[1]) * this.speed_);
     let potential_new_position_y = this.position_head_[1] + ((Math.sin(this.direction_) * vector_up[0] + Math.cos(this.direction_) * vector_up[1]) * this.speed_);
 
+    // Check if new position is out of bounds (x)
     if(potential_new_position_x < 0)
       this.position_head_[0] = this.fieldsize_[0];
 
@@ -94,7 +100,7 @@ class Player
     else
       this.position_head_[0] = potential_new_position_x;
 
-
+    // Check if new position is out of bounds (y)
     if(potential_new_position_y < 0)
       this.position_head_[1] = this.fieldsize_[1];
 
@@ -107,7 +113,8 @@ class Player
 
   updateExport()
   {
-    this.drawer_.drawLineFromTo([0,0], this.position_head_);
-    this.communicator_.sendMessage('RequestPositionUpdate', 'Global', {player: this.id_, position: this.position_head_});
+    this.drawer_.drawLineFromTo(this.position_head_old_, this.position_head_);
+    this.communicator_.sendMessage('RequestPositionUpdate', 'Global',
+                                   {player: this.id_, position: this.position_head_});
   }
 }

@@ -8,7 +8,7 @@ class Game
     // Settings
     this.server_url_    = 'localhost';
     this.server_port_   = '8765';
-    this.frametime_     = 1/25 * 1000;
+    this.frametime_     = 1/10 * 1000;
     this.fieldsize_     = [1000, 1000];
 
     // States
@@ -20,7 +20,7 @@ class Game
     // Essentials
     this.communicator_  = new Communicator(this.server_url_, this.server_port_, this.players_);
     this.input_handler_ = new InputHandler();
-    this.drawer_        = new Drawer(document.getElementById('svg'), document.getElementById('polyline'));
+    this.drawer_        = new Drawer(document.getElementById('canvas'));
 
     // Create game
     this.createGame();
