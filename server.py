@@ -9,7 +9,8 @@ import _thread
 # Settings
 
 setting_port_server_http        = 8000
-setting_port_server_websocket   = 8765
+setting_port_server_websocket   = 8080
+setting_localhost_only          = False
 
 # ######################################################################################################################
 # HTTP server
@@ -140,6 +141,12 @@ async def connectionHandler(websocket, path):
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Start server
 
-server = websockets.serve(connectionHandler, "localhost", setting_port_server_websocket)
+# Select host
+websocket_host = 'localhost'
+if setting_localhost_only == False:
+    websocket_host = ''
+
+# Run server
+server = websockets.serve(connectionHandler, websocket_host, setting_port_server_websocket)
 asyncio.get_event_loop().run_until_complete(server)
 asyncio.get_event_loop().run_forever()
