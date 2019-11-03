@@ -53,11 +53,17 @@ async def connectionHandler(websocket, path):
     # Generate new id
     player_id = 1
     if(len(players) > 0):
-        player_id = max(players) + 1
+        for possible_player_id in range(1, 5):
+            if(possible_player_id not in players.keys()):
+                player_id = possible_player_id
+                break;
+
+    # todo handle more than 4 players
 
     # Store new player
     players[player_id] = websocket
     print('DEBUG: Player ' + str(player_id) + ' connected')
+    print('DEBUG: Player ' + str(player_id) + ' registered')
 
     try:
         # ----------------------------------------------------------------------------------------------------------
@@ -82,12 +88,16 @@ async def connectionHandler(websocket, path):
                     loop_player_websocket = players[loop_payer_id]
                     await loop_player_websocket.send(json.dumps(response))
 
+    except websockets.exceptions.ConnectionClosed:
+        print('DEBUG: Player ' + str(player_id) + ' disconnected')
+
+
     finally:
         # ----------------------------------------------------------------------------------------------------------
         # Unregister players
+        print('DEBUG: Player ' + str(player_id) + ' unregistered')
         for player_id, player_websocket in players.items():
             if player_websocket == websocket:
-                print('DEBUG: Player ' + str(player_id) + ' disconnected')
                 del players[player_id]
                 break
 
