@@ -26,6 +26,12 @@ def messageHandler(player_id, player_websocket, message):
         response    = {'type': 'RemotePlayerHello', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
         return destination, response
 
+    elif m_type == 'RequestPositionUpdate':
+        print('DEBUG: RequestPositionUpdate from player ' + str(player_id))
+        destination = 'everyone-but-sender'
+        response    = {'type': 'PositionUpdate', 'destination': 'everyone-but-' + str(player_id), 'content': message['content']}
+        return destination, response
+
     else:
         print('DEBUG: Unknown message from player ' + str(player_id))
         destination = 'void'

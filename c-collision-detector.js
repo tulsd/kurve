@@ -24,7 +24,6 @@ class CollisionDetector
     }
     else
     {
-      console.log('collision');
       return true;
     }
   }

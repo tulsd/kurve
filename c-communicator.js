@@ -26,7 +26,6 @@ class Communicator
   onOpen(event)
   {
     console.log('DEBUG: WebSocket open');
-    console.log(this)
     this.connection_open_ = true;
   }
 
@@ -37,9 +36,6 @@ class Communicator
     // Unpack message
     let message = JSON.parse(event.data);
     let m_type = message.type;
-
-    console.log(message);
-
 
     // Create player array if never created before
     if(this.register_[m_type] == undefined)

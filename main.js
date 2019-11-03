@@ -16,7 +16,8 @@ class Game
     this.state_               = 'Lobby';
 
     // Players
-    this.players_             = {};
+    this.player_local_
+    this.players_remote_      = [];
 
     // Essentials
     this.communicator_        = new Communicator(this.server_url_, this.server_port_);
@@ -36,11 +37,11 @@ class Game
     switch(message.type)
     {
       case 'RemotePlayerHello':
-        console.log('here');
-
         let remote_player_id = message.content;
-        this.players_[remote_player_id] = new Player(remote_player_id, this.fieldsize_, [400, 400],
-                                                     this.collision_detector_, this.drawer_, this.communicator_);
+        let new_player_remote = new Player(remote_player_id, this.fieldsize_, [400, 400], this.collision_detector_,
+                                           this.drawer_, this.communicator_)
+        this.communicator_.registerToMessageType('PositionUpdate', new_player_remote);
+        this.players_remote_.push(new_player_remote);
         break;
 
       default:
@@ -60,7 +61,7 @@ class Game
       console.log('DEBUG: Network ready, starting game');
 
       // Create local player
-      this.players_.local = new Player('local', this.fieldsize_, [500, 500], this.collision_detector_, this.drawer_,
+      this.player_local_ = new Player('local', this.fieldsize_, [500, 500], this.collision_detector_, this.drawer_,
                                        this.communicator_);
 
       // Create other players
@@ -82,7 +83,11 @@ class Game
 
   runGame()
   {
-    this.players_.local.updateAllIfAlive(this.input_handler_.getDirection());
+    this.player_local_.updateAllIfAlive(this.input_handler_.getDirection());
+    this.players_remote_.forEach(function(player_remote)
+    {
+      player_remote.updateDraw();
+    });
   }
 }
 

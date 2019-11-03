@@ -52,6 +52,16 @@ class Player
         this.communicator_.sendMessage('RequestRemotePlayerHello', 'Global', this.id_);
         break;
 
+      case 'PositionUpdate':
+        console.log(1234567890)
+        console.log(message);
+
+        this.position_head_old_ = message.content.position_head_old;
+        this.position_head_     = message.content.position_head;
+        this.color_             = message.content.color;
+        this.thickness_         = message.content.thickness;
+        break;
+
       default:
         console.log('DEBUG: Unknown message type')
         break;
@@ -67,7 +77,8 @@ class Player
     {
       this.updateDirection(direction);
       this.updatePosition();
-      this.updateExport();
+      this.updateDraw();
+      this.updateNetwork();
     }
   }
 
@@ -126,11 +137,16 @@ class Player
       this.position_head_[1] = potential_new_position_y;
   }
 
-  updateExport()
+  updateDraw()
   {
+    console.log(this.position_head_old_);
     this.drawer_.drawLineFromTo(this.position_head_old_, this.position_head_, this.color_, this.thickness_);
+  }
+
+  updateNetwork()
+  {
     this.communicator_.sendMessage('RequestPositionUpdate', 'Global', {player: this.id_,
-                                   position_old: this.position_head_old_, position: this.position_head_,
+                                   position_head_old: this.position_head_old_, position_head: this.position_head_,
                                    color: this.color_, thickness: this.thickness_});
   }
 }
