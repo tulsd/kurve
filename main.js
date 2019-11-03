@@ -46,14 +46,14 @@ class Game
         {
           if(player_remote.id_ == remote_player_id)
           {
-            remote_player_already_known = false;
+            remote_player_not_known = false;
           }
         });
 
         // If not known
         if(remote_player_not_known)
         {
-          let new_player_remote = new Player(remote_player_id, this.fieldsize_, [400, 400], this.collision_detector_,
+          let new_player_remote = new Player(remote_player_id, this.fieldsize_, this.collision_detector_,
                                              this.drawer_, this.communicator_);
           this.players_remote_.push(new_player_remote);
           this.communicator_.registerToMessageType('PositionUpdate', new_player_remote);
@@ -82,7 +82,7 @@ class Game
       console.log('DEBUG: Network ready, starting game');
 
       // Create local player
-      this.player_local_ = new Player('local', this.fieldsize_, [500, 500], this.collision_detector_, this.drawer_,
+      this.player_local_ = new Player('local', this.fieldsize_, this.collision_detector_, this.drawer_,
                                        this.communicator_);
 
       // Create other players

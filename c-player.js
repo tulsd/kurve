@@ -9,7 +9,7 @@ class Player
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(id, fieldsize, startposition, collision_detector, drawer, communicator)
+  constructor(id, fieldsize, collision_detector, drawer, communicator)
   {
     // General setup
     this.id_                  = id;
@@ -28,9 +28,11 @@ class Player
     }
 
     // Position and movement
-    this.alive_ = true;
-    this.position_head_old_ = startposition;
-    this.position_head_     = startposition;
+    this.alive_             = true;
+    this.startpositions_    = [[100, 100], [900, 100], [900, 900], [100, 900]];
+    this.startposition_     = [500, 500];
+    this.position_head_old_ = this.startposition_;
+    this.position_head_     = this.startposition_;
     this.direction_         = 0;
     this.speed_             = 2;
     this.turnrate_          = 0.1;
@@ -49,8 +51,11 @@ class Player
     switch(message.type)
     {
       case 'PlayerId':
-        this.id_ = message.content;
-        this.color_ = this.colors_[this.id_ % this.colors_.length];
+        this.id_                = message.content;
+        this.color_             = this.colors_[this.id_ % this.colors_.length];
+        this.startposition_     = this.startpositions_[this.id_ % this.startpositions_.length];
+        this.position_head_old_ = this.startposition_;
+        this.position_head_     = this.startposition_;
         this.sendMessageRemotePlayerHello();
         break;
 
