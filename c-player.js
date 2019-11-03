@@ -33,9 +33,9 @@ class Player
     this.startposition_     = [500, 500];
     this.position_head_old_ = this.startposition_;
     this.position_head_     = this.startposition_;
-    this.direction_         = 0;
-    this.speed_             = 2;
-    this.turnrate_          = 0.1;
+    this.direction_         = 0;    // In degrees
+    this.speed_             = 50;    // In pixels per second
+    this.turnrate_          = 0.1;  // In degrees per second
 
     // Optics
     this.colors_    = ['#ff0000', '#00ff00', '#0000ff', '#fffff00']
@@ -80,18 +80,18 @@ class Player
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for updating player
 
-  updateAllIfAlive(direction)
+  updateAllIfAlive(direction, delta_ms)
   {
     if(this.alive_)
     {
-      this.updateDirection(direction);
-      this.updatePosition();
+      this.updateDirection(delta_ms, direction);
+      this.updatePosition(delta_ms);
       this.updateDraw();
       this.updateNetwork();
     }
   }
 
-  updateDirection(direction)
+  updateDirection(delta_ms, direction)
   {
     switch(direction)
     {
@@ -109,15 +109,15 @@ class Player
     }
   }
 
-  updatePosition()
+  updatePosition(delta_ms)
   {
     // Store old position
     this.position_head_old_ = [this.position_head_[0], this.position_head_[1]];
 
     // Calculate new position
     let vector_up = [0,-1];
-    let potential_new_position_x = this.position_head_[0] + ((Math.cos(this.direction_) * vector_up[0] - Math.sin(this.direction_) * vector_up[1]) * this.speed_);
-    let potential_new_position_y = this.position_head_[1] + ((Math.sin(this.direction_) * vector_up[0] + Math.cos(this.direction_) * vector_up[1]) * this.speed_);
+    let potential_new_position_x = this.position_head_[0] + ((Math.cos(this.direction_) * vector_up[0] - Math.sin(this.direction_) * vector_up[1]) * this.speed_ * (delta_ms / 1000));
+    let potential_new_position_y = this.position_head_[1] + ((Math.sin(this.direction_) * vector_up[0] + Math.cos(this.direction_) * vector_up[1]) * this.speed_ * (delta_ms / 1000));
 
     // Check if new position collides with obstacles
     if(this.collision_detector_.collisionAtLocation([potential_new_position_x, potential_new_position_y]))

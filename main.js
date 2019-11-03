@@ -8,12 +8,14 @@ class Game
     // Settings
     this.server_url_          = 'localhost';
     this.server_port_         = '8765';
-    this.frametime_           = 1/25 * 1000; // 25 FPS
+    this.framerate_           = 5;                       // In frames per second
+    this.frametime_           = 1/this.framerate_ * 1000; // In milliseconds
     this.fieldsize_           = [1000, 1000];
     this.max_players_         = 2;
 
     // States
     this.state_               = 'Lobby';
+    this.last_update_         = undefined;
 
     // Players
     this.player_local_
@@ -110,13 +112,17 @@ class Game
   startGame()
   {
     this.state_ = 'Game';
+    this.last_update_ = Date.now();
     let event_target = this;
     window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
   }
 
   runGame()
   {
-    this.player_local_.updateAllIfAlive(this.input_handler_.getDirection());
+    let now = Date.now();
+    let delta_ms = now - this.last_update_;
+    this.last_update_ = now;
+    this.player_local_.updateAllIfAlive(this.input_handler_.getDirection(), delta_ms);
     this.players_remote_.forEach(function(player_remote)
     {
       player_remote.updateDraw();
