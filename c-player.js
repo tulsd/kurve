@@ -35,7 +35,7 @@ class Player
     this.position_head_     = this.startposition_;
     this.direction_         = 0;    // In degrees
     this.speed_             = 50;   // In pixels per second
-    this.turnrate_          = 10;    // In degrees per second
+    this.turnrate_          = 90;    // In degrees per second
 
     // Optics
     this.colors_    = ['#ff0000', '#00ff00', '#0000ff', '#fffff00']
@@ -114,13 +114,11 @@ class Player
     // Store old position
     this.position_head_old_ = [this.position_head_[0], this.position_head_[1]];
 
-    console.log(this.direction_);
-
-
     // Calculate new position
     let vector_up = [0, -1];
-    let vector_forward_x = Math.cos(this.direction_) * vector_up[0] - Math.sin(this.direction_) * vector_up[1];
-    let vector_forward_y = Math.sin(this.direction_) * vector_up[0] + Math.cos(this.direction_) * vector_up[1];
+    let direction_radians = this.direction_ * Math.PI / 180;
+    let vector_forward_x = Math.cos(direction_radians) * vector_up[0] - Math.sin(direction_radians) * vector_up[1];
+    let vector_forward_y = Math.sin(direction_radians) * vector_up[0] + Math.cos(direction_radians) * vector_up[1];
 
     let potential_new_position_x = this.position_head_[0] + vector_forward_x * this.speed_ * (delta_ms / 1000);
     let potential_new_position_y = this.position_head_[1] + vector_forward_y * this.speed_ * (delta_ms / 1000);
