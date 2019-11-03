@@ -11,6 +11,13 @@ import _thread
 setting_port_server_http        = 8000
 setting_port_server_websocket   = 8080
 setting_localhost_only          = False
+setting_log_level               = 1     # 0 - 2
+
+# ######################################################################################################################
+# Common functions
+def log(level, message):
+    if(setting_log_level >= level):
+        print('LOG:', message)
 
 # ######################################################################################################################
 # HTTP server
@@ -19,14 +26,14 @@ setting_localhost_only          = False
 def http_server_thread():
     handler_http = http.server.SimpleHTTPRequestHandler
     with socketserver.TCPServer(("", setting_port_server_http), handler_http) as httpd:
-        print("DEBUG: HTTP-Server at port", setting_port_server_http)
+        log(0, 'HTTP-Server at port' + str(setting_port_server_http))
         httpd.serve_forever()
 
 # Create thread
 try:
    _thread.start_new_thread(http_server_thread, ())
 except:
-   print ("DEBUG: HTTP-Server died")
+   log(0, 'HTTP-Server died')
 
 # ######################################################################################################################
 # Websocket server
@@ -46,31 +53,31 @@ def messageHandler(player_id, player_websocket, message):
 
     # Handle message
     if m_type == 'RequestPlayerId':
-        print('DEBUG: RequestPlayerId from player ' + str(player_id))
+        log(2, 'RequestPlayerId from player ' + str(player_id))
         destination = 'sender'
         response    = {'type': 'PlayerId', 'destination': player_id, 'content': player_id}
         return destination, response
 
     elif m_type == 'RequestRemotePlayerHello':
-        print('DEBUG: RequestRemotePlayerHello from player ' + str(player_id))
+        log(2, 'RequestRemotePlayerHello from player ' + str(player_id))
         destination = 'everyone-but-sender'
         response    = {'type': 'RemotePlayerHello', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
         return destination, response
 
     elif m_type == 'RequestStartGame':
-        print('DEBUG: RequestStartGame from player ' + str(player_id))
+        log(2, 'RequestStartGame from player ' + str(player_id))
         destination = 'everyone'
         response    = {'type': 'StartGame', 'destination': 'everyone', 'content': player_id}
         return destination, response
 
     elif m_type == 'RequestPositionUpdate':
-        print('DEBUG: RequestPositionUpdate from player ' + str(player_id))
+        log(2, 'RequestPositionUpdate from player ' + str(player_id))
         destination = 'everyone-but-sender'
         response    = {'type': 'PositionUpdate', 'destination': 'everyone-but-' + str(player_id), 'content': message['content']}
         return destination, response
 
     else:
-        print('DEBUG: Unknown message from player ' + str(player_id))
+        log(1, 'Unknown message from player ' + str(player_id))
         destination = 'void'
         response    = {}
         return destination, response
@@ -95,8 +102,8 @@ async def connectionHandler(websocket, path):
 
     # Store new player
     players[player_id] = websocket
-    print('DEBUG: Player ' + str(player_id) + ' connected')
-    print('DEBUG: Player ' + str(player_id) + ' registered')
+    log(1, 'Player ' + str(player_id) + ' connected')
+    log(1, 'Player ' + str(player_id) + ' registered')
 
     try:
 
@@ -124,7 +131,7 @@ async def connectionHandler(websocket, path):
                     await loop_player_websocket.send(json.dumps(response))
 
     except websockets.exceptions.ConnectionClosed:
-        print('DEBUG: Player ' + str(player_id) + ' disconnected')
+        log(1, 'Player ' + str(player_id) + ' disconnected')
 
 
     finally:
@@ -132,7 +139,7 @@ async def connectionHandler(websocket, path):
         # --------------------------------------------------------------------------------------------------------------
         # Unregister players
 
-        print('DEBUG: Player ' + str(player_id) + ' unregistered')
+        log(1, 'Player ' + str(player_id) + ' unregistered')
         for player_id, player_websocket in players.items():
             if player_websocket == websocket:
                 del players[player_id]
