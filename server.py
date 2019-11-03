@@ -1,13 +1,34 @@
 import asyncio
 import websockets
 import json
+import http.server
+import socketserver
+
+# ######################################################################################################################
+# Settings
+
+setting_port_server_http        = 8000
+setting_port_server_websocket   = 8765
+
+# ######################################################################################################################
+# HTTP server
+
+handler_http = http.server.SimpleHTTPRequestHandler
+with socketserver.TCPServer(("", setting_port_server_http), handler_http) as httpd:
+    print("DEBUG: HTTP-Server at port", setting_port_server_http)
+    httpd.serve_forever()
+
+# ######################################################################################################################
+# Websocket server
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Global states
+
 players = {}
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Main message handler function
+
 def messageHandler(player_id, player_websocket, message):
 
     # Unpack message
@@ -46,8 +67,10 @@ def messageHandler(player_id, player_websocket, message):
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Main connection handler function
+
 async def connectionHandler(websocket, path):
-    # --------------------------------------------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------------------------------------------------
     # Register players
 
     # Generate new id
@@ -56,7 +79,7 @@ async def connectionHandler(websocket, path):
         for possible_player_id in range(1, 5):
             if(possible_player_id not in players.keys()):
                 player_id = possible_player_id
-                break;
+                break
 
     # todo handle more than 4 players
 
@@ -66,8 +89,10 @@ async def connectionHandler(websocket, path):
     print('DEBUG: Player ' + str(player_id) + ' registered')
 
     try:
-        # ----------------------------------------------------------------------------------------------------------
+
+        # --------------------------------------------------------------------------------------------------------------
         # Handle messages
+
         while True:
             json_string_in = await websocket.recv()
             destination, response = messageHandler(player_id, websocket, json.loads(json_string_in))
@@ -93,8 +118,10 @@ async def connectionHandler(websocket, path):
 
 
     finally:
-        # ----------------------------------------------------------------------------------------------------------
+
+        # --------------------------------------------------------------------------------------------------------------
         # Unregister players
+
         print('DEBUG: Player ' + str(player_id) + ' unregistered')
         for player_id, player_websocket in players.items():
             if player_websocket == websocket:
@@ -103,6 +130,7 @@ async def connectionHandler(websocket, path):
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Start server
-server = websockets.serve(connectionHandler, "localhost", 8765)
+
+server = websockets.serve(connectionHandler, "localhost", setting_port_server_websocket)
 asyncio.get_event_loop().run_until_complete(server)
 asyncio.get_event_loop().run_forever()
