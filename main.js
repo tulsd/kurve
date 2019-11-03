@@ -44,6 +44,10 @@ class Game
         this.players_remote_.push(new_player_remote);
         break;
 
+      case 'StartGame':
+        this.startGame();
+        break;
+
       default:
         console.log('DEBUG: Unknown message type')
         break;
@@ -66,6 +70,7 @@ class Game
 
       // Create other players
       this.communicator_.registerToMessageType('RemotePlayerHello', this);
+      this.communicator_.registerToMessageType('StartGame', this);
 
       // Call run function periodically
       let event_target = this;
@@ -78,6 +83,11 @@ class Game
       let event_target = this;
       window.setTimeout(function(){event_target.setupGame.call(event_target);}, 1000);
     }
+  }
+
+  requestStartGame()
+  {
+    this.communicator_.sendMessage('RequestStartGame', 'Global', undefined);
   }
 
   startGame()

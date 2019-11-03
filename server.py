@@ -26,6 +26,12 @@ def messageHandler(player_id, player_websocket, message):
         response    = {'type': 'RemotePlayerHello', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
         return destination, response
 
+    elif m_type == 'RequestStartGame':
+        print('DEBUG: RequestStratGame from player ' + str(player_id))
+        destination = 'everyone'
+        response    = {'type': 'StartGame', 'destination': 'everyone', 'content': player_id}
+        return destination, response
+
     elif m_type == 'RequestPositionUpdate':
         print('DEBUG: RequestPositionUpdate from player ' + str(player_id))
         destination = 'everyone-but-sender'
@@ -69,6 +75,12 @@ async def connectionHandler(websocket, path):
                     if player_id != loop_payer_id:
                         loop_player_websocket = players[loop_payer_id]
                         await loop_player_websocket.send(json.dumps(response))
+
+            elif(destination == 'everyone'):
+                player_keys = players.keys()
+                for loop_payer_id in players:
+                    loop_player_websocket = players[loop_payer_id]
+                    await loop_player_websocket.send(json.dumps(response))
 
     finally:
         # ----------------------------------------------------------------------------------------------------------

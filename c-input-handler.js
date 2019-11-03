@@ -34,7 +34,7 @@ class InputHandler
     else if(e.code == this.start_key_ && this.start_pressed_ == false)
     {
       this.start_pressed_ = true;
-      game.startGame();
+      game.requestStartGame();
     }
   }
 
