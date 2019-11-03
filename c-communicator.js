@@ -3,8 +3,11 @@ class Communicator
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(server_url, server_port)
+  constructor(server_url, server_port, logger)
   {
+    // General
+    this.logger_              = logger;
+
     // Connection
     this.connection_open_     = false;
     this.websocket_           = new WebSocket('ws://' + server_url + ':' + server_port);
@@ -25,13 +28,13 @@ class Communicator
 
   onOpen(event)
   {
-    console.log('DEBUG: WebSocket open');
+    this.logger_.log(1, 'WebSocket open');
     this.connection_open_ = true;
   }
 
   onMessage(event)
   {
-    console.log('DEBUG: WebSocket message receive');
+    this.logger_.log(2, 'WebSocket message receive');
 
     // Unpack message
     let message = JSON.parse(event.data);
@@ -55,13 +58,13 @@ class Communicator
 
   onClose(event)
   {
-    console.log('DEBUG: WebSocket close');
+    this.logger_.log(1, 'WebSocket close');
     // TODO
   }
 
   onError(event)
   {
-    console.log('DEBUG: WebSocket error');
+    this.logger_.log(1, 'WebSocket error');
     // TODO
   }
 
@@ -84,7 +87,7 @@ class Communicator
 
   sendMessage(type, destination, content)
   {
-    console.log('DEBUG: WebSocket message send');
+    this.logger_.log(2, 'WebSocket message send');
 
     let message =
     {

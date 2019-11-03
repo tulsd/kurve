@@ -9,7 +9,7 @@ class Player
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(id, fieldsize, collision_detector, drawer, communicator)
+  constructor(id, fieldsize, collision_detector, drawer, communicator, logger)
   {
     // General setup
     this.id_                  = id;
@@ -18,6 +18,7 @@ class Player
     this.collision_detector_  = collision_detector;
     this.drawer_              = drawer;
     this.communicator_        = communicator;
+    this.logger_              = logger;
 
     // Id setup
     if(this.id_ == 'local')
@@ -70,7 +71,7 @@ class Player
         break;
 
       default:
-        console.log('DEBUG: Unknown message type')
+        this.logger_.log(1, 'Unknown message type')
         break;
     }
   }

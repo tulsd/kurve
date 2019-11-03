@@ -6,6 +6,7 @@ class Game
   constructor()
   {
     // Settings
+    this.log_level_           = 1;                        // 0 - 2
     this.server_url_          = self.location.hostname;
     this.server_port_         = '8080';
     this.framerate_           = 15;                       // In frames per second
@@ -22,7 +23,8 @@ class Game
     this.players_remote_      = [];
 
     // Essentials
-    this.communicator_        = new Communicator(this.server_url_, this.server_port_);
+    this.logger_              = new Logger(this.log_level_);
+    this.communicator_        = new Communicator(this.server_url_, this.server_port_, this.logger_);
     this.input_handler_       = new InputHandler(this);
     this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'), this.fieldsize_);
     this.drawer_              = new Drawer(document.getElementById('canvas'));
@@ -56,7 +58,7 @@ class Game
         if(remote_player_not_known)
         {
           let new_player_remote = new Player(remote_player_id, this.fieldsize_, this.collision_detector_,
-                                             this.drawer_, this.communicator_);
+                                             this.drawer_, this.communicator_, this.logger_);
           this.players_remote_.push(new_player_remote);
           this.communicator_.registerToMessageType('PositionUpdate', new_player_remote);
           this.player_local_.sendMessageRemotePlayerHello();
@@ -68,7 +70,7 @@ class Game
         break;
 
       default:
-        console.log('DEBUG: Unknown message type')
+        this.logger_.log(1, 'Unknown message type')
         break;
     }
   }
@@ -81,11 +83,11 @@ class Game
     // Check connection
     if(this.communicator_.connection_open_)
     {
-      console.log('DEBUG: Network ready, starting game');
+      this.logger_.log(1, 'Network ready, starting game');
 
       // Create local player
       this.player_local_ = new Player('local', this.fieldsize_, this.collision_detector_, this.drawer_,
-                                       this.communicator_);
+                                       this.communicator_, this.logger_);
 
       // Create other players
       this.communicator_.registerToMessageType('RemotePlayerHello', this);
@@ -96,7 +98,7 @@ class Game
     }
     else
     {
-      console.log('DEBUG: Network not ready, retrying');
+      this.logger_.log(1, 'Network not ready, retrying');
 
       // Call create function one more time
       let event_target = this;
