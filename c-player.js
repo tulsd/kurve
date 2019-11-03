@@ -49,7 +49,7 @@ class Player
     {
       case 'PlayerId':
         this.id_ = message.content;
-        this.communicator_.sendMessage('RequestRemotePlayerHello', 'Global', this.id_);
+        this.sendMessageRemotePlayerHello();
         break;
 
       case 'PositionUpdate':
@@ -63,6 +63,11 @@ class Player
         console.log('DEBUG: Unknown message type')
         break;
     }
+  }
+
+  sendMessageRemotePlayerHello()
+  {
+    this.communicator_.sendMessage('RequestRemotePlayerHello', 'Global', this.id_);
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -37,11 +37,28 @@ class Game
     switch(message.type)
     {
       case 'RemotePlayerHello':
+        // Get remote player id
         let remote_player_id = message.content;
-        let new_player_remote = new Player(remote_player_id, this.fieldsize_, [400, 400], this.collision_detector_,
-                                           this.drawer_, this.communicator_)
-        this.communicator_.registerToMessageType('PositionUpdate', new_player_remote);
-        this.players_remote_.push(new_player_remote);
+
+        // Check if already known
+        let remote_player_not_known = true;
+        this.players_remote_.forEach(function(player_remote)
+        {
+          if(player_remote.id_ == remote_player_id)
+          {
+            remote_player_already_known = false;
+          }
+        });
+
+        // If not known
+        if(remote_player_not_known)
+        {
+          let new_player_remote = new Player(remote_player_id, this.fieldsize_, [400, 400], this.collision_detector_,
+                                             this.drawer_, this.communicator_);
+          this.players_remote_.push(new_player_remote);
+          this.communicator_.registerToMessageType('PositionUpdate', new_player_remote);
+          this.player_local_.sendMessageRemotePlayerHello();
+        }
         break;
 
       case 'StartGame':
