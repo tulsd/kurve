@@ -3,13 +3,16 @@ class InputHandler
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(left_key = 'ArrowLeft', right_key = 'ArrowRight')
+  constructor(game, left_key = 'ArrowLeft', right_key = 'ArrowRight', start_key = 'Space')
   {
     // Members
-    this.left_key_ = left_key;
-    this.right_key_ = right_key;
-    this.left_active_ = false;
-    this.right_active_ = false;
+    this.left_key_      = left_key;
+    this.right_key_     = right_key;
+    this.start_key_     = start_key;
+    this.left_active_   = false;
+    this.right_active_  = false;
+    this.game_          = game;
+    this.start_pressed_ = false;
 
     // Event listeners
     let event_target = this;
@@ -25,8 +28,14 @@ class InputHandler
     if(e.code == this.left_key_)
       this.left_active_ = true;
 
-    if(e.code == this.right_key_)
+    else if(e.code == this.right_key_)
       this.right_active_ = true;
+
+    else if(e.code == this.start_key_ && this.start_pressed_ == false)
+    {
+      this.start_pressed_ = true;
+      game.startGame();
+    }
   }
 
   keyUpHandler(e)

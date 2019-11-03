@@ -21,12 +21,12 @@ class Game
 
     // Essentials
     this.communicator_        = new Communicator(this.server_url_, this.server_port_);
-    this.input_handler_       = new InputHandler();
+    this.input_handler_       = new InputHandler(this);
     this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'));
     this.drawer_              = new Drawer(document.getElementById('canvas'));
 
     // Create game
-    this.createGame();
+    this.setupGame();
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -53,7 +53,7 @@ class Game
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for game logic
 
-  createGame()
+  setupGame()
   {
     // Check connection
     if(this.communicator_.connection_open_)
@@ -69,7 +69,6 @@ class Game
 
       // Call run function periodically
       let event_target = this;
-      window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
     }
     else
     {
@@ -77,8 +76,15 @@ class Game
 
       // Call create function one more time
       let event_target = this;
-      window.setTimeout(function(){event_target.createGame.call(event_target);}, 1000);
+      window.setTimeout(function(){event_target.setupGame.call(event_target);}, 1000);
     }
+  }
+
+  startGame()
+  {
+    this.state_ = 'Game';
+    let event_target = this;
+    window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
   }
 
   runGame()

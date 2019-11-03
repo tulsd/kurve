@@ -53,9 +53,6 @@ class Player
         break;
 
       case 'PositionUpdate':
-        console.log(1234567890)
-        console.log(message);
-
         this.position_head_old_ = message.content.position_head_old;
         this.position_head_     = message.content.position_head;
         this.color_             = message.content.color;

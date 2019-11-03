@@ -8,13 +8,48 @@
 
     <link rel="stylesheet" href="style.css" />
 
-    <title>SVG Test</title>
+    <title>Kurve</title>
   </head>
 
   <body>
-    <h1>SVG Test</h1>
+    <div id="container">
 
-    <canvas id="canvas" height="1000" width="1000"></canvas>
+      <div id="container-top">
+        <h1>Kurve</h1>
+      </div>
+
+      <div id="container-left">
+        <div id="container-draw">
+          <canvas id="canvas" height="1000" width="1000"></canvas>
+        </div>
+      </div>
+
+      <div id="container-right">
+        <div class="playerslot">
+          <div class="name-slot">Player 1</div>
+          <div class="state-connection">not connected</div>
+          <div class="name-player">---</div>
+        </div>
+
+        <div class="playerslot">
+          <div class="name-slot">Player 2</div>
+          <div class="state-connection">not connected</div>
+          <div class="name-player">---</div>
+        </div>
+
+        <div class="playerslot">
+          <div class="name-slot">Player 3</div>
+          <div class="state-connection">not connected</div>
+          <div class="name-player">---</div>
+        </div>
+
+        <div class="playerslot">
+          <div class="name-slot">Player 4</div>
+          <div class="state-connection">not connected</div>
+          <div class="name-player">---</div>
+        </div>
+      </div>
+    </div>
 
     <script src="c-communicator.js"></script>
     <script src="c-input-handler.js"></script>

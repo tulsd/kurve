@@ -1,3 +1,42 @@
-svg, canvas{
-	border: 10px solid red;
+html, body
+{
+    background: #222222;
+    margin: 0;
+    padding: 0;
+    color: #eee;
+}
+
+#container
+{
+    padding: 25px;
+}
+
+#container-left
+{
+    float: left;
+    width: 1020px;
+}
+
+#container-right
+{
+    float: left;
+    padding-left: 25px;
+}
+
+#container-draw
+{
+    background: #555555;
+    width: 1020px;
+    height: 1020px;
+}
+
+canvas
+{
+    border: 10px solid red;
+}
+
+.playerslot{
+    border: 2px solid #555;
+    padding: 15px;
+    margin-bottom: 15px;
 }
