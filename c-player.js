@@ -142,7 +142,7 @@ class Player
     // If collided with border
     if(border_detection[1])
     {
-      this.position_head_old_ = [this.position_head_[0], this.position_head[1]]; // Deep copy
+      this.position_head_old_ = [this.position_head_[0], this.position_head_[1]]; // Deep copy
     }
   }
 

@@ -94,7 +94,6 @@ class Communicator
       type: type,
       destination: destination,
       content: content,
-      time: Date.now()
     };
 
     this.websocket_.send(JSON.stringify(message));
