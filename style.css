@@ -14,7 +14,7 @@ html, body
 #container-left
 {
     float: left;
-    width: 1020px;
+    width: 1000px;
 }
 
 #container-right
@@ -26,13 +26,8 @@ html, body
 #container-draw
 {
     background: #555555;
-    width: 1020px;
-    height: 1020px;
-}
-
-canvas
-{
-    border: 10px solid red;
+    width: 1000px;
+    height: 1000px;
 }
 
 .playerslot{
