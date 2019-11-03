@@ -33,6 +33,7 @@ class Player
     this.startposition_     = [500, 500];
     this.position_head_old_ = this.startposition_;
     this.position_head_     = this.startposition_;
+    this.startdirections_   = [135, -135, -45, 45];
     this.direction_         = 0;    // In degrees
     this.speed_             = 50;   // In pixels per second
     this.turnrate_          = 90;    // In degrees per second
@@ -56,6 +57,7 @@ class Player
         this.startposition_     = this.startpositions_[this.id_ % this.startpositions_.length];
         this.position_head_old_ = this.startposition_;
         this.position_head_     = this.startposition_;
+        this.direction_         = this.startdirections_[this.id_ % this.startdirections_.length];
         this.sendMessageRemotePlayerHello();
         break;
 
