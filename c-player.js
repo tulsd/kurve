@@ -36,7 +36,8 @@ class Player
     this.turnrate_          = 0.1;
 
     // Optics
-    this.color_     = '#ff0000';
+    this.colors_    = ['#ff0000', '#00ff00', '#0000ff', '#fffff00']
+    this.color_     = '#000000';
     this.thickness_ = 5;
   }
 
@@ -49,6 +50,7 @@ class Player
     {
       case 'PlayerId':
         this.id_ = message.content;
+        this.color_ = this.colors_[this.id_ % this.colors_.length];
         this.sendMessageRemotePlayerHello();
         break;
 
