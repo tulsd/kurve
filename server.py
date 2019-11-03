@@ -3,6 +3,7 @@ import websockets
 import json
 import http.server
 import socketserver
+import _thread
 
 # ######################################################################################################################
 # Settings
@@ -13,10 +14,18 @@ setting_port_server_websocket   = 8765
 # ######################################################################################################################
 # HTTP server
 
-handler_http = http.server.SimpleHTTPRequestHandler
-with socketserver.TCPServer(("", setting_port_server_http), handler_http) as httpd:
-    print("DEBUG: HTTP-Server at port", setting_port_server_http)
-    httpd.serve_forever()
+# Thread function
+def http_server_thread():
+    handler_http = http.server.SimpleHTTPRequestHandler
+    with socketserver.TCPServer(("", setting_port_server_http), handler_http) as httpd:
+        print("DEBUG: HTTP-Server at port", setting_port_server_http)
+        httpd.serve_forever()
+
+# Create thread
+try:
+   _thread.start_new_thread(http_server_thread, ())
+except:
+   print ("DEBUG: HTTP-Server died")
 
 # ######################################################################################################################
 # Websocket server

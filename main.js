@@ -6,7 +6,7 @@ class Game
   constructor()
   {
     // Settings
-    this.server_url_          = 'localhost';
+    this.server_url_          = self.location.hostname;
     this.server_port_         = '8765';
     this.framerate_           = 20;                       // In frames per second
     this.frametime_           = 1/this.framerate_ * 1000; // In milliseconds
