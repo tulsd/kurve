@@ -34,8 +34,8 @@ class Player
     this.position_head_old_ = this.startposition_;
     this.position_head_     = this.startposition_;
     this.direction_         = 0;    // In degrees
-    this.speed_             = 50;    // In pixels per second
-    this.turnrate_          = 0.1;  // In degrees per second
+    this.speed_             = 50;   // In pixels per second
+    this.turnrate_          = 10;    // In degrees per second
 
     // Optics
     this.colors_    = ['#ff0000', '#00ff00', '#0000ff', '#fffff00']
@@ -96,11 +96,11 @@ class Player
     switch(direction)
     {
       case 'left':
-        this.direction_ -= this.turnrate_;
+        this.direction_ -= this.turnrate_ * (delta_ms / 1000);
         break;
 
       case 'right':
-        this.direction_ += this.turnrate_;
+        this.direction_ += this.turnrate_ * (delta_ms / 1000);
         break;
 
       default:
@@ -114,10 +114,16 @@ class Player
     // Store old position
     this.position_head_old_ = [this.position_head_[0], this.position_head_[1]];
 
+    console.log(this.direction_);
+
+
     // Calculate new position
-    let vector_up = [0,-1];
-    let potential_new_position_x = this.position_head_[0] + ((Math.cos(this.direction_) * vector_up[0] - Math.sin(this.direction_) * vector_up[1]) * this.speed_ * (delta_ms / 1000));
-    let potential_new_position_y = this.position_head_[1] + ((Math.sin(this.direction_) * vector_up[0] + Math.cos(this.direction_) * vector_up[1]) * this.speed_ * (delta_ms / 1000));
+    let vector_up = [0, -1];
+    let vector_forward_x = Math.cos(this.direction_) * vector_up[0] - Math.sin(this.direction_) * vector_up[1];
+    let vector_forward_y = Math.sin(this.direction_) * vector_up[0] + Math.cos(this.direction_) * vector_up[1];
+
+    let potential_new_position_x = this.position_head_[0] + vector_forward_x * this.speed_ * (delta_ms / 1000);
+    let potential_new_position_y = this.position_head_[1] + vector_forward_y * this.speed_ * (delta_ms / 1000);
 
     // Check if new position collides with obstacles
     if(this.collision_detector_.collisionAtLocation([potential_new_position_x, potential_new_position_y]))
@@ -148,7 +154,6 @@ class Player
 
   updateDraw()
   {
-    console.log(this.position_head_old_);
     this.drawer_.drawLineFromTo(this.position_head_old_, this.position_head_, this.color_, this.thickness_);
   }
 

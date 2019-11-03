@@ -8,7 +8,7 @@ class Game
     // Settings
     this.server_url_          = 'localhost';
     this.server_port_         = '8765';
-    this.framerate_           = 5;                       // In frames per second
+    this.framerate_           = 5;                        // In frames per second
     this.frametime_           = 1/this.framerate_ * 1000; // In milliseconds
     this.fieldsize_           = [1000, 1000];
     this.max_players_         = 2;
