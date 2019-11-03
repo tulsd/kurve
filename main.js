@@ -18,13 +18,13 @@ class Game
     this.last_update_         = undefined;
 
     // Players
-    this.player_local_
+    this.player_local_        = undefined;
     this.players_remote_      = [];
 
     // Essentials
     this.communicator_        = new Communicator(this.server_url_, this.server_port_);
     this.input_handler_       = new InputHandler(this);
-    this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'));
+    this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'), this.fieldsize_);
     this.drawer_              = new Drawer(document.getElementById('canvas'));
 
     // Create game

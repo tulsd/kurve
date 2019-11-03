@@ -29,8 +29,9 @@ class Player
 
     // Position and movement
     this.alive_             = true;
-    this.startpositions_    = [[100, 100], [900, 100], [900, 900], [100, 900]];
-    this.startposition_     = [500, 500];
+    this.startpositions_    = [[100, 100], [this.fieldsize_[0] - 100, 100],
+                               [this.fieldsize_[0] - 100, this.fieldsize_[1] -100], [100, this.fieldsize_[1] - 100]];
+    this.startposition_     = [this.fieldsize_[0]/2, this.fieldsize_[1]/2];
     this.position_head_old_ = this.startposition_;
     this.position_head_     = this.startposition_;
     this.startdirections_   = [135, -135, -45, 45];
@@ -125,31 +126,23 @@ class Player
     let potential_new_position_x = this.position_head_[0] + vector_forward_x * this.speed_ * (delta_ms / 1000);
     let potential_new_position_y = this.position_head_[1] + vector_forward_y * this.speed_ * (delta_ms / 1000);
 
+    let potential_new_position = [potential_new_position_x, potential_new_position_y];
+
     // Check if new position collides with obstacles
-    if(this.collision_detector_.collisionAtLocation([potential_new_position_x, potential_new_position_y]))
+    if(this.collision_detector_.collisionAtLocation(potential_new_position))
     {
       this.alive_ = false;
     };
 
-    // Check if new position is out of bounds (x)
-    if(potential_new_position_x < 0)
-      this.position_head_[0] = this.fieldsize_[0];
+    // Check if new position clloides with border and update to new position
+    let border_detection = this.collision_detector_.borderAtLocation(potential_new_position);
+    this.position_head_ = border_detection[0];
 
-    else if(potential_new_position_x > this.fieldsize_[0])
-      this.position_head_[0] = 0;
-
-    else
-      this.position_head_[0] = potential_new_position_x;
-
-    // Check if new position is out of bounds (y)
-    if(potential_new_position_y < 0)
-      this.position_head_[1] = this.fieldsize_[1];
-
-    else if(potential_new_position_y > this.fieldsize_[1])
-      this.position_head_[1] = 0;
-
-    else
-      this.position_head_[1] = potential_new_position_y;
+    // If collided with border
+    if(border_detection[1])
+    {
+      this.position_head_old_ = [this.position_head_[0], this.position_head[1]]; // Deep copy
+    }
   }
 
   updateDraw()

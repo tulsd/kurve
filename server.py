@@ -58,7 +58,7 @@ def messageHandler(player_id, player_websocket, message):
         return destination, response
 
     elif m_type == 'RequestStartGame':
-        print('DEBUG: RequestStratGame from player ' + str(player_id))
+        print('DEBUG: RequestStartGame from player ' + str(player_id))
         destination = 'everyone'
         response    = {'type': 'StartGame', 'destination': 'everyone', 'content': player_id}
         return destination, response
