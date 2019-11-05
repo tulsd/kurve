@@ -9,7 +9,7 @@ class Game
     this.log_level_           = 1;                        // 0 - 2
     this.server_url_          = self.location.hostname;
     this.server_port_         = '8080';
-    this.framerate_           = 5;                       // In frames per second
+    this.framerate_           = 15;                       // In frames per second
     this.frametime_           = 1/this.framerate_ * 1000; // In milliseconds
     this.fieldsize_           = [1000, 1000];
     this.max_players_         = 2;
