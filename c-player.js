@@ -146,6 +146,7 @@ class Player
     if(this.collision_detector_.collisionAtLocation(potential_new_position))
     {
       this.alive_ = false;
+      this.communicator_.sendMessage('RequestRemotePlayerDeath', 'Global', this.id_);
     };
 
     // Check if new position clloides with border and update to new position

@@ -42,11 +42,11 @@ class Game
     {
       case 'RemotePlayerHello':
         // Get remote player id
-        let remote_player_id = message.content;
+        let remote_player_hello_id = message.content;
 
         // Check if remote player is local player
         let remote_player_not_known = true;
-        if(this.player_local_.id_ == remote_player_id)
+        if(this.player_local_.id_ == remote_player_hello_id)
         {
           remote_player_not_known = false;
         }
@@ -54,7 +54,7 @@ class Game
         // Check if remote player already known
         this.players_remote_.forEach(function(player_remote)
         {
-          if(player_remote.id_ == remote_player_id)
+          if(player_remote.id_ == remote_player_hello_id)
           {
             remote_player_not_known = false;
           }
@@ -63,7 +63,7 @@ class Game
         // If not known
         if(remote_player_not_known)
         {
-          let new_player_remote = new Player(remote_player_id, this.fieldsize_, this.collision_detector_,
+          let new_player_remote = new Player(remote_player_hello_id, this.fieldsize_, this.collision_detector_,
                                              this.drawer_, this.communicator_, this.logger_);
           this.players_remote_.push(new_player_remote);
           this.communicator_.registerToMessageType('PositionUpdate', new_player_remote);
@@ -75,6 +75,23 @@ class Game
         this.startGame();
         break;
 
+      case 'RemotePlayerDeath':
+        // Get remote player id
+        let remote_player_death_id = message.content;
+
+        // Set remote player alive state
+        this.players_remote_.forEach(function(player_remote)
+        {
+          if(player_remote.id_ == remote_player_death_id)
+          {
+            player_remote.alive_ = false;
+          }
+        });
+
+        // Check win condition
+        this.checkWinCondition();
+        break;
+
       default:
         this.logger_.log(1, 'Unknown message type')
         break;
@@ -83,6 +100,26 @@ class Game
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for game logic
+
+  checkWinCondition()
+  {
+    // Check if all other players dead
+    let all_other_players_dead = true;
+
+    this.players_remote_.forEach(function(player_remote)
+    {
+      if(player_remote.alive_ == true)
+      {
+        all_other_players_dead = false;
+      }
+    });
+
+    // If all other players dead
+    alert('You win. And you shall implement a better "You win" sign.');
+  }
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods for game operation
 
   setupGame()
   {
@@ -93,6 +130,7 @@ class Game
 
       // Listen to creation of other players
       this.communicator_.registerToMessageType('RemotePlayerHello', this);
+      this.communicator_.registerToMessageType('RemotePlayerDeath', this);
 
       // Create local player
       this.player_local_ = new Player('local', this.fieldsize_, this.collision_detector_, this.drawer_,
