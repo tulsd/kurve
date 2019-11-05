@@ -19,6 +19,7 @@ class Player
     this.drawer_              = drawer;
     this.communicator_        = communicator;
     this.logger_              = logger;
+    this.draw_queue_          = [];
 
     // Id setup
     if(this.id_ == 'local')
@@ -38,10 +39,7 @@ class Player
     this.startdirections_     = [135, -135, -45, 45];
     this.direction_           = 0;    // In degrees
     this.speed_               = 50;   // In pixels per second
-    this.turnrate_            = 90;    // In degrees per second
-
-    // Remote position queue
-    this.remote_update_queue_ = [];
+    this.turnrate_            = 90;   // In degrees per second
 
     // Optics
     this.colors_              = ['#ff0000', '#00ff00', '#0000ff', '#fffff00']
@@ -57,21 +55,21 @@ class Player
     switch(message.type)
     {
       case 'PlayerId':
-        this.id_                  = message.content;
-        this.color_               = this.colors_[this.id_ % this.colors_.length];
-        this.startposition_       = this.startpositions_[this.id_ % this.startpositions_.length];
-        this.position_head_old_   = this.startposition_;
-        this.position_head_       = this.startposition_;
-        this.direction_           = this.startdirections_[this.id_ % this.startdirections_.length];
+        this.id_                = message.content;
+        this.color_             = this.colors_[this.id_ % this.colors_.length];
+        this.startposition_     = this.startpositions_[this.id_ % this.startpositions_.length];
+        this.position_head_old_ = this.startposition_;
+        this.position_head_     = this.startposition_;
+        this.direction_         = this.startdirections_[this.id_ % this.startdirections_.length];
         this.sendMessageRemotePlayerHello();
         break;
 
       case 'PositionUpdate':
-        this.position_head_old_   = message.content.position_head_old;
-        this.position_head_       = message.content.position_head;
-        this.color_               = message.content.color;
-        this.thickness_           = message.content.thickness;
-        this.remote_update_queue_.push(message.content);
+        this.position_head_old_ = message.content.draw_request.position_head_old;
+        this.position_head_     = message.content.draw_request.position_head;
+        this.color_             = message.content.draw_request.color;
+        this.thickness_         = message.content.draw_request.thickness;
+        this.draw_queue_.push(message.content.draw_request);
         break;
 
       default:
@@ -86,18 +84,21 @@ class Player
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Methods for updating player
+  // Methods: Updatingplayer
 
-  updateAllIfAlive(direction, delta_ms)
+  updateAllIfAlive(delta_ms, direction)
   {
     if(this.alive_)
     {
       this.updateDirection(delta_ms, direction);
       this.updatePosition(delta_ms);
-      this.updateDraw();
-      this.updateNetwork();
+      this.storeAndSendDrawRequest();
+      this.drawPendingDrawRequests();
     }
   }
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods: Updatingplayer: Direction and position
 
   updateDirection(delta_ms, direction)
   {
@@ -150,29 +151,44 @@ class Player
     }
   }
 
-  updateDraw()
-  {
-    this.drawer_.drawLineFromTo(this.position_head_old_, this.position_head_, this.color_, this.thickness_);
-  }
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods: Updatingplayer: Draw and network
 
-  updateRemoteDraws()
+  generateDrawRequest()
   {
-    while(this.remote_update_queue_.length > 0)
-    {
-      let draw = this.remote_update_queue_.shift();
-      this.drawer_.drawLineFromTo(draw.position_head_old, draw.position_head, draw.color, draw.thickness);
-    }
-  }
-
-  updateNetwork()
-  {
-    let message = {
-      player: this.id_,
-      position_head_old: this.position_head_old_,
-      position_head: this.position_head_,
-      color: this.color_,
-      thickness: this.thickness_
+    let draw_request = {
+      position_head_old:  this.position_head_old_,
+      position_head:      this.position_head_,
+      color:              this.color_,
+      thickness:          this.thickness_
     };
-    this.communicator_.sendMessage('RequestPositionUpdate', 'Global', message);
+
+    return draw_request;
+  }
+
+  sendDrawRequest(draw_request)
+  {
+    let message_content = {
+      player: this.id_,
+      draw_request: draw_request
+    };
+    this.communicator_.sendMessage('RequestPositionUpdate', 'Global', message_content);
+  }
+
+  storeAndSendDrawRequest()
+  {
+    let draw_request = this.generateDrawRequest();
+    this.draw_queue_.push(draw_request);
+    this.sendDrawRequest(draw_request);
+  }
+
+  drawPendingDrawRequests()
+  {
+    while(this.draw_queue_.length > 0)
+    {
+      let draw_request = this.draw_queue_.shift();
+      this.drawer_.drawLineFromTo(draw_request.position_head_old, draw_request.position_head, draw_request.color,
+                                  draw_request.thickness);
+    }
   }
 }

@@ -7,12 +7,12 @@ class Game
   {
     // Settings
     this.log_level_           = 1;                        // 0 - 2
-    this.server_url_          = self.location.hostname;
-    this.server_port_         = '8080';
+    this.server_url_          = self.location.hostname;   // URL to the websocket server
+    this.server_port_         = '8080';                   // Port of the websocket server
     this.framerate_           = 15;                       // In frames per second
     this.frametime_           = 1/this.framerate_ * 1000; // In milliseconds
-    this.fieldsize_           = [1000, 1000];
-    this.max_players_         = 2;
+    this.fieldsize_           = [1000, 1000];             // Size of the playing field
+    this.max_players_         = 4;                        // Maximum number of players
 
     // States
     this.state_               = 'Lobby';
@@ -44,8 +44,14 @@ class Game
         // Get remote player id
         let remote_player_id = message.content;
 
-        // Check if already known
+        // Check if remote player is local player
         let remote_player_not_known = true;
+        if(this.player_local_.id_ == remote_player_id)
+        {
+          remote_player_not_known = false;
+        }
+
+        // Check if remote player already known
         this.players_remote_.forEach(function(player_remote)
         {
           if(player_remote.id_ == remote_player_id)
@@ -83,14 +89,16 @@ class Game
     // Check connection
     if(this.communicator_.connection_open_)
     {
-      this.logger_.log(1, 'Network ready, starting game');
+      this.logger_.log(1, 'Creating game');
+
+      // Listen to creation of other players
+      this.communicator_.registerToMessageType('RemotePlayerHello', this);
 
       // Create local player
       this.player_local_ = new Player('local', this.fieldsize_, this.collision_detector_, this.drawer_,
                                        this.communicator_, this.logger_);
 
-      // Create other players
-      this.communicator_.registerToMessageType('RemotePlayerHello', this);
+      // Listen to start of the game
       this.communicator_.registerToMessageType('StartGame', this);
 
       // Call run function periodically
@@ -98,9 +106,9 @@ class Game
     }
     else
     {
-      this.logger_.log(1, 'Network not ready, retrying');
+      this.logger_.log(1, 'Could not create game, network not ready, retrying');
 
-      // Call create function one more time
+      // Call create function one more time in one second
       let event_target = this;
       window.setTimeout(function(){event_target.setupGame.call(event_target);}, 1000);
     }
@@ -121,14 +129,19 @@ class Game
 
   runGame()
   {
+    // Calculate delta to last iteration
     let now = Date.now();
     let delta_ms = now - this.last_update_;
     this.last_update_ = now;
-    this.player_local_.updateAllIfAlive(this.input_handler_.getDirection(), delta_ms);
-    this.players_remote_.forEach(function(player_remote)
-    {
-      player_remote.updateRemoteDraws();
-    });
+
+    // Update local and remote players
+    this.player_local_.updateAllIfAlive(delta_ms, this.input_handler_.getDirection());
+    this.players_remote_.forEach(
+      function(player_remote)
+      {
+        player_remote.drawPendingDrawRequests();
+      }
+    );
   }
 }
 
