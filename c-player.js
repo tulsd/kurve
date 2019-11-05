@@ -48,9 +48,9 @@ class Player
 
     // Special effects: Holes
     this.last_hole_           = Date.now();
-    this.hole_lenght_         = 10;   // Lenght of holes in pixels
-    this.hole_distance_       = 100;  // Distance between holes in pixels
-    this.hole_distance_diff_  = 10;   // Range of number of pixels added or removed between holes
+    this.hole_lenght_         = 20;   // Lenght of holes in pixels
+    this.hole_distance_       = 300;  // Distance between holes in pixels
+    this.hole_distance_diff_  = 80;   // Range of number of pixels added or removed between holes
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -209,7 +209,7 @@ class Player
     // Draw hole aka draw nothing
     if(distance_last_hole < this.hole_lenght_)
     {
-      this.color_ = '#ffffff';
+      this.color_ = '#00000000';
     }
     else
     {
