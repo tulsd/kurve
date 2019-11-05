@@ -22,7 +22,7 @@ class UiHandler
 
   generatePlayerCards()
   {
-    for (let index = 0; index <= 4; index++)
+    for (let index = 0; index < 4; index++)
     {
       // Create nodes
       let node_player_card  = document.createElement('div');
@@ -37,7 +37,7 @@ class UiHandler
       node_name.className         = 'name';
 
       // Fill nodes
-      node_id.appendChild(document.createTextNode('Player ' + index));
+      node_id.appendChild(document.createTextNode('Player ' + (index + 1)));
       node_connection.appendChild(document.createTextNode('Disconnected'));
       node_name.appendChild(document.createTextNode('---'));
 
@@ -62,14 +62,14 @@ class UiHandler
     );
   }
 
-  updatePlayerCard(id)
+  updatePlayerCard(player_id)
   {
     let event_target = this;
     this.players_remote_.forEach(function(player_remote)
       {
-        if(player_remote.id_ == id)
+        if(player_remote.id_ == player_id)
         {
-          let player_card = event_target.player_cards_[id];
+          let player_card = event_target.player_cards_[player_id - 1];
           player_card.children[1].textContent = 'Connected';
           player_card.style.borderColor = player_remote.color_;
         }
