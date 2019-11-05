@@ -16,6 +16,7 @@ class Game
 
     // States
     this.state_               = 'Lobby';
+    this.wall_inactive_for_   = 0;
     this.last_update_         = undefined;
 
     // Players
@@ -103,6 +104,11 @@ class Game
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for game logic
+
+  addWallInactiveTime(seconds)
+  {
+    this.wall_inactive_for_ += seconds;
+  }
 
   checkWinCondition()
   {

@@ -76,6 +76,8 @@ class Player
         this.direction_         = this.startdirections_[this.id_ % this.startdirections_.length];
         this.sendMessageRemotePlayerHello();
         this.ui_handler.updatePlayerCards();
+        this.draw_queue_.push(this.generateDrawStartPositionRequest());
+        this.drawPendingDrawRequests();
         break;
 
       case 'PositionUpdate':
@@ -169,6 +171,18 @@ class Player
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods: Updatingplayer: Draw and network
+
+  generateDrawStartPositionRequest()
+  {
+    let draw_request = {
+      position_head_old:  this.position_head_old_,
+      position_head:      [this.position_head_[0] + this.thickness_, this.position_head_[1] + this.thickness_],
+      color:              this.color_,
+      thickness:          this.thickness_
+    };
+
+    return draw_request;
+  }
 
   generateDrawRequest()
   {
