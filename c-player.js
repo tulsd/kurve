@@ -48,9 +48,10 @@ class Player
 
     // Special effects: Holes
     this.last_hole_           = Date.now();
-    this.hole_lenght_         = 20;   // Lenght of holes in pixels
-    this.hole_distance_       = 300;  // Distance between holes in pixels
-    this.hole_distance_diff_  = 80;   // Range of number of pixels added or removed between holes
+    this.hole_lenght_         = 20;                   // Lenght of holes in pixels
+    this.hole_distance_       = 300;                  // Typical distance between holes in pixels
+    this.hole_distance_diff_  = 150                   // Number of pixels added or removed to/from typical hole distance
+    this.hole_distance_calc_  = this.hole_distance_;  // Actual calculated hole distance for next hole
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -217,8 +218,14 @@ class Player
     }
 
     // Start new hole
-    if(distance_last_hole > this.hole_distance_)
+    if(distance_last_hole > this.hole_distance_calc_)
     {
+      // Calculate new hole distance
+      let min = Math.ceil(this.hole_distance_ - this.hole_distance_diff_);
+      let max = Math.floor(this.hole_distance_ + this.hole_distance_diff_);
+      this.hole_distance_calc_ = Math.floor(Math.random() * (max - min + 1)) + min;
+
+      // Start new hole now
       this.last_hole_ = Date.now();
     }
   }
