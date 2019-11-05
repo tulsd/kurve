@@ -54,7 +54,7 @@ class Player
 
     // Special effects: Holes
     this.last_hole_           = Date.now();
-    this.hole_lenght_         = 20;                   // Lenght of holes in pixels
+    this.hole_length_         = 20;                   // Length of holes in pixels
     this.hole_distance_       = 300;                  // Typical distance between holes in pixels
     this.hole_distance_diff_  = 150                   // Number of pixels added or removed to/from typical hole distance
     this.hole_distance_calc_  = this.hole_distance_;  // Actual calculated hole distance for next hole
@@ -230,7 +230,7 @@ class Player
     let distance_last_hole = this.speed_ * (Date.now() - this.last_hole_) / 1000;
 
     // Draw hole aka draw nothing
-    if(distance_last_hole < this.hole_lenght_)
+    if(distance_last_hole < this.hole_length_)
     {
       this.color_ = '#00000000';
     }
