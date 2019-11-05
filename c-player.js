@@ -9,7 +9,7 @@ class Player
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(id, fieldsize, collision_detector, drawer, communicator, logger)
+  constructor(id, fieldsize, collision_detector, drawer, communicator, ui_handler, logger)
   {
     // General setup
     this.id_                  = id;
@@ -18,6 +18,7 @@ class Player
     this.collision_detector_  = collision_detector;
     this.drawer_              = drawer;
     this.communicator_        = communicator;
+    this.ui_handler           = ui_handler;
     this.logger_              = logger;
     this.draw_queue_          = [];
 
@@ -74,6 +75,7 @@ class Player
         this.position_head_     = this.startposition_;
         this.direction_         = this.startdirections_[this.id_ % this.startdirections_.length];
         this.sendMessageRemotePlayerHello();
+        this.ui_handler.updatePlayerCards();
         break;
 
       case 'PositionUpdate':

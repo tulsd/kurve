@@ -19,7 +19,7 @@ class Game
     this.last_update_         = undefined;
 
     // Players
-    this.player_local_        = undefined;
+    this.players_local_       = [undefined];
     this.players_remote_      = [];
 
     // Essentials
@@ -27,7 +27,7 @@ class Game
     this.communicator_        = new Communicator(this.server_url_, this.server_port_, this.logger_);
     this.input_handler_       = new InputHandler(this);
     this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'), this.fieldsize_);
-    this.ui_handler_          = new UiHandler(document.getElementById('container-player-cards'), this.player_local_,
+    this.ui_handler_          = new UiHandler(document.getElementById('container-player-cards'), this.players_local_,
                                               this.players_remote_);
     this.drawer_              = new Drawer(document.getElementById('canvas'));
 
@@ -48,7 +48,7 @@ class Game
 
         // Check if remote player is local player
         let remote_player_not_known = true;
-        if(this.player_local_.id_ == remote_player_hello_id)
+        if(this.players_local_[0].id_ == remote_player_hello_id)
         {
           remote_player_not_known = false;
         }
@@ -66,10 +66,10 @@ class Game
         if(remote_player_not_known)
         {
           let new_player_remote = new Player(remote_player_hello_id, this.fieldsize_, this.collision_detector_,
-                                             this.drawer_, this.communicator_, this.logger_);
+                                             this.drawer_, this.communicator_, this.ui_handler_, this.logger_);
           this.players_remote_.push(new_player_remote);
           this.communicator_.registerToMessageType('PositionUpdate', new_player_remote);
-          this.player_local_.sendMessageRemotePlayerHello();
+          this.players_local_[0].sendMessageRemotePlayerHello();
           this.ui_handler_.updatePlayerCards();
         }
         break;
@@ -136,8 +136,8 @@ class Game
       this.communicator_.registerToMessageType('RemotePlayerDeath', this);
 
       // Create local player
-      this.player_local_ = new Player('local', this.fieldsize_, this.collision_detector_, this.drawer_,
-                                       this.communicator_, this.logger_);
+      this.players_local_[0] = new Player('local', this.fieldsize_, this.collision_detector_, this.drawer_,
+                                         this.communicator_, this.ui_handler_, this.logger_);
 
       // Listen to start of the game
       this.communicator_.registerToMessageType('StartGame', this);
@@ -176,7 +176,7 @@ class Game
     this.last_update_ = now;
 
     // Update local and remote players
-    this.player_local_.updateAllIfAlive(delta_ms, this.input_handler_.getDirection());
+    this.players_local_[0].updateAllIfAlive(delta_ms, this.input_handler_.getDirection());
     this.players_remote_.forEach(
       function(player_remote)
       {

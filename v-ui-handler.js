@@ -3,14 +3,14 @@ class UiHandler
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(container_player_cards, player_local, players_remote)
+  constructor(container_player_cards, players_local, players_remote)
   {
     // Ui elements
     this.container_player_cards_    = container_player_cards;
     this.player_cards_              = [];
 
     // Information
-    this.player_local_              = player_local;
+    this.players_local_             = players_local;
     this.players_remote_            = players_remote;
 
     // Generate player cards
@@ -54,6 +54,10 @@ class UiHandler
 
   updatePlayerCards()
   {
+    // Update local player
+    this.updatePlayerCard(this.players_local_[0].id_);
+
+    // Update remote players
     let event_target = this;
     this.players_remote_.forEach(function(player_remote)
       {
@@ -64,16 +68,26 @@ class UiHandler
 
   updatePlayerCard(player_id)
   {
-    let event_target = this;
-    this.players_remote_.forEach(function(player_remote)
-      {
-        if(player_remote.id_ == player_id)
+    if(this.players_local_[0].id_ == player_id)
+    {
+      let player_card = this.player_cards_[player_id - 1];
+      player_card.children[1].textContent = 'Local';
+      player_card.style.borderColor = this.players_local_[0].color_;
+    }
+
+    else
+    {
+      let event_target = this;
+      this.players_remote_.forEach(function(player_remote)
         {
-          let player_card = event_target.player_cards_[player_id - 1];
-          player_card.children[1].textContent = 'Connected';
-          player_card.style.borderColor = player_remote.color_;
+          if(player_remote.id_ == player_id)
+          {
+            let player_card = event_target.player_cards_[player_id - 1];
+            player_card.children[1].textContent = 'Connected';
+            player_card.style.borderColor = player_remote.color_;
+          }
         }
-      }
-    );
+      );
+    }
   }
 }
