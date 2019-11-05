@@ -71,6 +71,7 @@ class UiHandler
         {
           let player_card = event_target.player_cards_[id];
           player_card.children[1].textContent = 'Connected';
+          player_card.style.borderColor = player_remote.color_;
         }
       }
     );

@@ -46,6 +46,11 @@ class Player
     this.color_               = '#000000';
     this.thickness_           = 5;
 
+    if(this.id_ != 'local')
+    {
+      this.color_             = this.colors_[this.id_ % this.colors_.length];
+    }
+
     // Special effects: Holes
     this.last_hole_           = Date.now();
     this.hole_lenght_         = 20;                   // Lenght of holes in pixels
