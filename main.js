@@ -79,6 +79,13 @@ class Game
         this.startGame();
         break;
 
+      case 'WallInactiveTime':
+        this.addWallInactiveTime(message.content);
+        break;
+
+      case 'Audio':
+        break;
+
       case 'RemotePlayerDeath':
         // Get remote player id
         let remote_player_death_id = message.content;
@@ -137,6 +144,9 @@ class Game
     {
       this.logger_.log(1, 'Creating game');
 
+      // Draw border
+      this.drawer_.drawBorder();
+
       // Listen to creation of other players
       this.communicator_.registerToMessageType('RemotePlayerHello', this);
       this.communicator_.registerToMessageType('RemotePlayerDeath', this);
@@ -171,6 +181,7 @@ class Game
     this.state_ = 'Game';
     this.last_update_ = Date.now();
     this.drawer_.clear();
+    this.drawer_.drawBorder();
     let event_target = this;
     window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
   }
