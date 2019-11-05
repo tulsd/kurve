@@ -170,6 +170,7 @@ class Game
   {
     this.state_ = 'Game';
     this.last_update_ = Date.now();
+    this.drawer_.clear();
     let event_target = this;
     window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
   }
