@@ -27,6 +27,7 @@ class Game
     this.communicator_        = new Communicator(this.server_url_, this.server_port_, this.logger_);
     this.input_handler_       = new InputHandler(this);
     this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'), this.fieldsize_);
+    this.ui_handler_          = new UiHandler('todo');
     this.drawer_              = new Drawer(document.getElementById('canvas'));
 
     // Create game
