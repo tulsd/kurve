@@ -9,7 +9,7 @@ class Game
     this.log_level_           = 1;                        // 0 - 2
     this.server_url_          = self.location.hostname;
     this.server_port_         = '8080';
-    this.framerate_           = 15;                       // In frames per second
+    this.framerate_           = 5;                       // In frames per second
     this.frametime_           = 1/this.framerate_ * 1000; // In milliseconds
     this.fieldsize_           = [1000, 1000];
     this.max_players_         = 2;
@@ -127,7 +127,7 @@ class Game
     this.player_local_.updateAllIfAlive(this.input_handler_.getDirection(), delta_ms);
     this.players_remote_.forEach(function(player_remote)
     {
-      player_remote.updateDraw();
+      player_remote.updateRemoteDraws();
     });
   }
 }
