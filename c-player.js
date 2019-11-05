@@ -45,6 +45,12 @@ class Player
     this.colors_              = ['#ff0000', '#00ff00', '#0000ff', '#fffff00']
     this.color_               = '#000000';
     this.thickness_           = 5;
+
+    // Special effects: Holes
+    this.last_hole_           = Date.now();
+    this.hole_lenght_         = 10;   // Lenght of holes in pixels
+    this.hole_distance_       = 100;  // Distance between holes in pixels
+    this.hole_distance_diff_  = 10;   // Range of number of pixels added or removed between holes
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -92,6 +98,7 @@ class Player
     {
       this.updateDirection(delta_ms, direction);
       this.updatePosition(delta_ms);
+      this.handleEffectHoles(delta_ms);
       this.storeAndSendDrawRequest();
       this.drawPendingDrawRequests();
     }
@@ -189,6 +196,30 @@ class Player
       let draw_request = this.draw_queue_.shift();
       this.drawer_.drawLineFromTo(draw_request.position_head_old, draw_request.position_head, draw_request.color,
                                   draw_request.thickness);
+    }
+  }
+
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Methods: Special effects
+  handleEffectHoles(delta_ms)
+  {
+    // Distance in pixels from the beginning of the last hole
+    let distance_last_hole = this.speed_ * (Date.now() - this.last_hole_) / 1000;
+
+    // Draw hole aka draw nothing
+    if(distance_last_hole < this.hole_lenght_)
+    {
+      this.color_ = '#ffffff';
+    }
+    else
+    {
+      this.color_ = this.colors_[this.id_ % this.colors_.length];
+    }
+
+    // Start new hole
+    if(distance_last_hole > this.hole_distance_)
+    {
+      this.last_hole_ = Date.now();
     }
   }
 }
