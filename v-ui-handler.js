@@ -54,6 +54,25 @@ class UiHandler
 
   updatePlayerCards()
   {
+    let event_target = this;
+    this.players_remote_.forEach(function(player_remote)
+      {
+        event_target.updatePlayerCard(player_remote.id_);
+      }
+    );
+  }
 
+  updatePlayerCard(id)
+  {
+    let event_target = this;
+    this.players_remote_.forEach(function(player_remote)
+      {
+        if(player_remote.id_ == id)
+        {
+          let player_card = event_target.player_cards_[id];
+          player_card.children[1].textContent = 'Connected';
+        }
+      }
+    );
   }
 }
