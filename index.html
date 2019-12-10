@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link rel="stylesheet" href="style.css" />
+
+    <title>Kurve</title>
+  </head>
+
+  <body>
+    <div id="container">
+
+      <div id="container-top">
+        <h1>Kurve</h1>
+      </div>
+
+      <div id="container-left">
+        <div id="container-draw">
+          <canvas id="canvas" height="1000" width="1000"></canvas>
+        </div>
+      </div>
+
+      <div id="container-right">
+        <div id="container-player-cards">
+          <!-- Cards are added dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-audio">
+      <!-- Audio is added dynamically -->
+    </div>
+
+    <script src="c-logger.js"></script>
+    <script src="c-communicator.js"></script>
+    <script src="c-input-handler.js"></script>
+    <script src="c-player.js"></script>
+    <script src="c-collision-detector.js"></script>
+    <script src="c-power-up.js"></script>
+    <script src="v-audio-player.js"></script>
+    <script src="v-ui-handler.js"></script>
+    <script src="v-drawer.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

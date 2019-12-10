@@ -1,0 +1,37 @@
+html, body
+{
+    background: #222222;
+    margin: 0;
+    padding: 0;
+    color: #eee;
+}
+
+#container
+{
+    padding: 25px;
+}
+
+#container-left
+{
+    float: left;
+    width: 1000px;
+}
+
+#container-right
+{
+    float: left;
+    padding-left: 25px;
+}
+
+#container-draw
+{
+    background: #555555;
+    width: 1000px;
+    height: 1000px;
+}
+
+.playercard{
+    border: 2px solid #555;
+    padding: 15px;
+    margin-bottom: 15px;
+}
