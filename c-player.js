@@ -45,7 +45,7 @@ class Player
     // Optics
     this.colors_              = ['#ff0000', '#00ff00', '#0000ff', '#fffff00']
     this.color_               = '#000000';
-    this.thickness_           = 5;
+    this.thickness_           = 50;
 
     if(this.id_ != 'local')
     {
@@ -152,7 +152,7 @@ class Player
     let potential_new_position = [potential_new_position_x, potential_new_position_y];
 
     // Check if new position collides with obstacles
-    if(this.collision_detector_.collisionAtLocation(potential_new_position))
+    if(this.collision_detector_.collisionAtLocation(potential_new_position, this.direction_, this.thickness_, this.color_))
     {
       this.alive_ = false;
       this.communicator_.sendMessage('RequestRemotePlayerDeath', 'Global', this.id_);
