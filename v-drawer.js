@@ -22,10 +22,19 @@ class Drawer
     let context = this.canvas_.getContext("2d");
     context.strokeStyle = color;
     context.lineWidth = thickness;
+    //context.lineJoin = round;
     context.beginPath();
+
     context.moveTo(from[0], from[1]);
 
+    //Smoother line
+    //Source: https://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas/7058606#7058606
+
+    var x = (from[0] + to[0]) / 2;
+    var y = (from[1] + to[1]) / 2;
+
     // curve through the last two points
+    context.quadraticCurveTo(from[0], from[1], x, y);
     context.quadraticCurveTo(from[0], from[1], to[0], to[1]);
 
     context.stroke();
