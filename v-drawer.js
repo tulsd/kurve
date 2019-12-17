@@ -23,8 +23,15 @@ class Drawer
     context.strokeStyle = color;
     context.lineWidth = thickness;
     context.beginPath();
+    console.log(from[0]);
+    console.log(to[0]);
+    console.log(to[1]);
+    console.log("----")
     context.moveTo(from[0], from[1]);
-    context.lineTo(to[0], to[1]);
+
+    // curve through the last two points
+    context.quadraticCurveTo(from[0], from[1], to[0], to[1]);
+
     context.stroke();
   }
 
