@@ -43,33 +43,36 @@ class CollisionDetector
 
     // Get intersecting colors
     let context = this.canvas_.getContext("2d");
-    let data    = context.getImageData(location[0], location[1], 1, 1).data;
-    let data1    = context.getImageData(leftmostpoint_x, leftmostpoint_y, 1, 1).data;
-    let data2    = context.getImageData(rightmostpoint_x, rightmostpoint_y, 1, 1).data;
+    let color_middle    = context.getImageData(location[0], location[1], 1, 1).data;
+    let color_left    = context.getImageData(leftmostpoint_x, leftmostpoint_y, 1, 1).data;
+    let color_right    = context.getImageData(rightmostpoint_x, rightmostpoint_y, 1, 1).data;
 
     let own_color_rgb = this.hexToRGB(own_color)
     console.log("own_color_rgb: ", own_color_rgb)
+    console.log("own_color_rgb.r: ", own_color_rgb.r)
+    console.log("own_color_rgb.g: ", own_color_rgb.g)
+    console.log("own_color_rgb.b: ", own_color_rgb.b)
 
-    console.log(data)
-    console.log(data1)
-    console.log(data2)
+    console.log(color_middle)
+    console.log(color_left)
+    console.log(color_right)
 
     // Check color
     if 
     (
       // Black canvas is fine
       (
-        (data[0] == 0 && data[1] == 0 && data[2] == 0) &&
-        (data1[0] == 0 && data1[1] == 0 && data1[2] == 0) &&
-        (data2[0] == 0 && data2[1] == 0 && data2[2] == 0)
+        (color_middle[0] == 0 && color_middle[1] == 0 && color_middle[2] == 0) &&
+        (color_left[0] == 0 && color_left[1] == 0 && color_left[2] == 0) &&
+        (color_right[0] == 0 && color_right[1] == 0 && color_right[2] == 0)
       )
       ||
       // Own color is fine only when intersection results due to rotation curve
       // TODO: Should not be fine when you intersect yourself at a later point
       (
-        (data[0] == own_color_rgb[0] && data[1] == own_color_rgb[1] && data[2] == own_color_rgb[2]) &&
-        (data1[0] == own_color_rgb[0] && data1[1] == own_color_rgb[1] && data1[2] == own_color_rgb[2]) &&
-        (data2[0] == own_color_rgb[0] && data2[1] == own_color_rgb[1] && data2[2] == own_color_rgb[2])
+        (color_middle[0] == own_color_rgb.r && color_middle[1] == own_color_rgb.g && color_middle[2] == own_color_rgb.b) &&
+        (color_left[0] == own_color_rgb.r && color_left[1] == own_color_rgb.g && color_left[2] == own_color_rgb.b) &&
+        (color_right[0] == own_color_rgb.r && color_right[1] == own_color_rgb.g && color_right[2] == own_color_rgb.b)
       )
     )
     {
