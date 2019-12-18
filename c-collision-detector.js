@@ -85,9 +85,10 @@ class CollisionDetector
     let rightmostpoint = [rightmostpoint_x, rightmostpoint_y];
 
     // Get rectangle in front of head
-    let padding = 0;
+    let padding = 0; // Optional padding - Increase or decrease size of rectangle
     let direction_radians = direction * Math.PI / 180;
 
+    // Probably don't need to use full thickness here but a fixed small amount
     let rectangle_point_a_x = leftmostpoint[0] - padding + (thickness + padding) * Math.cos((-1) * direction_radians);
     let rectangle_point_a_y = leftmostpoint[1] + padding + (thickness + padding) * Math.sin((-1) * direction_radians);
     let rectangle_point_b_x = rightmostpoint[0] + padding + (thickness + padding) * Math.cos((-1) * direction_radians);
@@ -102,18 +103,8 @@ class CollisionDetector
     let rectangle_point_d = [rectangle_point_d_x, rectangle_point_d_y];
     let rectangle = [rectangle_point_a, rectangle_point_b, rectangle_point_c, rectangle_point_d];
 
-    /*var canvasData = context.getImageData(0, 0, this.canvas_.width, this.canvas_.height);
-    this.drawPixel(canvasData, this.canvas_.width, rectangle_point_a[0]+10, rectangle_point_a[1]+10, 255, 0, 0, 255)
-    this.drawPixel(canvasData, this.canvas_.width, rectangle_point_b[0]+10, rectangle_point_b[1]+10, 255, 0, 0, 255)
-    this.drawPixel(canvasData, this.canvas_.width, rectangle_point_c[0]+10, rectangle_point_c[1]+10, 255, 0, 0, 255)
-    this.drawPixel(canvasData, this.canvas_.width, rectangle_point_d[0]+10, rectangle_point_d[1]+10, 255, 0, 0, 255)
-    context.putImageData(canvasData, 0, 0);*/
     context.fillStyle = '#0f0';
     context.beginPath();
-    // context.moveTo(rectangle_point_a[0], rectangle_point_a[1]);
-    // context.moveTo(rectangle_point_b[0], rectangle_point_b[1]);
-    // context.moveTo(rectangle_point_c[0], rectangle_point_c[1]);
-    // context.moveTo(rectangle_point_d[0], rectangle_point_d[1]);
     context.moveTo(764.6136471375994, 209.9679291896031);
     context.lineTo(816.120340696868, 248.79225482395702);
     context.lineTo(769.5311499356433, 286.6002870950792);
@@ -131,16 +122,6 @@ class CollisionDetector
     console.log("rectangle:", rectangle)
 
     // Get intersecting colors
-
-    /*var w1 = rectangle_point_a[0] - rectangle_point_b[0];
-    var w2 = rectangle_point_a[1] - rectangle_point_b[1];
-    var width = Math.sqrt(w1*w1 + w2*w2);
-
-    var h1 = rectangle_point_a[0] - rectangle_point_b[0];
-    var h2 = rectangle_point_d[1] - rectangle_point_d[1];
-    var height = Math.sqrt(h1*h1 + h1*h1);
-    context.fillRect(rectangle_point_a[0], rectangle_point_a[1], width, height);*/
-
     let color_middle    = context.getImageData(location[0], location[1], 1, 1).data;
     let color_left    = context.getImageData(leftmostpoint[0], leftmostpoint[1], 1, 1).data;
     let color_right    = context.getImageData(rightmostpoint[0], rightmostpoint[1], 1, 1).data;
