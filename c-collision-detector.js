@@ -29,18 +29,18 @@ class CollisionDetector
     let direction_radians_left = (direction - 90) * Math.PI / 180;
     let direction_radians_right = (direction + 90) * Math.PI / 180;
     let leftmostpoint_x  = location[0] + (thickness / 2) * Math.cos(direction_radians_left);
-    let leftmostpoint_y  = location[1] + (thickness / 2) * Math.sin(direction_radians_left);
+    let leftmostpoint_y  = location[1] - (thickness / 2) * Math.sin(direction_radians_left);
     let rightmostpoint_x  = location[0] + (thickness / 2) * Math.cos(direction_radians_right);
-    let rightmostpoint_y  = location[1] + (thickness / 2) * Math.sin(direction_radians_right);
+    let rightmostpoint_y  = location[1] - (thickness / 2) * Math.sin(direction_radians_right);
     let leftmostpoint = [leftmostpoint_x, leftmostpoint_y];
     let rightmostpoint = [rightmostpoint_x, rightmostpoint_y];
 
     // Get rectangle behind head
     let direction_radians = direction * Math.PI / 180;
-    let rectangle_point_a_x = leftmostpoint[0] + (thickness / 2) * Math.cos((-1) * direction_radians);
-    let rectangle_point_a_y = leftmostpoint[1] + (thickness / 2) * Math.sin((-1) * direction_radians);
-    let rectangle_point_b_x = rightmostpoint[0] + (thickness / 2) * Math.cos((-1) * direction_radians);
-    let rectangle_point_b_y = rightmostpoint[1] + (thickness / 2) * Math.sin((-1) * direction_radians);
+    let rectangle_point_a_x = leftmostpoint[0] - (thickness) * Math.cos((-1) * direction_radians);
+    let rectangle_point_a_y = leftmostpoint[1] - (thickness) * Math.sin((-1) * direction_radians);
+    let rectangle_point_b_x = rightmostpoint[0] - (thickness) * Math.cos((-1) * direction_radians);
+    let rectangle_point_b_y = rightmostpoint[1] - (thickness) * Math.sin((-1) * direction_radians);
     let rectangle_point_c_x = rightmostpoint[0];
     let rectangle_point_c_y = rightmostpoint[1];
     let rectangle_point_d_x = leftmostpoint[0];

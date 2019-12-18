@@ -16,7 +16,7 @@ class Drawer
     var context = this.canvas_.getContext('2d');
     context.clearRect(0, 0, 500, 25);
     context.font = '16pt Calibri';
-    context.fillStyle = 'black';
+    context.fillStyle = 'white';
     context.fillText(message, 10, 25);
   }
 
