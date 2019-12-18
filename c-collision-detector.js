@@ -32,23 +32,22 @@ class CollisionDetector
     let leftmostpoint_y  = location[1] + (thickness / 2) * Math.sin(direction_radians_left);
     let rightmostpoint_x  = location[0] + (thickness / 2) * Math.cos(direction_radians_right);
     let rightmostpoint_y  = location[1] + (thickness / 2) * Math.sin(direction_radians_right);
+    let leftmostpoint = [leftmostpoint_x, leftmostpoint_y];
+    let rightmostpoint = [rightmostpoint_x, rightmostpoint_y];
 
     console.log("direction: ", direction)
     console.log("direction_radians_left: ", direction_radians_left)
     console.log("direction_radians_right: ", direction_radians_right)
     console.log("thickness: ", thickness)
-    console.log("location_x: ", location[0])
-    console.log("location_y: ", location[1])
-    console.log("leftmostpoint_x: ", leftmostpoint_x)
-    console.log("leftmostpoint_y: ", leftmostpoint_y)
-    console.log("rightmostpoint_x: ", rightmostpoint_x)
-    console.log("rightmostpoint_y: ", rightmostpoint_y)
+    console.log("location: ", location)
+    console.log("leftmostpoint: ", leftmostpoint)
+    console.log("rightmostpoint: ", rightmostpoint)
 
     // Get intersecting colors
     let context = this.canvas_.getContext("2d");
     let color_middle    = context.getImageData(location[0], location[1], 1, 1).data;
-    let color_left    = context.getImageData(leftmostpoint_x, leftmostpoint_y, 1, 1).data;
-    let color_right    = context.getImageData(rightmostpoint_x, rightmostpoint_y, 1, 1).data;
+    let color_left    = context.getImageData(leftmostpoint[0], leftmostpoint[1], 1, 1).data;
+    let color_right    = context.getImageData(rightmostpoint[0], rightmostpoint[1], 1, 1).data;
 
     let own_color_rgb = this.hexToRGB(own_color)
     console.log("own_color_rgb: ", own_color_rgb)
