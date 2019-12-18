@@ -32,6 +32,16 @@ class Game
                                               this.players_remote_);
     this.drawer_              = new Drawer(document.getElementById('canvas'));
 
+    var context = this.drawer_.canvas_.getContext('2d');
+
+    // For debugging - Print cursor coordinates on canvas
+    let drawer = this.drawer_;
+    this.drawer_.canvas_.addEventListener('mousemove', function(evt) {
+      var mousePos = drawer.getMousePos(evt);
+      var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+      drawer.writeMessage(message);
+    }, false);
+
     // Create game
     this.setupGame();
   }

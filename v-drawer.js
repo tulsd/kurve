@@ -11,6 +11,24 @@ class Drawer
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods
 
+  writeMessage(message)
+  {
+    var context = this.canvas_.getContext('2d');
+    context.clearRect(0, 0, 500, 25);
+    context.font = '16pt Calibri';
+    context.fillStyle = 'black';
+    context.fillText(message, 10, 25);
+  }
+
+  getMousePos(evt)
+  {
+    var rect = this.canvas_.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+  }
+
   clear()
   {
     let context = this.canvas_.getContext("2d");
