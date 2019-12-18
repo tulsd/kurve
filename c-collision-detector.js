@@ -81,7 +81,7 @@ class CollisionDetector
     this.drawPixel(canvasData, this.canvas_.width, rectangle_point_c[0]+10, rectangle_point_c[1]+10, 255, 0, 0, 255)
     this.drawPixel(canvasData, this.canvas_.width, rectangle_point_d[0]+10, rectangle_point_d[1]+10, 255, 0, 0, 255)
     context.putImageData(canvasData, 0, 0);*/
-    context.fillStyle = '#0f0';
+    context.fillStyle = '#f00';
     context.beginPath();
     // context.moveTo(rectangle_point_a[0], rectangle_point_a[1]);
     // context.moveTo(rectangle_point_b[0], rectangle_point_b[1]);
@@ -141,8 +141,8 @@ class CollisionDetector
       // Own color is fine only when intersection results due to rotation curve
       // TODO: Should not be fine when you intersect yourself at a later point
       (
-        (color_middle[0] == own_color_rgb.r && color_middle[1] == own_color_rgb.g && color_middle[2] == own_color_rgb.b) &&
-        (color_left[0] == own_color_rgb.r && color_left[1] == own_color_rgb.g && color_left[2] == own_color_rgb.b) &&
+        (color_middle[0] == own_color_rgb.r && color_middle[1] == own_color_rgb.g && color_middle[2] == own_color_rgb.b) ||
+        (color_left[0] == own_color_rgb.r && color_left[1] == own_color_rgb.g && color_left[2] == own_color_rgb.b) ||
         (color_right[0] == own_color_rgb.r && color_right[1] == own_color_rgb.g && color_right[2] == own_color_rgb.b)
       )
     )
