@@ -47,16 +47,28 @@ class CollisionDetector
     let rightmostpoint = [rightmostpoint_x, rightmostpoint_y];
 
     // Get rectangle behind head
-    let padding = 5;
+    let padding = 10;
     let direction_radians = direction * Math.PI / 180;
+
     let rectangle_point_a_x = leftmostpoint[0] - padding - (thickness + padding) * Math.cos((-1) * direction_radians);
     let rectangle_point_a_y = leftmostpoint[1] + padding - (thickness + padding) * Math.sin((-1) * direction_radians);
     let rectangle_point_b_x = rightmostpoint[0] + padding - (thickness + padding) * Math.cos((-1) * direction_radians);
-    let rectangle_point_b_y = rightmostpoint[1] + (thickness + padding) * Math.sin((-1) * direction_radians);
+    let rectangle_point_b_y = rightmostpoint[1] + padding - (thickness + padding) * Math.sin((-1) * direction_radians); // This line is missing a + padding
     let rectangle_point_c_x = rightmostpoint[0] + padding;
     let rectangle_point_c_y = rightmostpoint[1] + padding;
     let rectangle_point_d_x = leftmostpoint[0] - padding;
     let rectangle_point_d_y = leftmostpoint[1] + padding;
+
+    /*let rectangle_point_a_x = leftmostpoint[0] - (thickness) * Math.cos((-1) * direction_radians);
+    let rectangle_point_a_y = leftmostpoint[1] - (thickness) * Math.sin((-1) * direction_radians);
+    let rectangle_point_b_x = rightmostpoint[0] - (thickness) * Math.cos((-1) * direction_radians);
+    let rectangle_point_b_y = rightmostpoint[1] - (thickness) * Math.sin((-1) * direction_radians);
+    let rectangle_point_c_x = rightmostpoint[0];
+    let rectangle_point_c_y = rightmostpoint[1];
+    let rectangle_point_d_x = leftmostpoint[0];
+    let rectangle_point_d_y = leftmostpoint[1];*/
+
+
     let rectangle_point_a = [rectangle_point_a_x, rectangle_point_a_y];
     let rectangle_point_b = [rectangle_point_b_x, rectangle_point_b_y];
     let rectangle_point_c = [rectangle_point_c_x, rectangle_point_c_y];
@@ -69,6 +81,18 @@ class CollisionDetector
     this.drawPixel(canvasData, this.canvas_.width, rectangle_point_c[0]+10, rectangle_point_c[1]+10, 255, 0, 0, 255)
     this.drawPixel(canvasData, this.canvas_.width, rectangle_point_d[0]+10, rectangle_point_d[1]+10, 255, 0, 0, 255)
     context.putImageData(canvasData, 0, 0);*/
+    context.fillStyle = '#0f0';
+    context.beginPath();
+    // context.moveTo(rectangle_point_a[0], rectangle_point_a[1]);
+    // context.moveTo(rectangle_point_b[0], rectangle_point_b[1]);
+    // context.moveTo(rectangle_point_c[0], rectangle_point_c[1]);
+    // context.moveTo(rectangle_point_d[0], rectangle_point_d[1]);
+    context.moveTo(764.6136471375994, 209.9679291896031);
+    context.lineTo(816.120340696868, 248.79225482395702);
+    context.lineTo(769.5311499356433, 286.6002870950792);
+    context.lineTo(718.0244563763747, 247.77596146072526);
+    context.closePath();
+    context.fill();
 
     console.log("direction: ", direction)
     console.log("direction_radians_left: ", direction_radians_left)
@@ -90,7 +114,6 @@ class CollisionDetector
     var height = Math.sqrt(h1*h1 + h1*h1);
     context.fillRect(rectangle_point_a[0], rectangle_point_a[1], width, height);*/
 
-
     let color_middle    = context.getImageData(location[0], location[1], 1, 1).data;
     let color_left    = context.getImageData(leftmostpoint[0], leftmostpoint[1], 1, 1).data;
     let color_right    = context.getImageData(rightmostpoint[0], rightmostpoint[1], 1, 1).data;
@@ -101,9 +124,9 @@ class CollisionDetector
     console.log("own_color_rgb.g: ", own_color_rgb.g)
     console.log("own_color_rgb.b: ", own_color_rgb.b)
 
-    console.log(color_middle)
-    console.log(color_left)
-    console.log(color_right)
+    console.log("color_middle: ", color_middle)
+    console.log("color_left: ", color_left)
+    console.log("color_right: ", color_right)
 
     // Check color
     if 
