@@ -11,6 +11,44 @@ class CollisionDetector
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods
+  checkIfPointWithinRectangle(point, rectangle)
+  {
+    // https://math.stackexchange.com/a/190373/223129
+    // (0<AM*AB<AB*AB) AND (0<AM*AD<AD*AD) <=> M is within ABCD
+    let m = point;
+    let a = rectangle[0];
+    let b = rectangle[1];
+    let c = rectangle[2];
+    let d = rectangle[3];
+
+    let am = [0, 0];
+    am[0] = a[0] * m[0];
+    am[1] = a[1] * m[1];
+    let ab = [0, 0];
+    ab[0] = a[0] * b[0];
+    ab[1] = a[1] * b[1];
+    let ad = [0, 0];
+    ad[0] = a[0] * d[0];
+    ad[1] = a[1] * d[1];
+
+    let am_ab = am[0] * ab[0] + am[1] * ab[1];
+    let ab_ab = ab[0] * ab[0] + ab[1] * ab[1];
+    let am_ad = am[0] * ad[0] + am[1] * ad[1];
+    let ad_ad = ad[0] * ad[0] + ad[1] * ad[1];
+
+    if (
+      ((0 < am_ab) && (am_ab < ab_ab)) &&
+      ((0 < am_ad) && (am_ad < ad_ad))
+    )
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
   drawPixel(canvasData, canvasWidth, x, y, r, g, b, a)
   {
     var index = (x + y * canvasWidth) * 4;
@@ -50,10 +88,10 @@ class CollisionDetector
     let padding = 0;
     let direction_radians = direction * Math.PI / 180;
 
-    let rectangle_point_a_x = leftmostpoint[0] - padding - (thickness + padding) * Math.cos((-1) * direction_radians);
-    let rectangle_point_a_y = leftmostpoint[1] + padding - (thickness + padding) * Math.sin((-1) * direction_radians);
-    let rectangle_point_b_x = rightmostpoint[0] + padding - (thickness + padding) * Math.cos((-1) * direction_radians);
-    let rectangle_point_b_y = rightmostpoint[1] + padding - (thickness + padding) * Math.sin((-1) * direction_radians);
+    let rectangle_point_a_x = leftmostpoint[0] - padding + (thickness + padding) * Math.cos((-1) * direction_radians);
+    let rectangle_point_a_y = leftmostpoint[1] + padding + (thickness + padding) * Math.sin((-1) * direction_radians);
+    let rectangle_point_b_x = rightmostpoint[0] + padding + (thickness + padding) * Math.cos((-1) * direction_radians);
+    let rectangle_point_b_y = rightmostpoint[1] + padding + (thickness + padding) * Math.sin((-1) * direction_radians);
     let rectangle_point_c_x = rightmostpoint[0] + padding;
     let rectangle_point_c_y = rightmostpoint[1] + padding;
     let rectangle_point_d_x = leftmostpoint[0] - padding;
@@ -70,7 +108,7 @@ class CollisionDetector
     this.drawPixel(canvasData, this.canvas_.width, rectangle_point_c[0]+10, rectangle_point_c[1]+10, 255, 0, 0, 255)
     this.drawPixel(canvasData, this.canvas_.width, rectangle_point_d[0]+10, rectangle_point_d[1]+10, 255, 0, 0, 255)
     context.putImageData(canvasData, 0, 0);*/
-    context.fillStyle = '#f00';
+    context.fillStyle = '#0f0';
     context.beginPath();
     // context.moveTo(rectangle_point_a[0], rectangle_point_a[1]);
     // context.moveTo(rectangle_point_b[0], rectangle_point_b[1]);
@@ -129,15 +167,25 @@ class CollisionDetector
     }
     else if (
       // Own color is fine only when intersection results due to rotation curve
-      // TODO: Should not be fine when you intersect yourself at a later point
       (color_middle[0] == own_color_rgb.r && color_middle[1] == own_color_rgb.g && color_middle[2] == own_color_rgb.b) ||
       (color_left[0] == own_color_rgb.r && color_left[1] == own_color_rgb.g && color_left[2] == own_color_rgb.b) ||
       (color_right[0] == own_color_rgb.r && color_right[1] == own_color_rgb.g && color_right[2] == own_color_rgb.b)
     )
     {
-      // Check if potential colliding point is outside of own curve 
+      // Collision point lies in front of the head -> Call collision
+      if (this.checkIfPointWithinRectangle(leftmostpoint, rectangle))
+      {
+        console.log("COLLISION")
+        return true;
+      }
+      else if (this.checkIfPointWithinRectangle(rightmostpoint, rectangle))
+      {
+        console.log("COLLISION")
+        return true;
+      }
       
-      
+      // Collision point does not lie in front of the head -> Collision due to
+      // self-intersection in curve
       return false;
     }
     else
