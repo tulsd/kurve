@@ -46,29 +46,18 @@ class CollisionDetector
     let leftmostpoint = [leftmostpoint_x, leftmostpoint_y];
     let rightmostpoint = [rightmostpoint_x, rightmostpoint_y];
 
-    // Get rectangle behind head
-    let padding = 10;
+    // Get rectangle in front of head
+    let padding = 0;
     let direction_radians = direction * Math.PI / 180;
 
     let rectangle_point_a_x = leftmostpoint[0] - padding - (thickness + padding) * Math.cos((-1) * direction_radians);
     let rectangle_point_a_y = leftmostpoint[1] + padding - (thickness + padding) * Math.sin((-1) * direction_radians);
     let rectangle_point_b_x = rightmostpoint[0] + padding - (thickness + padding) * Math.cos((-1) * direction_radians);
-    let rectangle_point_b_y = rightmostpoint[1] + padding - (thickness + padding) * Math.sin((-1) * direction_radians); // This line is missing a + padding
+    let rectangle_point_b_y = rightmostpoint[1] + padding - (thickness + padding) * Math.sin((-1) * direction_radians);
     let rectangle_point_c_x = rightmostpoint[0] + padding;
     let rectangle_point_c_y = rightmostpoint[1] + padding;
     let rectangle_point_d_x = leftmostpoint[0] - padding;
     let rectangle_point_d_y = leftmostpoint[1] + padding;
-
-    /*let rectangle_point_a_x = leftmostpoint[0] - (thickness) * Math.cos((-1) * direction_radians);
-    let rectangle_point_a_y = leftmostpoint[1] - (thickness) * Math.sin((-1) * direction_radians);
-    let rectangle_point_b_x = rightmostpoint[0] - (thickness) * Math.cos((-1) * direction_radians);
-    let rectangle_point_b_y = rightmostpoint[1] - (thickness) * Math.sin((-1) * direction_radians);
-    let rectangle_point_c_x = rightmostpoint[0];
-    let rectangle_point_c_y = rightmostpoint[1];
-    let rectangle_point_d_x = leftmostpoint[0];
-    let rectangle_point_d_y = leftmostpoint[1];*/
-
-
     let rectangle_point_a = [rectangle_point_a_x, rectangle_point_a_y];
     let rectangle_point_b = [rectangle_point_b_x, rectangle_point_b_y];
     let rectangle_point_c = [rectangle_point_c_x, rectangle_point_c_y];
@@ -129,24 +118,26 @@ class CollisionDetector
     console.log("color_right: ", color_right)
 
     // Check color
-    if 
-    (
+    if (
       // Black canvas is fine
-      (
-        (color_middle[0] == 0 && color_middle[1] == 0 && color_middle[2] == 0) &&
-        (color_left[0] == 0 && color_left[1] == 0 && color_left[2] == 0) &&
-        (color_right[0] == 0 && color_right[1] == 0 && color_right[2] == 0)
-      )
-      ||
-      // Own color is fine only when intersection results due to rotation curve
-      // TODO: Should not be fine when you intersect yourself at a later point
-      (
-        (color_middle[0] == own_color_rgb.r && color_middle[1] == own_color_rgb.g && color_middle[2] == own_color_rgb.b) ||
-        (color_left[0] == own_color_rgb.r && color_left[1] == own_color_rgb.g && color_left[2] == own_color_rgb.b) ||
-        (color_right[0] == own_color_rgb.r && color_right[1] == own_color_rgb.g && color_right[2] == own_color_rgb.b)
-      )
+      (color_middle[0] == 0 && color_middle[1] == 0 && color_middle[2] == 0) &&
+      (color_left[0] == 0 && color_left[1] == 0 && color_left[2] == 0) &&
+      (color_right[0] == 0 && color_right[1] == 0 && color_right[2] == 0)
     )
     {
+      return false;
+    }
+    else if (
+      // Own color is fine only when intersection results due to rotation curve
+      // TODO: Should not be fine when you intersect yourself at a later point
+      (color_middle[0] == own_color_rgb.r && color_middle[1] == own_color_rgb.g && color_middle[2] == own_color_rgb.b) ||
+      (color_left[0] == own_color_rgb.r && color_left[1] == own_color_rgb.g && color_left[2] == own_color_rgb.b) ||
+      (color_right[0] == own_color_rgb.r && color_right[1] == own_color_rgb.g && color_right[2] == own_color_rgb.b)
+    )
+    {
+      // Check if potential colliding point is outside of own curve 
+      
+      
       return false;
     }
     else
