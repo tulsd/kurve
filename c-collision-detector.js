@@ -26,13 +26,16 @@ class CollisionDetector
   collisionAtLocation(location, direction, thickness, own_color)
   {
     // Get intersection points
-    let direction_radians = direction * Math.PI / 180;
-    let leftmostpoint_x  = location[0] + (thickness / 2) * Math.cos(direction_radians);
-    let leftmostpoint_y  = location[1] + (thickness / 2) * Math.sin(direction_radians);
-    let rightmostpoint_x  = location[0] - (thickness / 2) * Math.cos(direction_radians);
-    let rightmostpoint_y  = location[1] - (thickness / 2) * Math.sin(direction_radians);
+    let direction_radians_left = (direction - 90) * Math.PI / 180;
+    let direction_radians_right = (direction + 90) * Math.PI / 180;
+    let leftmostpoint_x  = location[0] + (thickness / 2) * Math.cos(direction_radians_left);
+    let leftmostpoint_y  = location[1] + (thickness / 2) * Math.sin(direction_radians_left);
+    let rightmostpoint_x  = location[0] + (thickness / 2) * Math.cos(direction_radians_right);
+    let rightmostpoint_y  = location[1] + (thickness / 2) * Math.sin(direction_radians_right);
 
     console.log("direction: ", direction)
+    console.log("direction_radians_left: ", direction_radians_left)
+    console.log("direction_radians_right: ", direction_radians_right)
     console.log("thickness: ", thickness)
     console.log("location_x: ", location[0])
     console.log("location_y: ", location[1])
@@ -66,14 +69,14 @@ class CollisionDetector
         (color_left[0] == 0 && color_left[1] == 0 && color_left[2] == 0) &&
         (color_right[0] == 0 && color_right[1] == 0 && color_right[2] == 0)
       )
-      ||
+      // ||
       // Own color is fine only when intersection results due to rotation curve
       // TODO: Should not be fine when you intersect yourself at a later point
-      (
-        (color_middle[0] == own_color_rgb.r && color_middle[1] == own_color_rgb.g && color_middle[2] == own_color_rgb.b) &&
-        (color_left[0] == own_color_rgb.r && color_left[1] == own_color_rgb.g && color_left[2] == own_color_rgb.b) &&
-        (color_right[0] == own_color_rgb.r && color_right[1] == own_color_rgb.g && color_right[2] == own_color_rgb.b)
-      )
+      // (
+        // (color_middle[0] == own_color_rgb.r && color_middle[1] == own_color_rgb.g && color_middle[2] == own_color_rgb.b) &&
+        // (color_left[0] == own_color_rgb.r && color_left[1] == own_color_rgb.g && color_left[2] == own_color_rgb.b) &&
+        // (color_right[0] == own_color_rgb.r && color_right[1] == own_color_rgb.g && color_right[2] == own_color_rgb.b)
+      // )
     )
     {
       return false;
