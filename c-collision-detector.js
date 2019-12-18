@@ -49,6 +49,7 @@ class CollisionDetector
     }
   }
 
+  // Unused - Can be removed
   drawPixel(canvasData, canvasWidth, x, y, r, g, b, a)
   {
     var index = (x + y * canvasWidth) * 4;
@@ -103,6 +104,7 @@ class CollisionDetector
     let rectangle_point_d = [rectangle_point_d_x, rectangle_point_d_y];
     let rectangle = [rectangle_point_a, rectangle_point_b, rectangle_point_c, rectangle_point_d];
 
+    // Draw debug rectangle to collide with
     context.fillStyle = '#0f0';
     context.beginPath();
     context.moveTo(764.6136471375994, 209.9679291896031);
@@ -125,6 +127,10 @@ class CollisionDetector
     let color_middle    = context.getImageData(location[0], location[1], 1, 1).data;
     let color_left    = context.getImageData(leftmostpoint[0], leftmostpoint[1], 1, 1).data;
     let color_right    = context.getImageData(rightmostpoint[0], rightmostpoint[1], 1, 1).data;
+    // TODO: Sometimes an off-by one color is retreived, e.g. 254 instead of
+    // 255, and some transparency value other than 255. Could be circumvented by
+    // rounding retreived colors up to the known colors (i.e. possible line colors
+    // for players)
 
     let own_color_rgb = this.hexToRGB(own_color)
     console.log("own_color_rgb: ", own_color_rgb)
