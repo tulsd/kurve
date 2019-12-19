@@ -88,12 +88,11 @@ class CollisionDetector
     // Get rectangle in front of head
     let padding = 0; // Optional padding - Increase or decrease size of rectangle
     let direction_radians = direction * Math.PI / 180;
-
-    // Probably don't need to use full thickness here but a fixed small amount
-    let rectangle_point_a_x = leftmostpoint[0] - padding + (thickness + padding) * Math.cos((-1) * direction_radians);
-    let rectangle_point_a_y = leftmostpoint[1] + padding + (thickness + padding) * Math.sin((-1) * direction_radians);
-    let rectangle_point_b_x = rightmostpoint[0] + padding + (thickness + padding) * Math.cos((-1) * direction_radians);
-    let rectangle_point_b_y = rightmostpoint[1] + padding + (thickness + padding) * Math.sin((-1) * direction_radians);
+    let rectangle_height = thickness / 3;
+    let rectangle_point_a_x = leftmostpoint[0] - padding + (rectangle_height + padding) * Math.cos((-1) * direction_radians);
+    let rectangle_point_a_y = leftmostpoint[1] + padding + (rectangle_height + padding) * Math.sin((-1) * direction_radians);
+    let rectangle_point_b_x = rightmostpoint[0] + padding + (rectangle_height + padding) * Math.cos((-1) * direction_radians);
+    let rectangle_point_b_y = rightmostpoint[1] + padding + (rectangle_height + padding) * Math.sin((-1) * direction_radians);
     let rectangle_point_c_x = rightmostpoint[0] + padding;
     let rectangle_point_c_y = rightmostpoint[1] + padding;
     let rectangle_point_d_x = leftmostpoint[0] - padding;
@@ -105,7 +104,7 @@ class CollisionDetector
     let rectangle = [rectangle_point_a, rectangle_point_b, rectangle_point_c, rectangle_point_d];
 
     // Draw debug rectangle to collide with
-    context.fillStyle = '#0f0';
+    context.fillStyle = '#f00';
     context.beginPath();
     context.moveTo(764.6136471375994, 209.9679291896031);
     context.lineTo(816.120340696868, 248.79225482395702);
@@ -118,6 +117,7 @@ class CollisionDetector
     console.log("direction_radians_left: ", direction_radians_left)
     console.log("direction_radians_right: ", direction_radians_right)
     console.log("thickness: ", thickness)
+    console.log("rectangle_height: ", rectangle_height)
     console.log("location: ", location)
     console.log("leftmostpoint: ", leftmostpoint)
     console.log("rightmostpoint: ", rightmostpoint)
