@@ -75,9 +75,14 @@ class CollisionDetector
   {
     let context = this.canvas_.getContext("2d");
 
-    // Get intersection points
-    let direction_radians_left = (direction - 90) * Math.PI / 180;
-    let direction_radians_right = (direction + 90) * Math.PI / 180;
+    // Get intersection points - Left most and right most points, i.e. the
+    // maximum thickness left and right of the middle
+    // Could use a fill line from left to right but these two should suffice for
+    // most cases
+    let direction_left = direction - 90;
+    let direction_right = direction + 90;
+    let direction_radians_left = direction_left * Math.PI / 180;
+    let direction_radians_right = direction_right * Math.PI / 180;
     let leftmostpoint_x  = location[0] + (thickness / 2) * Math.cos(direction_radians_left);
     let leftmostpoint_y  = location[1] - (thickness / 2) * Math.sin(direction_radians_left);
     let rightmostpoint_x  = location[0] + (thickness / 2) * Math.cos(direction_radians_right);
@@ -85,7 +90,7 @@ class CollisionDetector
     let leftmostpoint = [leftmostpoint_x, leftmostpoint_y];
     let rightmostpoint = [rightmostpoint_x, rightmostpoint_y];
 
-    // Get rectangle in front of head
+    // Get rectangle in front of head - Rotated acoording to the direction
     let padding = 0; // Optional padding - Increase or decrease size of rectangle
     let direction_radians = direction * Math.PI / 180;
     let rectangle_height = thickness / 3;
@@ -103,7 +108,7 @@ class CollisionDetector
     let rectangle_point_d = [rectangle_point_d_x, rectangle_point_d_y];
     let rectangle = [rectangle_point_a, rectangle_point_b, rectangle_point_c, rectangle_point_d];
 
-    // Draw debug rectangle to collide with
+    // Draw debug object to collide with
     context.fillStyle = '#f00';
     context.beginPath();
     context.moveTo(764.6136471375994, 209.9679291896031);
@@ -113,7 +118,10 @@ class CollisionDetector
     context.closePath();
     context.fill();
 
+    // TODO: Remove debug prints
     console.log("direction: ", direction)
+    console.log("direction_left: ", direction_left)
+    console.log("direction_right: ", direction_right)
     console.log("direction_radians_left: ", direction_radians_left)
     console.log("direction_radians_right: ", direction_radians_right)
     console.log("thickness: ", thickness)
@@ -137,12 +145,11 @@ class CollisionDetector
     console.log("own_color_rgb.r: ", own_color_rgb.r)
     console.log("own_color_rgb.g: ", own_color_rgb.g)
     console.log("own_color_rgb.b: ", own_color_rgb.b)
-
     console.log("color_middle: ", color_middle)
     console.log("color_left: ", color_left)
     console.log("color_right: ", color_right)
 
-    // Check color
+    // Check colors of points of interest
     if (
       // Black canvas is fine
       (color_middle[0] == 0 && color_middle[1] == 0 && color_middle[2] == 0) &&
