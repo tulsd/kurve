@@ -82,10 +82,10 @@ def messageHandler(player_id, player_websocket, message):
         response    = {'type': 'RemotePlayerDeath', 'destination': 'everyone-but-' + str(player_id), 'content': message['content']}
         return destination, response
 
-    elif m_type == 'RequestNotifyGameEnd':
-        log(2, 'RequestNotifyGameEnd from player ' + str(player_id))
+    elif m_type == 'RequestEndGame':
+        log(2, 'RequestEndGame from player ' + str(player_id))
         destination = 'everyone'
-        response    = {'type': 'NotifyGameEnd', 'destination': 'everyone', 'content': player_id}
+        response    = {'type': 'EndGame', 'destination': 'everyone', 'content': player_id}
         return destination, response
 
     else:

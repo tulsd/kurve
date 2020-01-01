@@ -103,7 +103,7 @@ class Game
         this.checkWinCondition();
         break;
 
-      case 'NotifyGameEnd':
+      case 'EndGame':
         let winner_player_id = message.content;
         let game_end_message = "Game over. You lose.";
         if(this.players_local_[0].id_ == winner_player_id)
@@ -142,7 +142,7 @@ class Game
     // If all other players dead - Game ends and this player wins.
     if(all_other_players_dead)
     {
-      this.communicator_.sendMessage('RequestNotifyGameEnd', 'Global', undefined);
+      this.communicator_.sendMessage('RequestEndGame', 'Global', undefined);
     }
   }
 
@@ -169,7 +169,7 @@ class Game
 
       // Listen to start and end of the game
       this.communicator_.registerToMessageType('StartGame', this);
-      this.communicator_.registerToMessageType('NotifyGameEnd', this);
+      this.communicator_.registerToMessageType('EndGame', this);
 
       // Call run function periodically
       let event_target = this;
