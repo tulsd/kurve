@@ -9,7 +9,7 @@ class Player
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(id, fieldsize, collision_detector, drawer, communicator, ui_handler, logger)
+  constructor(id, fieldsize, collision_detector, drawer, communicator, ui_handler, logger, storage)
   {
     // General setup
     this.id_                  = id;
@@ -18,9 +18,10 @@ class Player
     this.collision_detector_  = collision_detector;
     this.drawer_              = drawer;
     this.communicator_        = communicator;
-    this.ui_handler           = ui_handler;
+    this.ui_handler_          = ui_handler;
     this.logger_              = logger;
     this.draw_queue_          = [];
+    this.storage_             = storage;
 
     // Id setup
     if(this.id_ == 'local')
@@ -75,7 +76,7 @@ class Player
         this.position_head_     = this.startposition_;
         this.direction_         = this.startdirections_[this.id_ % this.startdirections_.length];
         this.sendMessageRemotePlayerHello();
-        this.ui_handler.updatePlayerCards();
+        this.ui_handler_.updatePlayerCards();
         this.draw_queue_.push(this.generateDrawStartPositionRequest());
         this.drawPendingDrawRequests();
         break;
@@ -146,8 +147,19 @@ class Player
     let vector_forward_x = Math.cos(direction_radians) * vector_up[0] - Math.sin(direction_radians) * vector_up[1];
     let vector_forward_y = Math.sin(direction_radians) * vector_up[0] + Math.cos(direction_radians) * vector_up[1];
 
-    let potential_new_position_x = this.position_head_[0] + vector_forward_x * this.speed_ * (delta_ms / 1000);
-    let potential_new_position_y = this.position_head_[1] + vector_forward_y * this.speed_ * (delta_ms / 1000);
+    let vector_move = [vector_forward_x * this.speed_ * delta_ms / 1000, 
+      vector_forward_y * this.speed_ * delta_ms / 1000];
+
+    // Update units traveled
+    const move_distance = Math.sqrt(
+      vector_move[0] * vector_move[0] + vector_move[1] * vector_move[1]
+    );
+    this.storage_.increaseUnitsTraveled(move_distance / 100);
+    this.ui_handler_.updateStats(this.storage_.win_count_, this.storage_.units_traveled_);
+
+    let potential_new_position_x = this.position_head_[0] + vector_move[0];
+    let potential_new_position_y = this.position_head_[1] + vector_move[1];
+
 
     let potential_new_position = [potential_new_position_x, potential_new_position_y];
 

@@ -26,6 +26,11 @@ aside {
   padding-top: 100%;
 }
 
+#container-stats > p {
+  margin-top: 0;
+  margin-bottom: 3px;
+}
+
 canvas {
   position: absolute;
   top: 0;
