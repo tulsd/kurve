@@ -31,7 +31,7 @@ class Game
     this.ui_handler_          = new UiHandler(document.getElementById('container-player-cards'), this.players_local_,
                                               this.players_remote_);
     this.drawer_              = new Drawer(document.getElementById('canvas'));
-    this.audio_player_        = new AudioPlayer(document.getElementById('container-audio'));
+    this.audio_player_        = new AudioPlayer();
 
     // Create game
     this.setupGame();
