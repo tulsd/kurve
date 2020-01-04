@@ -1,37 +1,53 @@
-html, body
-{
-    background: #222222;
-    margin: 0;
-    padding: 0;
-    color: #eee;
+html,
+body {
+  background: #222222;
+  margin: 0;
+  padding: 0;
+  color: #eee;
 }
 
-#container
-{
-    padding: 25px;
+#container {
+  padding: 25px;
 }
 
-#container-left
-{
-    float: left;
-    width: 1000px;
+#container-left {
+  float: left;
+  width: 80%;
+  box-sizing: border-box;
 }
 
-#container-right
-{
-    float: left;
-    padding-left: 25px;
+#container-right {
+  float: left;
+  padding-left: 25px;
+  width: 20%;
+  box-sizing: border-box;
 }
 
-#container-draw
-{
-    background: #555555;
-    width: 1000px;
-    height: 1000px;
+#container-draw {
+  position: relative;
+  background: #555555;
+  width: 100%;
+  padding-top: 100%;
 }
 
-.playercard{
-    border: 2px solid #555;
-    padding: 15px;
-    margin-bottom: 15px;
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
+
+.playercard {
+  border: 2px solid #555;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.truncate 
+{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+  
