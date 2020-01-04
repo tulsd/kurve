@@ -157,11 +157,13 @@ async def connectionHandler(websocket, path):
             if player_websocket == websocket:
                 del_player_id = player_id
 
-            else:
-                notify_message = {'type': 'RemotePlayerGoodbye', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
-                await player_websocket.send(json.dumps(notify_message))
-
         del players[del_player_id]
+        notify_message = {'type': 'RemotePlayerGoodbye', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
+        player_keys = players.keys()
+        for loop_payer_id in players:
+            if player_id != loop_payer_id:
+                loop_player_websocket = players[loop_payer_id]
+                await loop_player_websocket.send(json.dumps(notify_message))
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

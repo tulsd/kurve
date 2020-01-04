@@ -107,21 +107,26 @@ class Game
         // Get remote player id
         let remote_player_id = message.content;
 
+        console.log(message);
+
+
         // Check if remote player known
         let i = 0;
+        let that = this;
         this.players_remote_.forEach(function(player_remote)
         {
           if(player_remote.id_ == remote_player_id)
           {
-            if(this.state_ == 'Game')
+            if(that.state_ == 'Game')
             {
               player_remote.alive_ = false;
-              this.checkWinCondition();
+              that.checkWinCondition();
             }
 
-            this.players_remote_.splice(i, 1);
-            this.communicator_.unregisterFromMessageType('PositionUpdate', remote_player_id);
-            this.ui_handler_.updatePlayerCards();
+            that.players_remote_.splice(i, 1);
+            that.communicator_.unregisterFromMessageType('PositionUpdate', remote_player_id);
+            that.ui_handler_.resetPlayerCards();
+            that.ui_handler_.updatePlayerCards();
           }
           i++;
         });

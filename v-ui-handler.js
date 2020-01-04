@@ -52,6 +52,20 @@ class UiHandler
     }
   }
 
+  resetPlayerCards()
+  {
+    let index = 1;
+    this.player_cards_.forEach(function(player_card)
+    {
+      // Fill nodes
+      player_card.children[0].textContent = 'Player ' + index;
+      player_card.children[1].textContent = 'Disconnected';
+      player_card.children[2].textContent = '---';
+      player_card.style.borderColor       = '#555';
+      index++;
+    });
+  }
+
   updatePlayerCards()
   {
     // Update local player
