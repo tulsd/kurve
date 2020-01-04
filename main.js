@@ -143,7 +143,7 @@ class Game
     // If all other players dead - Game ends and this player wins.
     if(all_other_players_dead)
     {
-      this.audio_player_.playVictorySound();
+      this.audio_player_.playGameEndSound();
       this.communicator_.sendMessage('RequestEndGame', 'Global', undefined);
     }
   }

@@ -17,10 +17,9 @@ class AudioPlayer
     audio.play();
   }
 
-  playVictorySound()
+  playGameEndSound()
   {
-    // TODO: Use better victory sound instead of placeholder
-    this.playSound('assets/sfx-powerup-appear.mp3')
+    this.playSound('assets/sfx-game-over.mp3')
   }
 
 }
