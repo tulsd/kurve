@@ -32,9 +32,9 @@ class UiHandler
 
       // Class nodes
       node_player_card.className  = 'playercard';
-      node_id.className           = 'id';
-      node_connection.className   = 'connection';
-      node_name.className         = 'name';
+      node_id.className           = 'id truncate';
+      node_connection.className   = 'connection truncate';
+      node_name.className         = 'name truncate';
 
       // Fill nodes
       node_id.appendChild(document.createTextNode('Player ' + (index + 1)));
