@@ -14,7 +14,7 @@ class UiHandler
     this.players_local_             = players_local;
     this.players_remote_            = players_remote;
     this.win_count_                 = win_count;
-    this.stats_text_                 = document.createTextNode(this.win_count_);
+    this.stats_text_                = document.createTextNode("Win count: " + this.win_count_);
 
     // Generate player cards
     this.generatePlayerCards();
@@ -104,6 +104,6 @@ class UiHandler
 
   updateStats(win_count)
   {
-    this.stats_text_.textContent = win_count;
+    this.stats_text_.textContent = "Win count: " + win_count;
   }
 }
