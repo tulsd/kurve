@@ -1,10 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <link rel="stylesheet" href="style.css" />
 
@@ -12,29 +14,32 @@
   </head>
 
   <body>
-    <div id="container">
+    <header>
+      <h1>Kurve</h1>
+    </header>
 
-      <div id="container-top">
-        <h1>Kurve</h1>
+    <main>
+      <div id="container-draw">
+        <canvas id="canvas" width="1000" height="1000"></canvas>
       </div>
+    </main>
 
-      <div id="container-left">
-        <div id="container-draw">
-          <canvas id="canvas" height="1000" width="1000"></canvas>
-        </div>
+    <aside>
+      <div id="container-player-cards">
+        <!-- Cards are added dynamically -->
       </div>
-
-      <div id="container-right">
-        <div id="container-player-cards">
-          <!-- Cards are added dynamically -->
-        </div>
+      <div id="container-stats">
+        <!-- Stats are added dynamically -->
       </div>
-    </div>
+    </aside>
 
-    <div class="container-audio">
-      <!-- Audio is added dynamically -->
-    </div>
+    <footer>
+      <p class="center truncate">
+        © University of Technology - Web Technology - Team Spider 2019/2020
+      </p>
+    </footer>
 
+    <script src="m-storage.js"></script>
     <script src="c-logger.js"></script>
     <script src="c-communicator.js"></script>
     <script src="c-input-handler.js"></script>

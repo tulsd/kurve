@@ -23,14 +23,21 @@ class Game
     this.players_local_       = [undefined];
     this.players_remote_      = [];
 
+    // Storage
+    this.storage_             = new Storage();
+
     // Essentials
     this.logger_              = new Logger(this.log_level_);
     this.communicator_        = new Communicator(this.server_url_, this.server_port_, this.logger_);
     this.input_handler_       = new InputHandler(this);
     this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'), this.fieldsize_);
-    this.ui_handler_          = new UiHandler(document.getElementById('container-player-cards'), this.players_local_,
-                                              this.players_remote_);
+    this.ui_handler_          = new UiHandler(document.getElementById('container-player-cards'),
+                                              document.getElementById('container-stats'),
+                                              this.players_local_,
+                                              this.players_remote_,
+                                              this.storage_.win_count_);
     this.drawer_              = new Drawer(document.getElementById('canvas'));
+    this.audio_player_        = new AudioPlayer();
 
     // Create game
     this.setupGame();
@@ -137,6 +144,8 @@ class Game
         let game_end_message = "Game over. You lose.";
         if(this.players_local_[0].id_ == winner_player_id)
         {
+          this.storage_.local_storage_.setItem('win_count', ++this.storage_.win_count_)
+          this.ui_handler_.updateStats(this.storage_.win_count_);
           game_end_message = "You win."
         }
         alert(game_end_message)
@@ -171,6 +180,7 @@ class Game
     // If all other players dead - Game ends and this player wins.
     if(all_other_players_dead)
     {
+      this.audio_player_.playGameEndSound();
       this.communicator_.sendMessage('RequestEndGame', 'Global', undefined);
     }
   }
