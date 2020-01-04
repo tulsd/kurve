@@ -152,10 +152,20 @@ async def connectionHandler(websocket, path):
         # Unregister players
 
         log(1, 'Player ' + str(player_id) + ' unregistered')
-        for player_id, player_websocket in players.items():
+        del_player_id = -1
+        for loop_player_id, player_websocket in players.items():
             if player_websocket == websocket:
-                del players[player_id]
-                break
+                del_player_id = loop_player_id
+
+        del players[del_player_id]
+        notify_message = {'type': 'RemotePlayerGoodbye', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
+        print(json.dumps(notify_message))
+        player_keys = players.keys()
+        for loop_payer_id in players:
+            if player_id != loop_payer_id:
+                loop_player_websocket = players[loop_payer_id]
+                await loop_player_websocket.send(json.dumps(notify_message))
+
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Start server

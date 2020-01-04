@@ -82,6 +82,16 @@ class Communicator
     this.register_[type].add(message_target);
   }
 
+  unregisterFromMessageType(type, message_target)
+  {
+    if(this.register_[type] == undefined)
+    {
+      return true;
+    }
+
+    this.register_[type].delete(message_target);
+  }
+
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for sending
 

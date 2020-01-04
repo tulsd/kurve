@@ -110,6 +110,35 @@ class Game
         this.checkWinCondition();
         break;
 
+      case 'RemotePlayerGoodbye':
+        // Get remote player id
+        let remote_player_id = message.content;
+
+        console.log(message);
+
+
+        // Check if remote player known
+        let i = 0;
+        let that = this;
+        this.players_remote_.forEach(function(player_remote)
+        {
+          if(player_remote.id_ == remote_player_id)
+          {
+            if(that.state_ == 'Game')
+            {
+              player_remote.alive_ = false;
+              that.checkWinCondition();
+            }
+
+            that.players_remote_.splice(i, 1);
+            that.communicator_.unregisterFromMessageType('PositionUpdate', remote_player_id);
+            that.ui_handler_.resetPlayerCards();
+            that.ui_handler_.updatePlayerCards();
+          }
+          i++;
+        });
+        break;
+
       case 'EndGame':
         let winner_player_id = message.content;
         let game_end_message = "Game over. You lose.";
@@ -172,6 +201,7 @@ class Game
       // Listen to creation of other players
       this.communicator_.registerToMessageType('RemotePlayerHello', this);
       this.communicator_.registerToMessageType('RemotePlayerDeath', this);
+      this.communicator_.registerToMessageType('RemotePlayerGoodbye', this);
 
       // Create local player
       this.players_local_[0] = new Player('local', this.fieldsize_, this.collision_detector_, this.drawer_,
