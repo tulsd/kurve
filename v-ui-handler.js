@@ -3,18 +3,24 @@ class UiHandler
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(container_player_cards, players_local, players_remote)
+  constructor(container_player_cards, container_stats, players_local, players_remote, win_count)
   {
     // Ui elements
     this.container_player_cards_    = container_player_cards;
     this.player_cards_              = [];
+    this.container_stats_           = container_stats;
 
     // Information
     this.players_local_             = players_local;
     this.players_remote_            = players_remote;
+    this.win_count_                 = win_count;
+    this.stats_text_                 = document.createTextNode(this.win_count_);
 
     // Generate player cards
     this.generatePlayerCards();
+
+    // Generate stats for the first time
+    this.generateStats()
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -89,5 +95,15 @@ class UiHandler
         }
       );
     }
+  }
+
+  generateStats()
+  {
+    this.container_stats_.appendChild(this.stats_text_);
+  }
+
+  updateStats(win_count)
+  {
+    this.stats_text_.textContent = win_count;
   }
 }
