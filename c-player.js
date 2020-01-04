@@ -43,7 +43,7 @@ class Player
     this.turnrate_            = 90;   // In degrees per second
 
     // Optics
-    this.colors_              = ['#ff0000', '#00ff00', '#0000ff', '#fffff00']
+    this.colors_              = ['#ffff00', '#ff0000', '#00ff00', '#0000ff']
     this.color_               = '#000000';
     this.thickness_           = 5;
 
