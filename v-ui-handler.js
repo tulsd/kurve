@@ -3,7 +3,7 @@ class UiHandler
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(container_player_cards, container_stats, players_local, players_remote, win_count)
+  constructor(container_player_cards, container_stats, players_local, players_remote)
   {
     // Ui elements
     this.container_player_cards_    = container_player_cards;
@@ -13,14 +13,17 @@ class UiHandler
     // Information
     this.players_local_             = players_local;
     this.players_remote_            = players_remote;
-    this.win_count_                 = win_count;
-    this.stats_text_                = document.createTextNode("Win count: " + this.win_count_);
+
+    // Stats
+    this.win_count_                 = document.createElement("p");
+    this.units_traveled_            = document.createElement("p");
+    this.win_count_.className       = "truncate";
+    this.units_traveled_.className  = "truncate";
+    this.container_stats_.appendChild(this.win_count_);
+    this.container_stats_.appendChild(this.units_traveled_);
 
     // Generate player cards
     this.generatePlayerCards();
-
-    // Generate stats for the first time
-    this.generateStats()
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -111,13 +114,9 @@ class UiHandler
     }
   }
 
-  generateStats()
+  updateStats(win_count, units_traveled)
   {
-    this.container_stats_.appendChild(this.stats_text_);
-  }
-
-  updateStats(win_count)
-  {
-    this.stats_text_.textContent = "Win count: " + win_count;
+    this.win_count_.textContent = "Win count: " + win_count;
+    this.units_traveled_.textContent = "Traveled: " + Math.round(units_traveled) + "km";
   }
 }

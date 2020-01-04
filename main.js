@@ -34,10 +34,11 @@ class Game
     this.ui_handler_          = new UiHandler(document.getElementById('container-player-cards'),
                                               document.getElementById('container-stats'),
                                               this.players_local_,
-                                              this.players_remote_,
-                                              this.storage_.win_count_);
+                                              this.players_remote_);
     this.drawer_              = new Drawer(document.getElementById('canvas'));
     this.audio_player_        = new AudioPlayer();
+
+    this.ui_handler_.updateStats(this.storage_.win_count_, this.storage_.units_traveled_);
 
     // Create game
     this.setupGame();
@@ -74,7 +75,7 @@ class Game
         if(remote_player_not_known)
         {
           let new_player_remote = new Player(remote_player_hello_id, this.fieldsize_, this.collision_detector_,
-                                             this.drawer_, this.communicator_, this.ui_handler_, this.logger_);
+                                             this.drawer_, this.communicator_, this.ui_handler_, this.logger_, this.storage_);
           this.players_remote_.push(new_player_remote);
           this.communicator_.registerToMessageType('PositionUpdate', new_player_remote);
           this.players_local_[0].sendMessageRemotePlayerHello();
@@ -144,8 +145,8 @@ class Game
         let game_end_message = "Game over. You lose.";
         if(this.players_local_[0].id_ == winner_player_id)
         {
-          this.storage_.local_storage_.setItem('win_count', ++this.storage_.win_count_)
-          this.ui_handler_.updateStats(this.storage_.win_count_);
+          this.storage_.increaseWinCount();
+          this.ui_handler_.updateStats(this.storage_.win_count_, this.storage_.units_traveled_);
           game_end_message = "You win."
         }
         alert(game_end_message)
@@ -205,7 +206,7 @@ class Game
 
       // Create local player
       this.players_local_[0] = new Player('local', this.fieldsize_, this.collision_detector_, this.drawer_,
-                                         this.communicator_, this.ui_handler_, this.logger_);
+                                         this.communicator_, this.ui_handler_, this.logger_, this.storage_);
 
       // Listen to start and end of the game
       this.communicator_.registerToMessageType('StartGame', this);
