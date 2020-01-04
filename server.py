@@ -155,7 +155,11 @@ async def connectionHandler(websocket, path):
         for player_id, player_websocket in players.items():
             if player_websocket == websocket:
                 del players[player_id]
-                break
+
+            else:
+                notify_message = {'type': 'RemotePlayerGoodbye', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
+                await player_websocket.send(json.dumps({response}))
+
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Start server
