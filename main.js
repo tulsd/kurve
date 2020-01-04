@@ -33,6 +33,12 @@ class Game
     this.drawer_              = new Drawer(document.getElementById('canvas'));
     this.audio_player_        = new AudioPlayer(document.getElementById('container-audio'));
 
+    // Storage
+    this.storage_             = window.localStorage;
+    this.win_count_           = parseInt(this.storage_.getItem('win_count'));
+    this.win_count_           = (this.win_count_ == null) ? 0 : this.win_count_;
+    this.storage_.setItem('win_count', this.win_count_);
+
     // Create game
     this.setupGame();
   }
@@ -109,6 +115,7 @@ class Game
         let game_end_message = "Game over. You lose.";
         if(this.players_local_[0].id_ == winner_player_id)
         {
+          this.storage_.setItem('win_count', ++this.win_count_)
           game_end_message = "You win."
         }
         alert(game_end_message)
