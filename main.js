@@ -31,6 +31,7 @@ class Game
     this.ui_handler_          = new UiHandler(document.getElementById('container-player-cards'), this.players_local_,
                                               this.players_remote_);
     this.drawer_              = new Drawer(document.getElementById('canvas'));
+    this.audio_player_        = new AudioPlayer(document.getElementsByClassName('container-audio')[0]);
 
     // Create game
     this.setupGame();
@@ -142,6 +143,7 @@ class Game
     // If all other players dead - Game ends and this player wins.
     if(all_other_players_dead)
     {
+      this.audio_player_.playVictorySound();
       this.communicator_.sendMessage('RequestEndGame', 'Global', undefined);
     }
   }
