@@ -121,7 +121,7 @@ class UiHandler
     this.units_traveled_.textContent = "Traveled: " + Math.round(units_traveled) + "km";
   }
 
-  generateAlert(text_title, text_content, self_close_after=5)
+  generateAlert(text_title, text_content, self_close_after=10)
   {
     // Create nodes
     let node_alert  = document.createElement('div');

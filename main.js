@@ -140,7 +140,7 @@ class Game
 
       case 'EndGame':
         let winner_player_id = message.content;
-        let game_end_message = "Game over. You lose.";
+        let game_end_message = "You lose.";
         if(this.players_local_[0].id_ == winner_player_id)
         {
           this.storage_.increaseWinCount();
@@ -148,7 +148,7 @@ class Game
           game_end_message = "You win.";
           this.players_local_[0].alive_ = false;
         }
-        alert(game_end_message)
+        this.ui_handler_.generateAlert("Game over", game_end_message);
 
       default:
         this.logger_.log(1, 'Unknown message type')
