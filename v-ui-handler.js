@@ -3,12 +3,13 @@ class UiHandler
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(container_player_cards, container_stats, players_local, players_remote)
+  constructor(container_player_cards, container_alerts, container_stats, players_local, players_remote)
   {
     // Ui elements
     this.container_player_cards_    = container_player_cards;
     this.player_cards_              = [];
     this.container_stats_           = container_stats;
+    this.container_alerts_          = container_alerts;
 
     // Information
     this.players_local_             = players_local;
@@ -118,5 +119,39 @@ class UiHandler
   {
     this.win_count_.textContent = "Win count: " + win_count;
     this.units_traveled_.textContent = "Traveled: " + Math.round(units_traveled) + "km";
+  }
+
+  generateAlert(text_title, text_content, self_close_after=5)
+  {
+    // Create nodes
+    let node_alert  = document.createElement('div');
+    let node_title  = document.createElement('span');
+    let node_text   = document.createElement('span');
+
+    // Class nodes
+    node_alert.className  = 'alert';
+    node_title.className  = 'title';
+    node_text.className   = 'text';
+
+    // Fill nodes
+    node_alert.appendChild(node_title);
+    node_alert.appendChild(node_text);
+    node_title.appendChild(document.createTextNode(text_title));
+    node_text.appendChild(document.createTextNode(text_content));
+
+    // Add node to container
+    this.container_alerts_.appendChild(node_alert);
+
+    // Close alert
+    if(self_close_after)
+    {
+      setInterval(
+        function()
+        {
+          node_alert.remove();
+        },
+        self_close_after * 1000
+      );
+    }
   }
 }
