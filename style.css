@@ -19,6 +19,25 @@ aside {
   box-sizing: border-box;
 }
 
+#container-alerts .alert
+{
+  margin-bottom: 15px;
+  border-top: 2px solid #00ffff;
+  border-bottom: 2px solid #00ffff;
+  padding-top: 10px;
+}
+
+#container-alerts .alert span
+{
+  display: block;
+  padding-bottom: 10px;
+}
+
+#container-alerts .alert span.title
+{
+  font-weight: bold;
+}
+
 #container-draw {
   position: relative;
   background: #555555;
@@ -45,7 +64,7 @@ canvas {
   margin-bottom: 15px;
 }
 
-.truncate 
+.truncate
 {
   white-space: nowrap;
   overflow: hidden;

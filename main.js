@@ -32,6 +32,7 @@ class Game
     this.input_handler_       = new InputHandler(this);
     this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'), this.fieldsize_);
     this.ui_handler_          = new UiHandler(document.getElementById('container-player-cards'),
+                                              document.getElementById('container-alerts'),
                                               document.getElementById('container-stats'),
                                               this.players_local_,
                                               this.players_remote_);
