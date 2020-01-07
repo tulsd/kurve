@@ -142,17 +142,14 @@ class Game
       case 'EndGame':
         let winner_player_id = message.content;
         let game_end_message = "You lose.";
-        let alert_auto_close = 10;
         if(this.players_local_[0].id_ == winner_player_id)
         {
           this.storage_.increaseWinCount();
           this.ui_handler_.updateStats(this.storage_.win_count_, this.storage_.units_traveled_);
           game_end_message = "You win.";
           this.players_local_[0].alive_ = false;
-          alert_auto_close = false;
         }
-
-        this.ui_handler_.generateAlert("Game over", game_end_message, alert_auto_close);
+        this.ui_handler_.generateAlert("Game over", game_end_message, false);
         this.stopGame();
         break;
 
