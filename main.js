@@ -115,9 +115,6 @@ class Game
         // Get remote player id
         let remote_player_id = message.content;
 
-        console.log(message);
-
-
         // Check if remote player known
         let i = 0;
         let that = this;
@@ -147,7 +144,8 @@ class Game
         {
           this.storage_.increaseWinCount();
           this.ui_handler_.updateStats(this.storage_.win_count_, this.storage_.units_traveled_);
-          game_end_message = "You win."
+          game_end_message = "You win.";
+          this.players_local_[0].alive_ = false;
         }
         alert(game_end_message)
 
