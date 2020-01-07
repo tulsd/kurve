@@ -16,6 +16,8 @@ class Game
 
     // States
     this.state_               = 'Lobby';
+    this.start_requested_     = false;
+    this.reset_requested_     = false;
     this.wall_inactive_for_   = 0;
     this.last_update_         = undefined;
     this.interval_            = undefined;
@@ -232,12 +234,19 @@ class Game
 
   requestStartGame()
   {
-    this.communicator_.sendMessage('RequestStartGame', 'Global', undefined);
+    if(this.start_requested_ == false)
+    {
+      this.logger_.log(1, 'startGame request');
+      this.communicator_.sendMessage('RequestStartGame', 'Global', undefined);
+      this.start_requested_ = true;
+    }
   }
 
   startGame()
   {
+    this.logger_.log(1, 'startGame');
     this.state_ = 'Game';
+    this.reset_requested_ = false;
     this.last_update_ = Date.now();
     this.drawer_.clear();
     this.drawer_.drawBorder();
@@ -264,10 +273,31 @@ class Game
 
   stopGame()
   {
-    this.state_ = 'Lobby';
+    this.logger_.log(1, 'stopGame');
+    this.state_ = 'LobbyGameOver';
     this.last_update_ = Date.now();
     let event_target = this;
     window.clearInterval(this.interval_);
+  }
+
+  requestResetGame()
+  {
+    if(this.reset_requested_ == false && this.state_ == 'LobbyGameOver')
+    {
+      this.logger_.log(1, 'resetGame Request');
+      this.communicator_.sendMessage('RequestResetGame', 'Global', undefined);
+      this.reset_requested_ = true;
+    }
+  }
+
+  resetGame()
+  {
+    this.logger_.log(1, 'requestGame');
+    this.start_requested_ = false;
+    this.drawer_.clear();
+    this.drawer_.drawBorder();
+
+    // Reset all players to start position TODO
   }
 }
 

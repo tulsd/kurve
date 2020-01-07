@@ -12,7 +12,6 @@ class InputHandler
     this.left_active_   = false;
     this.right_active_  = false;
     this.game_          = game;
-    this.start_pressed_ = false;
 
     // Event listeners
     let event_target = this;
@@ -29,26 +28,32 @@ class InputHandler
 
   consumeEvent(e) {
     e.preventDefault();
-    e.stopPropagation();  
+    e.stopPropagation();
   }
 
   keyDownHandler(e)
   {
     if(e.code == this.left_key_) {
       this.left_active_ = true;
-      this.consumeEvent(e);  
+      this.consumeEvent(e);
     }
 
     else if(e.code == this.right_key_) {
       this.right_active_ = true;
-      this.consumeEvent(e);  
+      this.consumeEvent(e);
     }
 
-    else if(e.code == this.start_key_ && this.start_pressed_ == false)
+    else if(e.code == this.start_key_)
     {
-      this.start_pressed_ = true;
-      game.requestStartGame();
-      this.consumeEvent(e);  
+      if(this.game_.state_ == 'Lobby')
+      {
+        this.game_.requestStartGame();
+      }
+      else if(this.game_.state_ =='LobbyGameOver')
+      {
+        this.game_.requestResetGame();
+      }
+      this.consumeEvent(e);
     }
   }
 
