@@ -18,6 +18,7 @@ class Game
     this.state_               = 'Lobby';
     this.wall_inactive_for_   = 0;
     this.last_update_         = undefined;
+    this.interval_            = undefined;
 
     // Players
     this.players_local_       = [undefined];
@@ -149,6 +150,8 @@ class Game
           this.players_local_[0].alive_ = false;
         }
         this.ui_handler_.generateAlert("Game over", game_end_message);
+        this.stopGame();
+        break;
 
       default:
         this.logger_.log(1, 'Unknown message type')
@@ -236,7 +239,7 @@ class Game
     this.drawer_.clear();
     this.drawer_.drawBorder();
     let event_target = this;
-    window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
+    this.interval_ = window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
   }
 
   runGame()
@@ -254,6 +257,14 @@ class Game
         player_remote.drawPendingDrawRequests();
       }
     );
+  }
+
+  stopGame()
+  {
+    this.state_ = 'Lobby';
+    this.last_update_ = Date.now();
+    let event_target = this;
+    window.clearInterval(this.interval_);
   }
 }
 
