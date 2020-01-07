@@ -116,9 +116,6 @@ class Game
         // Get remote player id
         let remote_player_id = message.content;
 
-        console.log(message);
-
-
         // Check if remote player known
         let i = 0;
         let that = this;
@@ -143,14 +140,15 @@ class Game
 
       case 'EndGame':
         let winner_player_id = message.content;
-        let game_end_message = "Game over. You lose.";
+        let game_end_message = "You lose.";
         if(this.players_local_[0].id_ == winner_player_id)
         {
           this.storage_.increaseWinCount();
           this.ui_handler_.updateStats(this.storage_.win_count_, this.storage_.units_traveled_);
-          game_end_message = "You win."
+          game_end_message = "You win.";
+          this.players_local_[0].alive_ = false;
         }
-        alert(game_end_message)
+        this.ui_handler_.generateAlert("Game over", game_end_message);
 
       default:
         this.logger_.log(1, 'Unknown message type')
