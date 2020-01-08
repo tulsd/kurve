@@ -92,7 +92,6 @@ class Game
 
       case 'WallInactiveTime':
         this.addWallInactiveTime(message.content);
-        console.log("gotcha wallinactivtime yay")
         break;
 
       case 'Audio':
@@ -169,34 +168,35 @@ class Game
 
   sendMessageWallInactive()
   {
-    this.communicator_.sendMessage('WallInactiveTime', 'Global', '1000');
+    this.communicator_.sendMessage('WallInactiveTime', 'Global', 1000);
   }
   addWallInactiveTime(seconds)
   {
-    if(this.wallTimeout != undefined)
-    {
-      clearTimeout(this.wallTimeout);
-    }
-
     this.wall_inactive_for_ += seconds;
     this.drawer_.clearBorder();
-    let that = this;
-
-    this.checkTime();
-    
-    
+    this.checkTime(seconds);
   }
 
   checkTime(seconds)
   {
-    setTimeout(function(){
-      this.wall_inactive_for_ -= seconds;
-      if(this.wall_inactive_for_ > 0)
-      {
-        checkTime(this.wall_inactive_for_);
-      }
-      that.drawer_.drawBorder();
-    }, seconds);
+    if(this.wallTimeout == undefined)
+    {
+      let that = this;
+      this.wallTimeout = setTimeout(function(){
+
+        that.wall_inactive_for_ -= seconds;
+
+        if(that.wall_inactive_for_ > 0)
+        {
+          that.wallTimeout = undefined;
+          that.checkTime(that.wall_inactive_for_);
+        } else {
+          that.drawer_.drawBorder();
+          that.wallTimeout = undefined;
+        }
+
+      }, seconds);
+    }
   }
 
   checkWinCondition()
