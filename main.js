@@ -19,6 +19,7 @@ class Game
     this.wall_inactive_for_   = 0;
     this.last_update_         = undefined;
     this.interval_            = undefined;
+    this.wallTimeout          = undefined;
 
     // Players
     this.players_local_       = [undefined];
@@ -91,6 +92,7 @@ class Game
 
       case 'WallInactiveTime':
         this.addWallInactiveTime(message.content);
+        console.log("gotcha wallinactivtime yay")
         break;
 
       case 'Audio':
@@ -165,9 +167,36 @@ class Game
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for game logic
 
+  sendMessageWallInactive()
+  {
+    this.communicator_.sendMessage('WallInactiveTime', 'Global', '1000');
+  }
   addWallInactiveTime(seconds)
   {
+    if(this.wallTimeout != undefined)
+    {
+      clearTimeout(this.wallTimeout);
+    }
+
     this.wall_inactive_for_ += seconds;
+    this.drawer_.clearBorder();
+    let that = this;
+
+    this.checkTime();
+    
+    
+  }
+
+  checkTime(seconds)
+  {
+    setTimeout(function(){
+      this.wall_inactive_for_ -= seconds;
+      if(this.wall_inactive_for_ > 0)
+      {
+        checkTime(this.wall_inactive_for_);
+      }
+      that.drawer_.drawBorder();
+    }, seconds);
   }
 
   checkWinCondition()
@@ -215,6 +244,7 @@ class Game
 
       // Listen to start and end of the game
       this.communicator_.registerToMessageType('StartGame', this);
+     
       this.communicator_.registerToMessageType('EndGame', this);
 
       // Call run function periodically
@@ -243,6 +273,8 @@ class Game
     this.drawer_.drawBorder();
     let event_target = this;
     this.interval_ = window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
+ 
+    this.communicator_.registerToMessageType('WallInactiveTime', this);
   }
 
   runGame()
