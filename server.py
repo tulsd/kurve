@@ -87,6 +87,12 @@ def messageHandler(player_id, player_websocket, message):
         destination = 'everyone'
         response    = {'type': 'EndGame', 'destination': 'everyone', 'content': player_id}
         return destination, response
+    
+    elif m_type == 'WallInactiveTime':
+        log(2, 'WallInactiveTime from player ' + str(player_id))
+        destination = 'everyone'
+        response    = {'type': 'WallInactiveTime', 'destination': 'everyone', 'content': message['content']}
+        return destination, response
 
     else:
         log(1, 'Unknown message from player ' + str(player_id))
