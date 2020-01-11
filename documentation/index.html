@@ -62,79 +62,110 @@
           maintainability the client code is separated into various files, based on the responsibility of the code.
         </p>
 
-        <h3 class="color-model">Model</h3>
-        <h4>m-storage.js</h4>
+        <h3 class="color-model">
+          Model
+        </h3>
+
+        <h4>
+          m-storage.js (Storage)
+        </h4>
         <p>
           Handles the persistent storage of player statistics.
         </p>
 
-        <h3 class="color-view">View</h3>
-        <h4>index.html</h4>
+        <h3 class="color-view">
+          View
+        </h3>
+
+        <h4>
+          index.html
+        </h4>
         <p>
           Contains the structure of the game's user interface and links all other necessary files.
         </p>
 
-        <h4>style.css</h4>
+        <h4>
+          style.css
+        </h4>
         <p>
           Responsible for the style of the game's user interface.
         </p>
 
-        <h4>v-audio-player.js</h4>
+        <h4>
+          v-audio-player.js (AudioPlayer)
+        </h4>
         <p>
           Plays sound effects.
         </p>
 
         <h4>
-          v-drawer.js
+          v-drawer.js (Drawer)
         </h4>
         <p>
           Updates the canvas element. Can draw the line-segments of the player and the border.
         </p>
 
         <h4>
-          v-ui-handler.js
+          v-ui-handler.js (UiHandler)
         </h4>
         <p>
           Draws all remaining UI elements such as the alerts and player cards.
         </p>
 
-        <h3 class="color-controller">Controller</h3>
-        <h4>main.js</h4>
+        <h3 class="color-controller">
+          Controller
+        </h3>
+
+        <h4>
+          main.js
+        </h4>
         <p>
           This main controller file initializes all other controller sections and orchestrates them. Additionally this
           file contains the main game logic and handles the initialization of all calculations for each frame that has to
           be drawn.
         </p>
 
-        <h4>c-collision-detector.js (CollisionDetector)</h4>
+        <h4>
+          c-collision-detector.js (CollisionDetector)
+        </h4>
         <p>
-          Resposible for detecting colission of a player line with any other object.
+          Resposible for detecting a colission of a player line with any other object.
         </p>
 
-        <h4>c-communicator.js</h4>
+        <h4>
+          c-communicator.js (Communicator)
+        </h4>
         <p>
           Connects to the websocket server and handles sending and receiving messages.
         </p>
 
-        <h4>c-input-handler.js (InputHandler)</h4>
+        <h4>
+          c-input-handler.js (InputHandler)
+        </h4>
         <p>
           Handles all inputs from the user for controlling the game (for example the arrow keys).
         </p>
 
-        <h4>c-logger.js</h4>
+        <h4>
+          c-logger.js (Logger)
+        </h4>
         <p>
           Handles logging within the client. Prints different amount of log messages to the developer console based on a
           log level setting.
         </p>
 
-        <h4>c-player.js (Player)</h4>
+        <h4>
+          c-player.js (Player)
+        </h4>
         <p>
           Handles the information of a player, such as its current position, color, speed, turn-rate and so on.
           Furthermore is responsible for making draw-requests for new line-segments and making requests for sending
           and receiving updates from remote players.
         </p>
 
-        <h4>c-power-up.js</h4>
+        <h4>
+          c-power-up.js (PowerUp)
+        </h4>
         <p>
           Handles actions related to power-ups.
         </p>
