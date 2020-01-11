@@ -61,6 +61,16 @@ class Player
     this.hole_distance_calc_  = this.hole_distance_;  // Actual calculated hole distance for next hole
   }
 
+  reset()
+  {
+    this.startposition_     = this.startpositions_[this.id_ % this.startpositions_.length];
+    this.position_head_old_ = this.startposition_;
+    this.position_head_     = this.startposition_;
+    this.direction_         = this.startdirections_[this.id_ % this.startdirections_.length];
+    this.alive_             = true;
+    this.draw_queue_        = [];
+  }
+
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for handling messages
 
@@ -147,7 +157,7 @@ class Player
     let vector_forward_x = Math.cos(direction_radians) * vector_up[0] - Math.sin(direction_radians) * vector_up[1];
     let vector_forward_y = Math.sin(direction_radians) * vector_up[0] + Math.cos(direction_radians) * vector_up[1];
 
-    let vector_move = [vector_forward_x * this.speed_ * delta_ms / 1000, 
+    let vector_move = [vector_forward_x * this.speed_ * delta_ms / 1000,
       vector_forward_y * this.speed_ * delta_ms / 1000];
 
     // Update units traveled
@@ -171,7 +181,7 @@ class Player
       this.communicator_.sendMessage('RequestRemotePlayerDeath', 'Global', this.id_);
     };
 
-    // Check if new position clloides with border and update to new position
+    // Check if new position collides with border and update to new position
     let border_detection = this.collision_detector_.borderAtLocation(potential_new_position);
     this.position_head_ = border_detection[0];
 
