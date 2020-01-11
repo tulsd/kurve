@@ -45,6 +45,7 @@ class Game
     this.power_up_            = new PowerUp(this);
 
     this.ui_handler_.updateStats(this.storage_.win_count_, this.storage_.units_traveled_);
+    this.communicator_.registerToMessageType('Alert', this);
 
     // Create game
     this.setupGame();
@@ -57,6 +58,10 @@ class Game
   {
     switch(message.type)
     {
+      case 'Alert':
+        this.ui_handler_.generateAlert(message.content.title, message.content.text, false)
+        break;
+
       case 'RemotePlayerHello':
         // Get remote player id
         let remote_player_hello_id = message.content;
