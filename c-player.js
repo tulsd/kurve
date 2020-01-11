@@ -68,6 +68,7 @@ class Player
     this.position_head_     = this.startposition_;
     this.direction_         = this.startdirections_[this.id_ % this.startdirections_.length];
     this.alive_             = true;
+    this.draw_queue_        = [];
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
