@@ -46,12 +46,14 @@ class InputHandler
 
     else if(e.code == this.start_key_)
     {
+      console.log('debug start')
       if(this.game_.state_ == 'Lobby')
       {
         this.game_.requestStartGame();
       }
       else if(this.game_.state_ =='LobbyGameOver')
       {
+        console.log('debug reset')
         this.game_.requestResetGame();
       }
       this.consumeEvent(e);

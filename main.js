@@ -156,6 +156,10 @@ class Game
         this.stopGame();
         break;
 
+      case 'ResetGame':
+        this.resetGame();
+        break;
+
       default:
         this.logger_.log(1, 'Unknown message type')
         break;
@@ -169,6 +173,7 @@ class Game
   {
     this.communicator_.sendMessage('WallInactiveTime', 'Global', 1000);
   }
+
   addWallInactiveTime(seconds)
   {
     this.wall_inactive_for_ += seconds;
@@ -243,7 +248,6 @@ class Game
 
       // Listen to start and end of the game
       this.communicator_.registerToMessageType('StartGame', this);
-     
       this.communicator_.registerToMessageType('EndGame', this);
 
       // Call run function periodically
@@ -279,7 +283,7 @@ class Game
     this.drawer_.drawBorder();
     let event_target = this;
     this.interval_ = window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
- 
+
     this.communicator_.registerToMessageType('WallInactiveTime', this);
   }
 
@@ -302,10 +306,10 @@ class Game
 
   stopGame()
   {
+    this.communicator_.registerToMessageType('ResetGame', this);
     this.logger_.log(1, 'stopGame');
     this.state_ = 'LobbyGameOver';
     this.last_update_ = Date.now();
-    let event_target = this;
     window.clearInterval(this.interval_);
   }
 
@@ -321,12 +325,22 @@ class Game
 
   resetGame()
   {
-    this.logger_.log(1, 'requestGame');
-    this.start_requested_ = false;
+    this.logger_.log(1, 'resetGame');
+
+    // Reset players
+    this.players_local_[0].reset();
+    this.players_remote_.forEach(function(player_remote){player_remote.reset()});
+
+    // Reset canvas
     this.drawer_.clear();
     this.drawer_.drawBorder();
 
-    // Reset all players to start position TODO
+    // Reset UI
+    this.ui_handler_.resetAlerts();
+
+    // Reset states
+    this.start_requested_ = false;
+    this.state_ = 'Lobby';
   }
 }
 
