@@ -123,7 +123,6 @@ class UiHandler
 
   updateWallUsed(playerID)
   {
-    console.log(playerID);
     this.player_cards_[playerID - 1].children[0].textContent = 'Player ' + playerID;
   }
 
