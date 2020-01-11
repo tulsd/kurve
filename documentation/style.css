@@ -1,0 +1,50 @@
+html,
+body {
+  background: #222;
+  margin: 0;
+  color: #eee;
+  position: relative;
+  text-align: justify;
+  line-height: 1.5;
+  font-size: 18px;
+}
+
+body{
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+a{
+  color: #eee;
+}
+
+a:hover{
+  color: #00ffff;
+}
+
+section, header, footer{
+  padding: 25px;
+  border: 5px dashed #444;
+  margin-top: 25px;
+}
+
+footer{
+  margin-bottom: 50px;
+}
+
+img{
+  max-width: 100%;
+  height: auto;
+}
+
+.color-model{
+  color: #6fa8dc;
+}
+
+.color-view{
+  color: #e06666;
+}
+
+.color-controller{
+  color: #93c47d;
+}

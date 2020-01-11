@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
 
     <title>Documentation for Kurve</title>
   </head>
@@ -16,123 +16,129 @@
     </header>
 
     <main>
-      <h2>Game idea</h2>
-      <p>
-          Kurve is a networked multiplayer game based on modern web technologies. The game is based on the popular DOS
-          game 'Achtung die Kurve'. Each player can control one line using the arrow keys or a gamepad. The goal of the
-          game is to maneuver the line without crashing into other lines or the border.
-      </p>
+      <section>
+        <h2>Game idea</h2>
+        <p>
+            Kurve is a networked multiplayer game based on modern web technologies. The game is based on the popular DOS
+            game 'Achtung die Kurve'. Each player can control one line using the arrow keys or a gamepad. The goal of the
+            game is to maneuver the line without crashing into other lines or the border.
+        </p>
+      </section>
 
-      <hr />
-      <h2>Software architecture overview</h2>
-      <p>
-          <img src="architecture.png" alt="Software architecture diagram" />
-      </p>
 
-      <hr />
-      <h2>Client-server architecture</h2>
-      <p>
-        Kurve is based on two servers and multiple clients. The servers are implemented in python and the clients run
-        in the player's browser.
-      </p>
+      <section>
+        <h2>Software architecture overview</h2>
+        <p>
+            <img src="architecture.png" alt="Software architecture diagram" />
+        </p>
+      </section>
 
-      <h3>HTTP server</h3>
-      <p>
-        The first server is a HTTP server and is responsible for the initial delivery of the files (html, js, css). It
-        has no further tasks during the game.
-      </p>
+      <section>
+        <h2>Client-server architecture</h2>
+        <p>
+          Kurve is based on two servers and multiple clients. The servers are implemented in python and the clients run
+          in the player's browser.
+        </p>
 
-      <h3>Websocket server</h3>
-      <p>
-        The second server is a websocket server. After loading the files the clients connect to the websocket server
-        and keep the connection open for further communication. The websocket server stores no data apart from
-        necessary information about the currently conntected clients (for example the number of clients, or the open
-        websocket connections). The websocket server's task is to forward messages from one client to the other clients.
-      </p>
+        <h3>HTTP server</h3>
+        <p>
+          The first server is a HTTP server and is responsible for the initial delivery of the files (html, js, css). It
+          has no further tasks during the game.
+        </p>
 
-      <hr />
-      <h2>MVC architecture</h2>
-      <p>
-        The client code is separated into model, view and controller. In order to structure the code and increase
-        mainability the client code is separated into various files, based on the responsibility of the code.
-      </p>
+        <h3>Websocket server</h3>
+        <p>
+          The second server is a websocket server. After loading the files the clients connect to the websocket server
+          and keep the connection open for further communication. The websocket server stores no data apart from
+          necessary information about the currently conntected clients (for example the number of clients, or the open
+          websocket connections). The websocket server's task is to forward messages from one client to the other clients.
+        </p>
+      </section>
 
-      <h3>Model</h3>
-      <h4>m-storage.js</h4>
-      <p>
-        Handles the persistent storage of player statistics.
-      </p>
+      <section>
+        <h2>MVC architecture</h2>
+        <p>
+          The client code is separated into model, view and controller. In order to structure the code and increase
+          maintainability the client code is separated into various files, based on the responsibility of the code.
+        </p>
 
-      <h3>View</h3>
-      <h4>index.html</h4>
-      <p>
-        Contains the structure of the game's user interface and links all other necessary files.
-      </p>
+        <h3 class="color-model">Model</h3>
+        <h4>m-storage.js</h4>
+        <p>
+          Handles the persistent storage of player statistics.
+        </p>
 
-      <h4>style.css</h4>
-      <p>
-        Responsible for the style of the game's user interface.
-      </p>
+        <h3 class="color-view">View</h3>
+        <h4>index.html</h4>
+        <p>
+          Contains the structure of the game's user interface and links all other necessary files.
+        </p>
 
-      <h4>v-audio-player.js</h4>
-      <p>
-        Plays sound effects.
-      </p>
+        <h4>style.css</h4>
+        <p>
+          Responsible for the style of the game's user interface.
+        </p>
 
-      <h4>
-        v-drawer.js
-      </h4>
-      <p>
-        Updates the canvas element. Can draw the line-segments of the player and the border.
-      </p>
+        <h4>v-audio-player.js</h4>
+        <p>
+          Plays sound effects.
+        </p>
 
-      <h4>
-        v-ui-handler.js
-      </h4>
-      <p>
-        Draws all remaining UI elements such as the alerts and player cards.
-      </p>
+        <h4>
+          v-drawer.js
+        </h4>
+        <p>
+          Updates the canvas element. Can draw the line-segments of the player and the border.
+        </p>
 
-      <h3>Controller</h3>
-      <h4>main.js</h4>
-      <p>
-        This main controller file initializes all other controller sections and orchestrates them. Additionally this
-        file contains the main game logic and handles the initialization of all calculations for each frame that has to
-        be drawn.
-      </p>
+        <h4>
+          v-ui-handler.js
+        </h4>
+        <p>
+          Draws all remaining UI elements such as the alerts and player cards.
+        </p>
 
-      <h4>c-collision-detector.js (CollisionDetector)</h4>
-      <p>
-        Resposible for detecting colission of a player line with any other object.
-      </p>
+        <h3 class="color-controller">Controller</h3>
+        <h4>main.js</h4>
+        <p>
+          This main controller file initializes all other controller sections and orchestrates them. Additionally this
+          file contains the main game logic and handles the initialization of all calculations for each frame that has to
+          be drawn.
+        </p>
 
-      <h4>c-communicator.js</h4>
-      <p>
-        Connects to the websocket server and handles sending and receiving messages.
-      </p>
+        <h4>c-collision-detector.js (CollisionDetector)</h4>
+        <p>
+          Resposible for detecting colission of a player line with any other object.
+        </p>
 
-      <h4>c-input-handler.js</h4>
-      <p>
-        Handles all inputs from the user for controlling the game (for example the arrow keys).
-      </p>
+        <h4>c-communicator.js</h4>
+        <p>
+          Connects to the websocket server and handles sending and receiving messages.
+        </p>
 
-      <h4>c-logger.js</h4>
-      <p>
-        Handles logging within the client. Prints different amount of log messages to the developer console based on a
-        log level setting.
-      </p>
+        <h4>c-input-handler.js (InputHandler)</h4>
+        <p>
+          Handles all inputs from the user for controlling the game (for example the arrow keys).
+        </p>
 
-      <h4>c-player.js (Player)</h4>
-      <p>
-        Handles the information of a player, such as its current position, color, speed, turn-rate and so on.
-        Furthermore is responsible for making draw-requests for new line-segments and making requests for sending
-        and receiving updates from remote players.
-      </p>
+        <h4>c-logger.js</h4>
+        <p>
+          Handles logging within the client. Prints different amount of log messages to the developer console based on a
+          log level setting.
+        </p>
 
-      <h4>c-power-up.js</h4>
-      <p>
-        Handles actions related to power-ups.
-      </p>
+        <h4>c-player.js (Player)</h4>
+        <p>
+          Handles the information of a player, such as its current position, color, speed, turn-rate and so on.
+          Furthermore is responsible for making draw-requests for new line-segments and making requests for sending
+          and receiving updates from remote players.
+        </p>
+
+        <h4>c-power-up.js</h4>
+        <p>
+          Handles actions related to power-ups.
+        </p>
+      </section>
     </main>
 
     <footer>
