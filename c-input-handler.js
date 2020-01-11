@@ -3,7 +3,7 @@ class InputHandler
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(game, left_key = 'ArrowLeft', right_key = 'ArrowRight', start_key = 'Space', border_key='KeyB')
+  constructor(game, power_up, left_key = 'ArrowLeft', right_key = 'ArrowRight', start_key = 'Space', border_key='KeyB')
   {
     // Members
     this.left_key_      = left_key;
@@ -12,6 +12,7 @@ class InputHandler
     this.left_active_   = false;
     this.right_active_  = false;
     this.game_          = game;
+    this.power_up_      = this.power_up;
     this.start_pressed_ = false;
     this.border_key_    = border_key;
 
@@ -53,8 +54,7 @@ class InputHandler
     }
     else if(e.code == this.border_key_)
     {
-      console.log("b pressed")
-      game.sendMessageWallInactive();
+      game.power_up_.sendMessageWallInactive();
     }
   }
 

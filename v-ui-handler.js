@@ -16,6 +16,7 @@ class UiHandler
     this.players_remote_            = players_remote;
 
     // Stats
+    this.wall_used_                 = []
     this.win_count_                 = document.createElement("p");
     this.units_traveled_            = document.createElement("p");
     this.win_count_.className       = "truncate";
@@ -35,19 +36,19 @@ class UiHandler
     for (let index = 0; index < 4; index++)
     {
       // Create nodes
-      let node_player_card  = document.createElement('div');
-      let node_id           = document.createElement('div');
-      let node_connection   = document.createElement('div');
-      let node_name         = document.createElement('div');
+      let node_player_card    = document.createElement('div');
+      let node_id             = document.createElement('div');
+      let node_connection     = document.createElement('div');
+      let node_name           = document.createElement('div');
 
       // Class nodes
-      node_player_card.className  = 'playercard';
-      node_id.className           = 'id truncate';
-      node_connection.className   = 'connection truncate';
-      node_name.className         = 'name truncate';
+      node_player_card.className         = 'playercard';
+      node_id.className                  = 'id truncate';
+      node_connection.className          = 'connection truncate';
+      node_name.className                = 'name truncate';
 
       // Fill nodes
-      node_id.appendChild(document.createTextNode('Player ' + (index + 1)));
+      node_id.appendChild(document.createTextNode('Player ' + (index + 1) + ' *'));
       node_connection.appendChild(document.createTextNode('Disconnected'));
       node_name.appendChild(document.createTextNode('---'));
 
@@ -68,7 +69,7 @@ class UiHandler
     this.player_cards_.forEach(function(player_card)
     {
       // Fill nodes
-      player_card.children[0].textContent = 'Player ' + index;
+      player_card.children[0].textContent = 'Player ' + index + ' *';
       player_card.children[1].textContent = 'Disconnected';
       player_card.children[2].textContent = '---';
       player_card.style.borderColor       = '#555';
@@ -119,6 +120,12 @@ class UiHandler
   {
     this.win_count_.textContent = "Win count: " + win_count;
     this.units_traveled_.textContent = "Traveled: " + Math.round(units_traveled) + "km";
+  }
+
+  updateWallUsed(playerID)
+  {
+    console.log(playerID);
+    this.player_cards_[playerID - 1].children[0].textContent = 'Player ' + playerID;
   }
 
   generateAlert(text_title, text_content, self_close_after=10)

@@ -40,6 +40,7 @@ class Game
                                               this.players_remote_);
     this.drawer_              = new Drawer(document.getElementById('canvas'));
     this.audio_player_        = new AudioPlayer();
+    this.power_up_            = new PowerUp(this);
 
     this.ui_handler_.updateStats(this.storage_.win_count_, this.storage_.units_traveled_);
 
@@ -91,7 +92,7 @@ class Game
         break;
 
       case 'WallInactiveTime':
-        this.addWallInactiveTime(message.content);
+        this.power_up_.addWallInactiveTime(message.content);
         break;
 
       case 'Audio':
@@ -162,39 +163,6 @@ class Game
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Methods for game logic
-
-  sendMessageWallInactive()
-  {
-    this.communicator_.sendMessage('WallInactiveTime', 'Global', 1000);
-  }
-  addWallInactiveTime(seconds)
-  {
-    this.wall_inactive_for_ += seconds;
-    this.drawer_.clearBorder();
-    this.checkTime(seconds);
-  }
-
-  checkTime(seconds)
-  {
-    if(this.wallTimeout == undefined)
-    {
-      let that = this;
-      this.wallTimeout = setTimeout(function(){
-
-        that.wall_inactive_for_ -= seconds;
-
-        if(that.wall_inactive_for_ > 0)
-        {
-          that.wallTimeout = undefined;
-          that.checkTime(that.wall_inactive_for_);
-        } else {
-          that.drawer_.drawBorder();
-          that.wallTimeout = undefined;
-        }
-
-      }, seconds);
-    }
-  }
 
   checkWinCondition()
   {
