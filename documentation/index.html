@@ -13,7 +13,9 @@
   <body>
     <header>
       <h1>Documentation for Kurve</h1>
+    </header>
 
+    <main>
       <h2>Game idea</h2>
       <p>
           Kurve is a networked multiplayer game based on modern web technologies. The game is based on the popular DOS
@@ -72,11 +74,65 @@
         Responsible for the style of the game's user interface.
       </p>
 
+      <h4>v-audio-player.js</h4>
+      <p>
+        Plays sound effects.
+      </p>
 
+      <h4>
+        v-drawer.js
+      </h4>
+      <p>
+        Updates the canvas element. Can draw the line-segments of the player and the border.
+      </p>
 
-    </header>
+      <h4>
+        v-ui-handler.js
+      </h4>
+      <p>
+        Draws all remaining UI elements such as the alerts and player cards.
+      </p>
 
-    <main>
+      <h3>Controller</h3>
+      <h4>main.js</h4>
+      <p>
+        This main controller file initializes all other controller sections and orchestrates them. Additionally this
+        file contains the main game logic and handles the initialization of all calculations for each frame that has to
+        be drawn.
+      </p>
+
+      <h4>c-collision-detector.js (CollisionDetector)</h4>
+      <p>
+        Resposible for detecting colission of a player line with any other object.
+      </p>
+
+      <h4>c-communicator.js</h4>
+      <p>
+        Connects to the websocket server and handles sending and receiving messages.
+      </p>
+
+      <h4>c-input-handler.js</h4>
+      <p>
+        Handles all inputs from the user for controlling the game (for example the arrow keys).
+      </p>
+
+      <h4>c-logger.js</h4>
+      <p>
+        Handles logging within the client. Prints different amount of log messages to the developer console based on a
+        log level setting.
+      </p>
+
+      <h4>c-player.js (Player)</h4>
+      <p>
+        Handles the information of a player, such as its current position, color, speed, turn-rate and so on.
+        Furthermore is responsible for making draw-requests for new line-segments and making requests for sending
+        and receiving updates from remote players.
+      </p>
+
+      <h4>c-power-up.js</h4>
+      <p>
+        Handles actions related to power-ups.
+      </p>
     </main>
 
     <footer>
