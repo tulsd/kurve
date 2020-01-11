@@ -16,7 +16,6 @@ class UiHandler
     this.players_remote_            = players_remote;
 
     // Stats
-    this.wall_used_                 = []
     this.win_count_                 = document.createElement("p");
     this.units_traveled_            = document.createElement("p");
     this.win_count_.className       = "truncate";
@@ -36,16 +35,16 @@ class UiHandler
     for (let index = 0; index < 4; index++)
     {
       // Create nodes
-      let node_player_card    = document.createElement('div');
-      let node_id             = document.createElement('div');
-      let node_connection     = document.createElement('div');
-      let node_name           = document.createElement('div');
+      let node_player_card  = document.createElement('div');
+      let node_id           = document.createElement('div');
+      let node_connection   = document.createElement('div');
+      let node_name         = document.createElement('div');
 
       // Class nodes
-      node_player_card.className         = 'playercard';
-      node_id.className                  = 'id truncate';
-      node_connection.className          = 'connection truncate';
-      node_name.className                = 'name truncate';
+      node_player_card.className  = 'playercard';
+      node_id.className           = 'id truncate';
+      node_connection.className   = 'connection truncate';
+      node_name.className         = 'name truncate';
 
       // Fill nodes
       node_id.appendChild(document.createTextNode('Player ' + (index + 1) + ' *'));
