@@ -181,7 +181,7 @@ class Player
       this.communicator_.sendMessage('RequestRemotePlayerDeath', 'Global', this.id_);
     };
 
-    // Check if new position clloides with border and update to new position
+    // Check if new position collides with border and update to new position
     let border_detection = this.collision_detector_.borderAtLocation(potential_new_position);
     this.position_head_ = border_detection[0];
 

@@ -302,6 +302,7 @@ class Game
         player_remote.drawPendingDrawRequests();
       }
     );
+    this.input_handler_.pollController();
   }
 
   stopGame()

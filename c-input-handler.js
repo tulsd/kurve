@@ -91,4 +91,32 @@ class InputHandler
 
     return 'straight';
   }
+
+  pollController()
+  {
+    var gamepads = navigator.getGamepads();
+    var controller = gamepads[0];
+    if(controller != undefined)
+    {
+      var axis = controller.axes[2].toFixed(4);
+
+      //Move left if axis is lower 0
+      if(axis < -0.2)
+      {
+        this.right_active_ = false;
+        this.left_active_ = true;
+      }//Move right if axis is higher 0
+      else if(axis > 0.2)
+      {
+        this.left_active_ = false;
+        this.right_active_ = true;
+      } else { // reset for moving in a straight line
+        this.left_active_ = false;
+        this.right_active_ = false;
+      }
+    }
+  }
 }
+
+
+
