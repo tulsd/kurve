@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link rel="stylesheet" href="../style.css" />
+
+    <title>Documentation for Kurve</title>
+  </head>
+
+  <body>
+    <header>
+      <h1>Documentation for Kurve</h1>
+
+      <h2>Game idea</h2>
+      <p>
+          Kurve is a networked multiplayer game based on modern web technologies. The game is based on the popular DOS
+          game 'Achtung die Kurve'. Each player can control one line using the arrow keys or a gamepad. The goal of the
+          game is to maneuver the line without crashing into other lines or the border.
+      </p>
+
+      <hr />
+      <h2>Software architecture overview</h2>
+      <p>
+          <img src="architecture.png" alt="Software architecture diagram" />
+      </p>
+
+      <hr />
+      <h2>Client-server architecture</h2>
+      <p>
+        Kurve is based on two servers and multiple clients. The servers are implemented in python and the clients run
+        in the player's browser.
+      </p>
+
+      <h3>HTTP server</h3>
+      <p>
+        The first server is a HTTP server and is responsible for the initial delivery of the files (html, js, css). It
+        has no further tasks during the game.
+      </p>
+
+      <h3>Websocket server</h3>
+      <p>
+        The second server is a websocket server. After loading the files the clients connect to the websocket server
+        and keep the connection open for further communication. The websocket server stores no data apart from
+        necessary information about the currently conntected clients (for example the number of clients, or the open
+        websocket connections). The websocket server's task is to forward messages from one client to the other clients.
+      </p>
+
+      <hr />
+      <h2>MVC architecture</h2>
+      <p>
+        The client code is separated into model, view and controller. In order to structure the code and increase
+        mainability the client code is separated into various files, based on the responsibility of the code.
+      </p>
+
+      <h3>Model</h3>
+      <h4>m-storage.js</h4>
+      <p>
+        Handles the persistent storage of player statistics.
+      </p>
+
+      <h3>View</h3>
+      <h4>index.html</h4>
+      <p>
+        Contains the structure of the game's user interface and links all other necessary files.
+      </p>
+
+      <h4>style.css</h4>
+      <p>
+        Responsible for the style of the game's user interface.
+      </p>
+
+
+
+    </header>
+
+    <main>
+    </main>
+
+    <footer>
+      <p class="center truncate">
+        <a href="javascript:window.close();">Close documentation</a>
+      </p>
+    </footer>
+
+    <script src="m-storage.js"></script>
+    <script src="c-logger.js"></script>
+    <script src="c-communicator.js"></script>
+    <script src="c-input-handler.js"></script>
+    <script src="c-player.js"></script>
+    <script src="c-collision-detector.js"></script>
+    <script src="c-power-up.js"></script>
+    <script src="v-audio-player.js"></script>
+    <script src="v-ui-handler.js"></script>
+    <script src="v-drawer.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
