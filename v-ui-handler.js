@@ -155,7 +155,7 @@ class UiHandler
     }
   }
 
-  removeAlerts()
+  resetAlerts()
   {
     this.container_alerts_.innerHTML = "";
   }

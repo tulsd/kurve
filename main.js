@@ -16,6 +16,8 @@ class Game
 
     // States
     this.state_               = 'Lobby';
+    this.start_requested_     = false;
+    this.reset_requested_     = false;
     this.wall_inactive_for_   = 0;
     this.last_update_         = undefined;
     this.interval_            = undefined;
@@ -154,6 +156,10 @@ class Game
         this.stopGame();
         break;
 
+      case 'ResetGame':
+        this.resetGame();
+        break;
+
       default:
         this.logger_.log(1, 'Unknown message type')
         break;
@@ -167,6 +173,7 @@ class Game
   {
     this.communicator_.sendMessage('WallInactiveTime', 'Global', 1000);
   }
+
   addWallInactiveTime(seconds)
   {
     this.wall_inactive_for_ += seconds;
@@ -241,7 +248,6 @@ class Game
 
       // Listen to start and end of the game
       this.communicator_.registerToMessageType('StartGame', this);
-     
       this.communicator_.registerToMessageType('EndGame', this);
 
       // Call run function periodically
@@ -259,18 +265,25 @@ class Game
 
   requestStartGame()
   {
-    this.communicator_.sendMessage('RequestStartGame', 'Global', undefined);
+    if(this.start_requested_ == false)
+    {
+      this.logger_.log(1, 'startGame request');
+      this.communicator_.sendMessage('RequestStartGame', 'Global', undefined);
+      this.start_requested_ = true;
+    }
   }
 
   startGame()
   {
+    this.logger_.log(1, 'startGame');
     this.state_ = 'Game';
+    this.reset_requested_ = false;
     this.last_update_ = Date.now();
     this.drawer_.clear();
     this.drawer_.drawBorder();
     let event_target = this;
     this.interval_ = window.setInterval(function(){event_target.runGame.call(event_target);}, this.frametime_);
- 
+
     this.communicator_.registerToMessageType('WallInactiveTime', this);
   }
 
@@ -293,10 +306,41 @@ class Game
 
   stopGame()
   {
-    this.state_ = 'Lobby';
+    this.communicator_.registerToMessageType('ResetGame', this);
+    this.logger_.log(1, 'stopGame');
+    this.state_ = 'LobbyGameOver';
     this.last_update_ = Date.now();
-    let event_target = this;
     window.clearInterval(this.interval_);
+  }
+
+  requestResetGame()
+  {
+    if(this.reset_requested_ == false && this.state_ == 'LobbyGameOver')
+    {
+      this.logger_.log(1, 'resetGame Request');
+      this.communicator_.sendMessage('RequestResetGame', 'Global', undefined);
+      this.reset_requested_ = true;
+    }
+  }
+
+  resetGame()
+  {
+    this.logger_.log(1, 'resetGame');
+
+    // Reset players
+    this.players_local_[0].reset();
+    this.players_remote_.forEach(function(player_remote){player_remote.reset()});
+
+    // Reset canvas
+    this.drawer_.clear();
+    this.drawer_.drawBorder();
+
+    // Reset UI
+    this.ui_handler_.resetAlerts();
+
+    // Reset states
+    this.start_requested_ = false;
+    this.state_ = 'Lobby';
   }
 }
 
