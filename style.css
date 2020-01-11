@@ -26,25 +26,35 @@ header {
 
 main {
   position: absolute;
-  width: 80vw;
-  height: 80vw;
+  width: 78vw;
+  height: 78vw;
   max-height: 75vh;
   max-width: 75vh;
   top: 15vh;
-  left: 40vw;
+  left: 39vw;
   box-sizing: border-box;
-  padding-left: 2vw;
+  margin-left: 2vw;
   transform: translateX(-50%);
 }
 
 aside {
   position: absolute;
-  width: 20vw;
+  width: 18vw;
   top: 15vh;
   right:0;
   box-sizing: border-box;
-  padding-right: 2vw;
+  margin-right: 2vw;
   padding-left: 1vw;
+}
+
+#container-alerts
+{
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  text-align: center;
 }
 
 #container-alerts .alert

@@ -3,7 +3,7 @@ class InputHandler
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(game, left_key = 'ArrowLeft', right_key = 'ArrowRight', start_key = 'Space', border_key='KeyB')
+  constructor(game, power_up, left_key = 'ArrowLeft', right_key = 'ArrowRight', start_key = 'Space', border_key='KeyB')
   {
     // Members
     this.left_key_      = left_key;
@@ -12,6 +12,8 @@ class InputHandler
     this.left_active_   = false;
     this.right_active_  = false;
     this.game_          = game;
+    this.power_up_      = this.power_up;
+    this.start_pressed_ = false;
     this.border_key_    = border_key;
 
     // Event listeners
@@ -60,8 +62,7 @@ class InputHandler
     }
     else if(e.code == this.border_key_)
     {
-      console.log("b pressed")
-      game.sendMessageWallInactive();
+      game.power_up_.sendMessageWallInactive();
     }
   }
 
@@ -91,4 +92,32 @@ class InputHandler
 
     return 'straight';
   }
+
+  pollController()
+  {
+    var gamepads = navigator.getGamepads();
+    var controller = gamepads[0];
+    if(controller != undefined)
+    {
+      var axis = controller.axes[2].toFixed(4);
+
+      //Move left if axis is lower 0
+      if(axis < -0.2)
+      {
+        this.right_active_ = false;
+        this.left_active_ = true;
+      }//Move right if axis is higher 0
+      else if(axis > 0.2)
+      {
+        this.left_active_ = false;
+        this.right_active_ = true;
+      } else { // reset for moving in a straight line
+        this.left_active_ = false;
+        this.right_active_ = false;
+      }
+    }
+  }
 }
+
+
+
