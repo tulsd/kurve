@@ -63,11 +63,8 @@ aside {
   margin-bottom: 3px;
 }
 
-#canvas {
-  background: #555555;
-}
-
 canvas {
+  background: #555555;
   width: 100%;
   height: 100%;
 }
