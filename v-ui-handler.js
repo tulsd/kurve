@@ -154,4 +154,9 @@ class UiHandler
       );
     }
   }
+
+  removeAlerts()
+  {
+    this.container_alerts_.innerHTML = "";
+  }
 }

@@ -2,21 +2,41 @@ html,
 body {
   background: #222222;
   margin: 0;
-  padding: 25px;
   color: #eee;
+  position: relative;
+}
+
+header {
+    position: absolute;
+    width: 100vw;
+    height: 15vh;
+    padding: 2vw;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
 }
 
 main {
-  float: left;
-  width: 80%;
+  position: absolute;
+  width: 80vw; 
+  height: 80vw;
+  max-height: 75vh;
+  max-width: 75vh;
+  top: 15vh;
+  left: 40vw;
   box-sizing: border-box;
+  padding-left: 2vw;
+  transform: translateX(-50%);
 }
 
 aside {
-  float: left;
-  padding-left: 25px;
-  width: 20%;
+  position: absolute;
+  width: 20vw; 
+  top: 15vh;
+  right:0;
   box-sizing: border-box;
+  padding-right: 2vw;
+  padding-left: 1vw;
 }
 
 #container-alerts .alert
@@ -38,22 +58,13 @@ aside {
   font-weight: bold;
 }
 
-#container-draw {
-  position: relative;
-  background: #555555;
-  width: 100%;
-  padding-top: 100%;
-}
-
 #container-stats > p {
   margin-top: 0;
   margin-bottom: 3px;
 }
 
 canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
+  background: #555555;
   width: 100%;
   height: 100%;
 }
@@ -73,9 +84,13 @@ canvas {
 
 footer
 {
-  padding-top: 50px;
-  clear: both;
-  width: 100%;
+  position: absolute;
+  width: 100vw;
+  height: 10vh;
+  padding: 2vw;
+  bottom: -100vh;
+  left: 0;
+  box-sizing: border-box;
 }
 
 footer:before

@@ -167,7 +167,7 @@ class Player
     if(this.collision_detector_.collisionAtLocation(potential_new_position))
     {
       this.alive_ = false;
-      this.ui_handler_.generateAlert("You died.", "Stay to spectate.");
+      this.ui_handler_.generateAlert("You died.", "Stay to spectate.", false);
       this.communicator_.sendMessage('RequestRemotePlayerDeath', 'Global', this.id_);
     };
 
