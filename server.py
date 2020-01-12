@@ -42,11 +42,14 @@ except:
 # Global states
 
 players = {}
+game_active = False
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Main message handler function
 
 def messageHandler(player_id, player_websocket, message):
+
+    global game_active
 
     # Unpack message
     m_type = message['type']
@@ -68,6 +71,7 @@ def messageHandler(player_id, player_websocket, message):
         log(2, 'RequestStartGame from player ' + str(player_id))
         destination = 'everyone'
         response    = {'type': 'StartGame', 'destination': 'everyone', 'content': player_id}
+        game_active = True
         return destination, response
 
     elif m_type == 'RequestPositionUpdate':
@@ -92,6 +96,7 @@ def messageHandler(player_id, player_websocket, message):
         log(2, 'RequestResetGame from player ' + str(player_id))
         destination = 'everyone'
         response    = {'type': 'ResetGame', 'destination': 'everyone', 'content': player_id}
+        game_active = False
         return destination, response
 
     elif m_type == 'WallInactiveTime':
@@ -111,8 +116,24 @@ def messageHandler(player_id, player_websocket, message):
 
 async def connectionHandler(websocket, path):
 
+    global game_active
+
     # ------------------------------------------------------------------------------------------------------------------
     # Register players
+
+    # Check number of players
+    if(len(players) >= 4):
+        notify_message = {'type': 'Alert', 'destination': 'new-player', 'content':
+                            {'title': 'Too many players', 'text': 'The maximum number of players is connected to the server. Please come back later.'}}
+        await websocket.send(json.dumps(notify_message))
+        return
+
+    # Check game state
+    if(game_active == True):
+        notify_message = {'type': 'Alert', 'destination': 'new-player', 'content':
+                            {'title': 'Game running', 'text': 'Other players are currently playing on the server. Please come back later.'}}
+        await websocket.send(json.dumps(notify_message))
+        return
 
     # Generate new id
     player_id = 1
@@ -121,8 +142,6 @@ async def connectionHandler(websocket, path):
             if(possible_player_id not in players.keys()):
                 player_id = possible_player_id
                 break
-
-    # todo handle more than 4 players
 
     # Store new player
     players[player_id] = websocket
@@ -163,6 +182,7 @@ async def connectionHandler(websocket, path):
         # --------------------------------------------------------------------------------------------------------------
         # Unregister players
 
+        # Delete players from list
         log(1, 'Player ' + str(player_id) + ' unregistered')
         del_player_id = -1
         for loop_player_id, player_websocket in players.items():
@@ -170,14 +190,18 @@ async def connectionHandler(websocket, path):
                 del_player_id = loop_player_id
 
         del players[del_player_id]
+
+        # Notify other players
         notify_message = {'type': 'RemotePlayerGoodbye', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
-        print(json.dumps(notify_message))
         player_keys = players.keys()
         for loop_payer_id in players:
             if player_id != loop_payer_id:
                 loop_player_websocket = players[loop_payer_id]
                 await loop_player_websocket.send(json.dumps(notify_message))
 
+        # Update game state
+        if(len(players) < 1):
+            game_active = False
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Start server

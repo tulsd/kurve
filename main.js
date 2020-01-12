@@ -32,7 +32,7 @@ class Game
 
     // Essentials
     this.logger_              = new Logger(this.log_level_);
-    this.communicator_        = new Communicator(this.server_url_, this.server_port_, this.logger_);
+    this.communicator_        = new Communicator(this.server_url_, this.server_port_, this.logger_, this);
     this.input_handler_       = new InputHandler(this);
     this.collision_detector_  = new CollisionDetector(document.getElementById('canvas'), this.fieldsize_);
     this.ui_handler_          = new UiHandler(document.getElementById('container-player-cards'),
@@ -45,6 +45,7 @@ class Game
     this.power_up_            = new PowerUp(this);
 
     this.ui_handler_.updateStats(this.storage_.win_count_, this.storage_.units_traveled_);
+    this.communicator_.registerToMessageType('Alert', this);
 
     // Create game
     this.setupGame();
@@ -57,6 +58,10 @@ class Game
   {
     switch(message.type)
     {
+      case 'Alert':
+        this.ui_handler_.generateAlert(message.content.title, message.content.text, false)
+        break;
+
       case 'RemotePlayerHello':
         // Get remote player id
         let remote_player_hello_id = message.content;
