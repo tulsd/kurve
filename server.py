@@ -49,6 +49,8 @@ game_active = False
 
 def messageHandler(player_id, player_websocket, message):
 
+    global game_active
+
     # Unpack message
     m_type = message['type']
 
@@ -121,6 +123,14 @@ async def connectionHandler(websocket, path):
     if(len(players) >= 4):
         notify_message = {'type': 'Alert', 'destination': 'new-player', 'content':
                             {'title': 'Too many players', 'text': 'The maximum number of players is connected to the server. Please come back later.'}}
+        await websocket.send(json.dumps(notify_message))
+        return
+
+    # Check game state
+    print('game active ' + str(game_active))
+    if(game_active == True):
+        notify_message = {'type': 'Alert', 'destination': 'new-player', 'content':
+                            {'title': 'Game running', 'text': 'Other players are currently paying on the server. Please come back later.'}}
         await websocket.send(json.dumps(notify_message))
         return
 
