@@ -3,13 +3,14 @@ class Communicator
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Setup
 
-  constructor(server_url, server_port, logger)
+  constructor(server_url, server_port, logger, game)
   {
     // Message register
     this.register_ = {};
 
     // General
     this.logger_              = logger;
+    this.game_                = game;
 
     // Connection
     this.connection_open_     = false;
@@ -59,13 +60,15 @@ class Communicator
   onClose(event)
   {
     this.logger_.log(1, 'WebSocket close');
-    // TODO
+    this.game_.resetGame();
+    this.game_.ui_handler_.generateAlert('Connection lost', 'The server disconnected. Please come back later.', false);
   }
 
   onError(event)
   {
     this.logger_.log(1, 'WebSocket error');
-    // TODO
+    this.game.resetGame()
+    this.game_.ui_handler_.generateAlert('Connection lost', 'The server disconnected. Please come back later.', false);
   }
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
