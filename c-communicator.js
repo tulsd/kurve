@@ -60,6 +60,7 @@ class Communicator
   onClose(event)
   {
     this.logger_.log(1, 'WebSocket close');
+    this.game_.stopGame();
     this.game_.resetGame();
     this.game_.ui_handler_.generateAlert('Connection lost', 'The server disconnected. Please come back later.', false);
   }
@@ -67,7 +68,8 @@ class Communicator
   onError(event)
   {
     this.logger_.log(1, 'WebSocket error');
-    this.game.resetGame()
+    this.game_.stopGame();
+    this.game_.resetGame();
     this.game_.ui_handler_.generateAlert('Connection lost', 'The server disconnected. Please come back later.', false);
   }
 
