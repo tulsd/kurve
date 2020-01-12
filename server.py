@@ -116,6 +116,8 @@ def messageHandler(player_id, player_websocket, message):
 
 async def connectionHandler(websocket, path):
 
+    global game_active
+
     # ------------------------------------------------------------------------------------------------------------------
     # Register players
 
@@ -127,10 +129,9 @@ async def connectionHandler(websocket, path):
         return
 
     # Check game state
-    print('game active ' + str(game_active))
     if(game_active == True):
         notify_message = {'type': 'Alert', 'destination': 'new-player', 'content':
-                            {'title': 'Game running', 'text': 'Other players are currently paying on the server. Please come back later.'}}
+                            {'title': 'Game running', 'text': 'Other players are currently playing on the server. Please come back later.'}}
         await websocket.send(json.dumps(notify_message))
         return
 
@@ -181,6 +182,7 @@ async def connectionHandler(websocket, path):
         # --------------------------------------------------------------------------------------------------------------
         # Unregister players
 
+        # Delete players from list
         log(1, 'Player ' + str(player_id) + ' unregistered')
         del_player_id = -1
         for loop_player_id, player_websocket in players.items():
@@ -188,6 +190,8 @@ async def connectionHandler(websocket, path):
                 del_player_id = loop_player_id
 
         del players[del_player_id]
+
+        # Notify other players
         notify_message = {'type': 'RemotePlayerGoodbye', 'destination': 'everyone-but-' + str(player_id), 'content': player_id}
         player_keys = players.keys()
         for loop_payer_id in players:
@@ -195,6 +199,9 @@ async def connectionHandler(websocket, path):
                 loop_player_websocket = players[loop_payer_id]
                 await loop_player_websocket.send(json.dumps(notify_message))
 
+        # Update game state
+        if(len(players) < 1):
+            game_active = False
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Start server
