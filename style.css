@@ -6,6 +6,14 @@ body {
   position: relative;
 }
 
+a{
+  color: #eee;
+}
+
+a:hover{
+  color: #00ffff;
+}
+
 header {
     position: absolute;
     width: 100vw;
@@ -18,7 +26,7 @@ header {
 
 main {
   position: absolute;
-  width: 78vw; 
+  width: 78vw;
   height: 78vw;
   max-height: 75vh;
   max-width: 75vh;
@@ -31,7 +39,7 @@ main {
 
 aside {
   position: absolute;
-  width: 18vw; 
+  width: 18vw;
   top: 15vh;
   right:0;
   box-sizing: border-box;
