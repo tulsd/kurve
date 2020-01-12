@@ -17,7 +17,7 @@ a:hover{
 header {
     position: absolute;
     width: 100vw;
-    height: 15vh;
+    height: 10vh;
     padding: 2vw;
     top: 0;
     left: 0;
@@ -110,6 +110,7 @@ footer
   bottom: -100vh;
   left: 0;
   box-sizing: border-box;
+  font-size: 0.6rem;
 }
 
 footer:before
