@@ -17,7 +17,7 @@ a:hover{
 header {
     position: absolute;
     width: 100vw;
-    height: 15vh;
+    height: 10vh;
     padding: 2vw;
     top: 0;
     left: 0;
@@ -63,6 +63,7 @@ aside {
   border-top: 2px solid #00ffff;
   border-bottom: 2px solid #00ffff;
   padding-top: 10px;
+  background: rgba(51, 51, 51, 0.75);
 }
 
 #container-alerts .alert span
@@ -109,6 +110,7 @@ footer
   bottom: -100vh;
   left: 0;
   box-sizing: border-box;
+  font-size: 0.6rem;
 }
 
 footer:before
