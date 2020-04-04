@@ -1,5 +1,5 @@
 # Kurve
-Achtung, die Kurve!/Curve Fever - Modern Mulitplayer Implementation
+Achtung, die Kurve!/Curve Fever - Modern Mulitplayer Implementation 🎮
 
 ## Usage
 Start the server:  
